@@ -1,0 +1,108 @@
+{
+  "size": {
+    "levels": 1,
+    "height": 3,
+    "width": 3
+  },
+  "layout": [
+    [
+      ["mountain", "town", "forest"],
+      ["crater", "field", "cliff"],
+      ["stream", "river", "ocean"]
+    ]
+  ],
+  "spawn_point": [0, 1, 1],
+  "rooms": {
+    "mountain": {
+      "name": "mountain",
+      "text": {
+        "init_desc": "Your path is blocked by a large mountain. Paths run to the east and south."
+      },
+      "items": [],
+      "state": {}
+    },
+    "town": {
+      "name": "town",
+      "text": {
+        "init_desc": "You have arrived at a busy town. There are all kinds of crazy characters here."
+      },
+      "items": [],
+      "state": {}
+    },
+    "ocean": {
+      "name": "ocean",
+      "text": {
+        "init_desc": "From here you can see a glorious ocean view. Paths lead north and west."
+      },
+      "items": [],
+      "state": {}
+    },
+    "river": {
+      "name": "river",
+      "text":{
+        "init_desc": "You are standing in front of a wide river which you cannot cross."
+      },
+      "items": [],
+      "state": {}
+    },
+    "stream": {
+      "name": "stream",
+      "text": {
+        "init_desc": "You see a stream flowing from the west."
+      },
+      "items": [],
+      "state": {}
+    },
+    "cliff": {
+      "name": "cliff",
+      "text": {
+        "init_desc": "You've arrived at a cliff edge, which runs north-south."
+      },
+      "items": [],
+      "state": {}
+    },
+    "field": {
+      "name": "field",
+      "text": {
+        "init_desc": "You are standing in an open field, surrounded by strange looking plants."
+      },
+      "items": [],
+      "state": {}
+    },
+    "crater": {
+      "name": "crater",
+      "text": {
+        "init_desc": "This is a large crater, apparently some kind of impact site.",
+        "state": {
+          "dug": {
+            "0": "The earth is soft here. You may be able to dig.",
+            "1": "At your feet there is a small hole."
+          }
+        },
+        "responses": {
+          "already_dug": "You can't dig any further."
+        }
+      },
+      "items": [],
+      "state": {
+        "dug": 0
+      }
+    },
+    "forest": {
+      "name": "forest",
+      "text": {
+        "init_desc": "You are in a forest. Paths run to the south and west."
+      },
+      "items": ["sword"],
+      "state": {}
+      }
+    },
+  "items": {
+    "sword": {
+      "name": "Sword",
+      "init_desc": "You notice a majestic sword. It stands upright, with its blade embedded into a stone pedestal.",
+      "taken": 0
+    }
+  },
+  "starting_inventory": []
+}
