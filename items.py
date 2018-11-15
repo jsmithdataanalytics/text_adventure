@@ -9,7 +9,9 @@ class Item:
     def __init__(self, item_data):
         self.name = item_data['name']
         self.init_desc = item_data['init_desc']
-        self.taken = item_data['taken']
+        self.taken = 0
+        self.visible = item_data['visible']
+        self.commands = {}
 
 
 game_items = game_map['items']

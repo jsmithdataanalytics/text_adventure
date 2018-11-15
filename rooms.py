@@ -20,6 +20,15 @@ class Room:
     def gain_items(self, items_to_gain):
         self.inventory.update({item: items[item] for item in items_to_gain})
 
+    def count_visible_items(self):
+        count = 0
+
+        for item in self.inventory.values():
+
+            if item.visible:
+                count += 1
+        return count
+
     def update_desc(self):
         text_components = [self.text['init_desc']] + \
                           [self.text['state'][x][str(y)] for x, y in self.state.items()]
@@ -29,11 +38,10 @@ class Room:
             if value.taken:
                 item_name = value.name.lower()
                 determiner = 'an' if item_name[0] in 'aeiou' else 'a'
-                text = '\nThere is {} {} here.'.format(determiner, item_name)
+                text_components.append('\nThere is {} {} here.'.format(determiner, item_name))
 
-            else:
-                text = value.init_desc
-            text_components.append(text)
+            elif value.visible:
+                text_components.append(value.init_desc)
         self.text['desc'] = ' '.join(text_components)
 
 

@@ -89,7 +89,7 @@ class GetCommand(Command):
     def parse(self):
         item = self.match.group(1).strip()
 
-        if item in player.room.inventory:
+        if item in player.room.inventory and items[item].visible:
             self.parsed['validity'] = 'valid'
             self.parsed['item'] = item
         elif item == 'all':
@@ -101,10 +101,12 @@ class GetCommand(Command):
     def execute(self):
         if self.parsed['validity'] == 'valid':
             if self.parsed['item'] == 'all':
-                if len(player.room.inventory) == 0:
+                n_visible = player.room.count_visible_items()
+
+                if n_visible == 0:
                     return GetResponse('valid', 'failure', method='all')
                 else:
-                    item_list = player.get_items(new_items=player.room.inventory)
+                    item_list = player.get_all_visible_items()
                     return GetResponse('valid', 'success', new_items=item_list, method='all')
             else:
                 player.get_items(new_items={self.parsed['item']: player.room.inventory[self.parsed['item']]})
@@ -135,24 +137,40 @@ class DigCommand(Command):
 
     def execute(self):
 
-        if player.room.state['dug']:
-            return Response(text=player.room.text['responses']['already_dug'])
+        if player.room.name == 'crater':
+
+            if 'shovel' in player.inventory:
+                if player.room.state['dug']:
+                    return Response(text=player.room.text['responses']['already_dug'])
+
+                else:
+                    player.room.state['dug'] = 1
+                    items['diamond'].visible = 1
+                    player.room.update_desc()
+                    return Response(text=player.room.text['state']['dug']['1'] + ' ' + items['diamond'].init_desc)
+
+            else:
+                return Response(text='You have nothing to dig with.')
 
         else:
-            player.room.state['dug'] = 1
-            player.room.update_desc()
-            return Response(text=player.room.text['state']['dug']['1'])
+            return Response(text='You can\'t dig here.')
 
 
-command_constructors = {
+generic_commands = {
     '(?:go +)?(north|south|east|west|up|down)': GoCommand,
     'wait': WaitCommand,
     'look(?: +around)?': LookCommand,
     '(?:(?:check|inspect|examine) +)?(?:items|inventory)': InventoryCommand,
     '(?:get|take) +(.+)': GetCommand,
-    '(?:drop|put +down) +(.+)': DropCommand
+    '(?:drop|put +down) +(.+)': DropCommand,
+    'dig': DigCommand
+
 }
 
 rooms['crater'].commands = {
+    'dig': DigCommand
+}
+
+items['shovel'].commands = {
     'dig': DigCommand
 }

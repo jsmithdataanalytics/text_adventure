@@ -83,7 +83,7 @@
           "already_dug": "You can't dig any further."
         }
       },
-      "items": [],
+      "items": ["diamond"],
       "state": {
         "dug": 0
       }
@@ -93,15 +93,20 @@
       "text": {
         "init_desc": "You are in a forest. Paths run to the south and west."
       },
-      "items": ["sword"],
+      "items": ["shovel"],
       "state": {}
       }
     },
   "items": {
-    "sword": {
-      "name": "Sword",
-      "init_desc": "You notice a majestic sword. It stands upright, with its blade embedded into a stone pedestal.",
-      "taken": 0
+    "shovel": {
+      "name": "Shovel",
+      "init_desc": "You notice a shovel lying on the ground.",
+      "visible": 1
+    },
+    "diamond": {
+      "name": "Diamond",
+      "init_desc": "Inside is an enormous diamond, probably worth an absolute fortune!",
+      "visible": 0
     }
   },
   "starting_inventory": []

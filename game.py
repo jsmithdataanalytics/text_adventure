@@ -18,33 +18,42 @@ def text_constructor(resp):
         return resp.text_constructor()
 
 
+def match_command(text, command_list):
+
+    for reg_ex in command_list:
+        result = re.fullmatch(reg_ex, text)
+
+        if result:
+            return command_list[reg_ex](result), result
+    return InvalidCommand(), None
+
+
 print(player.room.text['desc'])
+command = InvalidCommand()
 
 while game_complete is False and player_dead is False:
     user_input = input().strip().lower()
-    match = None
-    command = InvalidCommand()
 
-    for regex in player.room.commands:
-        match = re.fullmatch(regex, user_input)
+    if user_input == '' and command.match is not None:
+        user_input = command.match.string
 
-        if match:
-            command = player.room.commands[regex](match)
+    command, match = match_command(user_input, player.room.commands)
+
+    for item in player.inventory.values():
+
+        if not match:
+            command, match = match_command(user_input, item.commands)
+
+        else:
             break
 
-    if match is None:
-
-        for regex in command_constructors:
-            match = re.fullmatch(regex, user_input)
-
-            if match:
-                command = command_constructors[regex](match)
-                break
+    if not match:
+        command, match = match_command(user_input, generic_commands)
 
     command.parse()
     response = command.execute()
 
-    if player.room_name == 'crater' and 'sword' in player.inventory:
+    if 'diamond' in player.inventory:
         game_complete = True
 
     if player.dead is True:

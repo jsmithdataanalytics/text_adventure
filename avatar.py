@@ -31,6 +31,10 @@ class Avatar:
             items[item].taken = 1
         return item_list
 
+    def get_all_visible_items(self):
+        new_items = {key: value for key, value in self.room.inventory.items() if value.visible}
+        return self.get_items(new_items)
+
     def drop_items(self, to_drop):
 
         for item in to_drop:
