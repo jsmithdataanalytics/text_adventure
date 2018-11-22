@@ -1,30 +1,96 @@
 {
-  "size": {
-    "levels": 1,
-    "height": 3,
-    "width": 3
+  "opening": {
+    "title": "THE VISTA",
+    "intro": [
+      "Welcome to The Very-Improvised Satirical Text Adventure - The Vista! In this 1980s-style text adventure, we'll explore the fantasy realm known only as 'The Vista', so named for its breathtaking landscapes, and not at all for the half-arsed nature of this game. Okay, let's set the scene.",
+      "Fade in.",
+      "We start with a traditional twee, idyllic fantasy village. Like The Shire from The Lord Of The Rings, but without all the hairy feet. Enter our hero:... wait. What's your name?",
+      "Enter your name: ",
+      "Nice. Enter our hero, {}. You're a young lad / lass, living in the village. Like 9 or 10 years old. The kind of age where your parents definitely shouldn't be letting you go off on dangerous adventures without supervision, but for some reason that doesn't seem to matter here.",
+      "You're a stoic, quiet kid. A real Thomas Anderson. Very easy from a dialogue-writing perspective.",
+      "You've just woken up at home..."
+    ]
   },
   "layout": [
     [
-      ["mountain", "town", "forest"],
-      ["crater", "field", "cliff"],
-      ["stream", "river", "ocean"]
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "home1", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"]
+    ],
+    [
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "homeg", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"]
+    ],
+    [
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"]
+    ],
+    [
+      ["woods", "woods", "woods", "woods", "woods", "woods", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["woods", "woods", "woods", "woods", "woods", "woods", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["woods", "woods", "woods", "woods", "woods", "woods", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["woods", "woods", "woods", "woods", "woods", "woods", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["woods", "woods", "woods", "woods", "woods", "wood1", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["block", "block", "block", "block", "block", "vila2", "vilb2", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "vila1", "vilb1", "block", "block", "block", "block", "block"],
+      ["magma", "magma", "magma", "magma", "magma", "block", "block", "ocean", "ocean", "ocean", "ocean", "ocean"],
+      ["magma", "magma", "magma", "magma", "magma", "block", "block", "ocean", "ocean", "ocean", "ocean", "ocean"],
+      ["magma", "magma", "magma", "magma", "magma", "block", "block", "ocean", "ocean", "ocean", "ocean", "ocean"],
+      ["magma", "magma", "magma", "magma", "magma", "block", "block", "ocean", "ocean", "ocean", "ocean", "ocean"],
+      ["magma", "magma", "magma", "magma", "magma", "block", "block", "ocean", "ocean", "ocean", "ocean", "ocean"]
     ]
   ],
-  "spawn_point": [0, 1, 1],
+  "spawn_point": [0, 6, 5],
   "rooms": {
-    "mountain": {
-      "name": "mountain",
+    "block": {
+      "name": "block",
       "text": {
-        "init_desc": "Your path is blocked by a large mountain. Paths run to the east and south."
+        "init_desc": "You shouldn't be here."
       },
       "items": [],
       "state": {}
     },
-    "town": {
-      "name": "town",
+    "woods": {
+      "name": "woods",
       "text": {
-        "init_desc": "You have arrived at a busy town. There are all kinds of crazy characters here."
+        "init_desc": "You are in a forest."
+      },
+      "items": [],
+      "state": {}
+    },
+    "wood1": {
+      "name": "wood1",
+      "text": {
+        "init_desc": "You have entered a forest."
       },
       "items": [],
       "state": {}
@@ -32,47 +98,91 @@
     "ocean": {
       "name": "ocean",
       "text": {
-        "init_desc": "From here you can see a glorious ocean view. Paths lead north and west."
+        "init_desc": "You are on the ocean floor."
       },
       "items": [],
       "state": {}
     },
-    "river": {
-      "name": "river",
-      "text":{
-        "init_desc": "You are standing in front of a wide river which you cannot cross."
-      },
-      "items": [],
-      "state": {}
-    },
-    "stream": {
-      "name": "stream",
+    "mount": {
+      "name": "mount",
       "text": {
-        "init_desc": "You see a stream flowing from the west."
+        "init_desc": "You are in the mountains."
       },
       "items": [],
       "state": {}
     },
-    "cliff": {
-      "name": "cliff",
+    "magma": {
+      "name": "magma",
       "text": {
-        "init_desc": "You've arrived at a cliff edge, which runs north-south."
+        "init_desc": "You are on an active volcano."
       },
       "items": [],
       "state": {}
     },
-    "field": {
-      "name": "field",
+    "vila1": {
+      "name": "vila1",
       "text": {
-        "init_desc": "You are standing in an open field, surrounded by strange looking plants."
+        "init_desc": "Village A1"
+      },
+      "items": [],
+      "state": {
+        "extra_directions": {
+          "in": [1, 6, 5]
+        }
+      }
+    },
+    "home1": {
+      "name": "home1",
+      "text": {
+        "init_desc": "You're in the bedroom of your house. There's a rickety wooden staircase leading down,",
+        "state": {
+          "opened": {
+            "0": "and a chest in the corner.",
+            "1": "and an open chest in the corner."
+          }
+        },
+        "responses": {
+          "locked": "It's locked.",
+          "unlocked": "The chest is unlocked.",
+          "already_opened": "It's already open you mug.",
+          "already_unlocked": "It's already unlocked you mug.",
+          "no_key": "You need a key to do that."
+        }
+      },
+      "items": ["shield"],
+      "state": {
+        "opened": 0,
+        "locked": 1,
+        "extra_directions": {
+          "downstairs": null
+        }
+      }
+    },
+    "homeg": {
+      "name": "homeg",
+      "text": {
+        "init_desc": "This is the living room of your house."
+      },
+      "items": ["key"],
+      "state": {
+        "extra_directions": {
+          "upstairs": null,
+          "out": [3, 6, 5]
+        }
+      }
+    },
+    "vila2": {
+      "name": "vila2",
+      "text": {
+        "init_desc": "Village A2"
       },
       "items": [],
       "state": {}
     },
-    "crater": {
-      "name": "crater",
+    "vilb1": {
+      "name": "vilb1",
       "text": {
-        "init_desc": "This is a large crater, apparently some kind of impact site.",
+        "init_desc": "Village B1",
         "state": {
           "dug": {
             "0": "The earth is soft here. You may be able to dig.",
@@ -88,10 +198,10 @@
         "dug": 0
       }
     },
-    "forest": {
-      "name": "forest",
+    "vilb2": {
+      "name": "vilb2",
       "text": {
-        "init_desc": "You are in a forest. Paths run to the south and west."
+        "init_desc": "Village B2"
       },
       "items": ["shovel"],
       "state": {}
@@ -107,6 +217,16 @@
       "name": "Diamond",
       "init_desc": "Inside is an enormous diamond, probably worth an absolute fortune!",
       "visible": 0
+    },
+    "shield": {
+      "name": "Shield",
+      "init_desc": "Inside the chest is an antique shield.",
+      "visible": 0
+    },
+    "key": {
+      "name": "Key",
+      "init_desc": "There's a key on the table.",
+      "visible": 1
     }
   },
   "starting_inventory": []

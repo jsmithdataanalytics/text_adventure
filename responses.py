@@ -64,7 +64,7 @@ class InventoryResponse(Response):
         if self.validity == 'valid':
 
             if len(player.inventory) > 0:
-                return 'Your inventory consists of:\n' + '\n'.join([item.name for item in player.inventory.values()])
+                return ['Your inventory consists of:'] + [item.name for item in player.inventory.values()]
 
             else:
                 return 'You have no items!'

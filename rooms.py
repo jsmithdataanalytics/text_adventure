@@ -8,8 +8,8 @@ class Room:
         self.text = {'desc': room_data['text']['init_desc']}
         self.text.update(room_data['text'])
         self.inventory = {item: items[item] for item in room_data['items']}
-        self.commands = {}
         self.state = room_data['state']
+        self.commands = {}
         self.update_desc()
 
     def lose_items(self, items_to_lose):
@@ -30,8 +30,12 @@ class Room:
         return count
 
     def update_desc(self):
-        text_components = [self.text['init_desc']] + \
-                          [self.text['state'][x][str(y)] for x, y in self.state.items()]
+        text_components = [self.text['init_desc']]
+
+        for x, y in self.state.items():
+
+            if 'state' in self.text and x in self.text['state']:
+                text_components.append(self.text['state'][x][str(y)])
 
         for key, value in self.inventory.items():
 

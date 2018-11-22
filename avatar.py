@@ -2,17 +2,21 @@ from rooms import *
 from rooms import game_rooms as rooms
 
 
-levels, height, width = game_map['size']['levels'], game_map['size']['height'], game_map['size']['width']
+levels, height, width = len(game_map['layout']), len(game_map['layout'][0]), len(game_map['layout'][0][0])
 
 
 class Avatar:
     def __init__(self):
+        self.name = ''
         self.coords = game_map['spawn_point']
         self.room_name = ''
         self.room = None
         self.update_room()
         self.inventory = {item: items[item] for item in game_map['starting_inventory']}
         self.dead = False
+
+    def set_name(self, name):
+        self.name = name
 
     def update_room(self):
         self.room_name = game_map['layout'][self.coords[0]][self.coords[1]][self.coords[2]]
@@ -54,14 +58,38 @@ class Avatar:
             coord_bounds = [levels - 1, height - 1, width - 1]
             self.coords = [x + y for x, y in zip(self.coords, valid_moves[direction])]
             coord_checks = [(coord < 0 or coord > bound) for coord, bound in zip(self.coords, coord_bounds)]
+
             if any(coord_checks):
                 self.coords = [x - y for x, y in zip(self.coords, valid_moves[direction])]
                 return 'invalid_movement', direction
+
             else:
                 self.update_room()
-                return 'new_room', direction
-        else:
+
+                if self.room_name == 'block':
+                    self.coords = [x - y for x, y in zip(self.coords, valid_moves[direction])]
+                    self.update_room()
+                    return 'invalid_movement', direction
+
+                else:
+                    return 'new_room', direction
+
+        elif direction in ['in', 'out']:
+            self.coords = player.room.state['extra_directions'][direction]
+            self.update_room()
+            return 'new_room', direction
+
+        elif direction == 'no_stairs':
+            return 'no_stairs', direction
+
+        elif direction == 'no_inout':
+            return 'no_inout', direction
+
+        elif direction == 'invalid':
             return 'invalid_command', direction
+
+        else:
+            raise(ValueError('Unhandled direction'))
 
 
 player = Avatar()

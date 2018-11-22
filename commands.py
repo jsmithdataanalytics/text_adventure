@@ -28,12 +28,30 @@ class InvalidCommand(Command):
 class GoCommand(Command):
 
     def parse(self):
-        direction = self.match.group(1).strip()
+        group = self.match.group(1).strip()
+        direction = group.replace('stairs', '').replace('side', '')
 
-        if direction not in ['north', 'south', 'east', 'west', 'up', 'down']:
-            self.parsed = {'direction': 'invalid'}
+        if group in ['north', 'south', 'east', 'west', 'up', 'down']:
+            self.parsed['direction'] = group
+
+        elif group in ['upstairs', 'downstairs']:
+
+            if 'extra_directions' in player.room.state and group in player.room.state['extra_directions']:
+                self.parsed['direction'] = direction
+
+            else:
+                self.parsed['direction'] = 'no_stairs'
+
+        elif direction in ['in', 'out']:
+
+            if 'extra_directions' in player.room.state and direction in player.room.state['extra_directions']:
+                self.parsed['direction'] = direction
+
+            else:
+                self.parsed['direction'] = 'no_inout'
+
         else:
-            self.parsed['direction'] = direction
+            self.parsed['direction'] = 'invalid'
 
     def execute(self):
         result, direction = player.go(self.parsed['direction'])
@@ -41,6 +59,10 @@ class GoCommand(Command):
             return GoResponse('invalid', 'failure')
         elif result == 'invalid_movement':
             return GoResponse('valid', 'failure', direction=direction)
+        elif result == 'no_stairs':
+            return Response(text='There aren\'t any stairs here.')
+        elif result == 'no_inout':
+            return Response(text='You can\'t go that way.')
         elif result == 'new_room':
             return GoResponse('valid', 'success', direction=direction)
 
@@ -137,7 +159,7 @@ class DigCommand(Command):
 
     def execute(self):
 
-        if player.room.name == 'crater':
+        if player.room.name == 'vilb1':
 
             if 'shovel' in player.inventory:
                 if player.room.state['dug']:
@@ -156,21 +178,64 @@ class DigCommand(Command):
             return Response(text='You can\'t dig here.')
 
 
+class OpenChestHomeCommand(Command):
+
+    def execute(self):
+
+        if player.room.state['locked'] == 1:
+            return Response(text=player.room.text['responses']['locked'])
+
+        elif player.room.state['opened'] == 1:
+            return Response(text=player.room.text['responses']['already_opened'])
+
+        else:
+            player.room.state['opened'] = 1
+            items['shield'].visible = 1
+            player.room.update_desc()
+            return Response(text='Done. ' + items['shield'].init_desc)
+
+
+class UnlockChestHomeCommand(Command):
+
+    def execute(self):
+
+        if player.room.state['locked'] == 0:
+            return Response(text=player.room.text['responses']['already_unlocked'])
+
+        elif 'key' not in player.inventory:
+            return Response(text=player.room.text['responses']['no_key'])
+
+        else:
+            player.room.state['locked'] = 0
+            player.room.update_desc()
+            return Response(text=player.room.text['responses']['unlocked'])
+
+
 generic_commands = {
-    '(?:go +)?(north|south|east|west|up|down)': GoCommand,
+    '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|in|out|inside|outside)': GoCommand,
     'wait': WaitCommand,
     'look(?: +around)?': LookCommand,
     '(?:(?:check|inspect|examine) +)?(?:items|inventory)': InventoryCommand,
     '(?:get|take) +(.+)': GetCommand,
     '(?:drop|put +down) +(.+)': DropCommand,
     'dig': DigCommand
-
 }
 
-rooms['crater'].commands = {
-    'dig': DigCommand
-}
+rooms['vilb1'].commands.update(
+    {
+        'dig': DigCommand
+    }
+)
 
-items['shovel'].commands = {
-    'dig': DigCommand
-}
+rooms['home1'].commands.update(
+    {
+        'open(?: +chest)?': OpenChestHomeCommand,
+        'unlock(?: +chest)?': UnlockChestHomeCommand
+    }
+)
+
+items['shovel'].commands.update(
+    {
+        'dig': DigCommand
+    }
+)
