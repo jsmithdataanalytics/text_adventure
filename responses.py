@@ -19,14 +19,15 @@ class InvalidResponse(Response):
 
 
 class GoResponse(Response):
-    def __init__(self, validity, outcome, dead=False, direction=None):
+    def __init__(self, validity, outcome, dead=False, direction=None, desc_type='short'):
         super().__init__(validity, outcome, dead)
         self.direction = direction
+        self.desc_type = desc_type
 
     def text_constructor(self):
 
         if self.outcome == 'success':
-            return player.describe_current_room()
+            return player.describe_current_room(desc_type=self.desc_type)
 
         elif self.validity == 'valid':
             return 'You can\'t go that way.'
@@ -51,7 +52,7 @@ class LookResponse(Response):
     def text_constructor(self):
 
         if self.validity == 'valid':
-            return player.describe_current_room()
+            return player.describe_current_room(desc_type='long')
 
         else:
             return 'Invalid command.'
@@ -64,7 +65,7 @@ class InventoryResponse(Response):
         if self.validity == 'valid':
 
             if len(player.inventory) > 0:
-                return ['Your inventory consists of:'] + [item.name for item in player.inventory.values()]
+                return '\n'.join(['Your inventory consists of:'] + [item.name for item in player.inventory.values()])
 
             else:
                 return 'You have no items!'

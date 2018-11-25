@@ -64,7 +64,9 @@ class GoCommand(Command):
         elif result == 'no_inout':
             return Response(text='You can\'t go that way.')
         elif result == 'new_room':
-            return GoResponse('valid', 'success', direction=direction)
+            desc_type = 'init' if player.room.first_visit else 'short'
+            player.room.first_visit = 0
+            return GoResponse('valid', 'success', direction=direction, desc_type=desc_type)
 
 
 class WaitCommand(Command):
@@ -167,9 +169,9 @@ class DigCommand(Command):
 
                 else:
                     player.room.state['dug'] = 1
-                    items['diamond'].visible = 1
+                    items['sword'].visible = 1
                     player.room.update_desc()
-                    return Response(text=player.room.text['state']['dug']['1'] + ' ' + items['diamond'].init_desc)
+                    return Response(text=player.room.text['state']['dug']['1'] + ' ' + items['sword'].init_desc)
 
             else:
                 return Response(text='You have nothing to dig with.')

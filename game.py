@@ -20,29 +20,33 @@ def text_constructor(resp):
         return resp.text_constructor()
 
 
-def match_command(text, command_list):
+def match_command(string, command_list):
 
     for reg_ex in command_list:
-        result = re.fullmatch(reg_ex, text)
+        result = re.fullmatch(reg_ex, string)
 
         if result:
             return command_list[reg_ex](result), result
     return InvalidCommand(), None
 
 
-def display(paras, text_width=TEXT_WIDTH, before=1, after=0, between=2):
-    if isinstance(paras, str):
-        paras = [paras]
-    text = ('\n' * between).join([fill(para, text_width) for para in paras])
-    print('\n' * before + text + '\n' * after)
+def display(string, text_width=TEXT_WIDTH, before=1, after=0):
+    paras = string.split('\n')
+    string = '\n'.join([fill(para, text_width, replace_whitespace=False) for para in paras])
+    print('\n' * before + string + '\n' * after)
 
 
 print('\n' + '~' * TEXT_WIDTH + '\n' + game_map['opening']['title'].center(TEXT_WIDTH, ' ') + '\n' + '~' * TEXT_WIDTH)
-display(game_map['opening']['intro'][:4])
+
+for text in game_map['opening']['intro'][:4]:
+    display(text)
 player.set_name(input().strip())
 display(game_map['opening']['intro'][4].format(player.name))
-display(game_map['opening']['intro'][5:])
-display(player.room.text['desc'])
+
+for text in game_map['opening']['intro'][5:]:
+    display(text)
+display(player.room.init_desc, after=1)
+player.room.first_visit = 0
 command = InvalidCommand()
 
 
@@ -68,16 +72,17 @@ while game_complete is False and player_dead is False:
     command.parse()
     response = command.execute()
 
-    if 'diamond' in player.inventory:
+    if 'sword' in player.inventory:
         game_complete = True
 
     if player.dead is True:
         player_dead = True
 
     text_output = text_constructor(response)
-    display(text_output, between=1)
+    display(text_output.format(player.name), before=0, after=1)
 
 if player_dead:
     display('Thy game is over.')
+
 elif game_complete:
     display('Created by James Smith.')

@@ -4,7 +4,7 @@
     "intro": [
       "Welcome to The Very-Improvised Satirical Text Adventure - The Vista! In this 1980s-style text adventure, we'll explore the fantasy realm known only as 'The Vista', so named for its breathtaking landscapes, and not at all for the half-arsed nature of this game. Okay, let's set the scene.",
       "Fade in.",
-      "We start with a traditional twee, idyllic fantasy village. Like The Shire from The Lord Of The Rings, but without all the hairy feet. Enter our hero:... wait. What's your name?",
+      "We start with a traditional twee, idyllic fantasy village... Floonyloon Village. It's like The Shire, but without the hairy feet. Enter our hero:... wait. What's your name?",
       "Enter your name: ",
       "Nice. Enter our hero, {}. You're a young lad / lass, living in the village. Like 9 or 10 years old. The kind of age where your parents definitely shouldn't be letting you go off on dangerous adventures without supervision, but for some reason that doesn't seem to matter here.",
       "You're a stoic, quiet kid. A real Thomas Anderson. Very easy from a dialogue-writing perspective.",
@@ -33,7 +33,7 @@
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
-      ["block", "block", "block", "block", "block", "homeg", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "homeg", "block", "jimbg", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
@@ -74,7 +74,7 @@
     "block": {
       "name": "block",
       "text": {
-        "init_desc": "You shouldn't be here."
+        "init_core": "You shouldn't be here."
       },
       "items": [],
       "state": {}
@@ -82,7 +82,7 @@
     "woods": {
       "name": "woods",
       "text": {
-        "init_desc": "You are in a forest."
+        "init_core": "You are in a forest."
       },
       "items": [],
       "state": {}
@@ -90,7 +90,7 @@
     "wood1": {
       "name": "wood1",
       "text": {
-        "init_desc": "You have entered a forest."
+        "init_core": "You have entered a forest."
       },
       "items": [],
       "state": {}
@@ -98,7 +98,7 @@
     "ocean": {
       "name": "ocean",
       "text": {
-        "init_desc": "You are on the ocean floor."
+        "init_core": "You are on the ocean floor."
       },
       "items": [],
       "state": {}
@@ -106,7 +106,7 @@
     "mount": {
       "name": "mount",
       "text": {
-        "init_desc": "You are in the mountains."
+        "init_core": "You are in the mountains."
       },
       "items": [],
       "state": {}
@@ -114,7 +114,7 @@
     "magma": {
       "name": "magma",
       "text": {
-        "init_desc": "You are on an active volcano."
+        "init_core": "You are on an active volcano."
       },
       "items": [],
       "state": {}
@@ -122,7 +122,9 @@
     "vila1": {
       "name": "vila1",
       "text": {
-        "init_desc": "Village A1"
+        "init_core": "You're in the southwest part of Floonyloon Village, right outside your house / hut thing. Normally you'd be met by sunshine, birdsong, and a dozen cheery greetings from impossibly upbeat neighbours. But something is different today. Dark clouds cover the land in all directions, and there doesn't seem to be a soul in sight.",
+        "short_core": "You're in the southwest part of Floonyloon Village, right next to your house.",
+        "long_core": "You're in the southwest part of Floonyloon Village, right outside your house. Usually the village is a happy and upbeat place, but something seems different today. Dark clouds cover the land in all directions, and there doesn't seem to be a soul in sight."
       },
       "items": [],
       "state": {
@@ -134,7 +136,7 @@
     "home1": {
       "name": "home1",
       "text": {
-        "init_desc": "You're in the bedroom of your house. There's a rickety wooden staircase leading down,",
+        "init_core": "You're in the bedroom of your house. There's a rickety wooden staircase leading down,",
         "state": {
           "opened": {
             "0": "and a chest in the corner.",
@@ -161,7 +163,7 @@
     "homeg": {
       "name": "homeg",
       "text": {
-        "init_desc": "This is the living room of your house."
+        "init_core": "This is the living room of your house."
       },
       "items": ["key"],
       "state": {
@@ -174,7 +176,7 @@
     "vila2": {
       "name": "vila2",
       "text": {
-        "init_desc": "Village A2"
+        "init_core": "Village A2"
       },
       "items": [],
       "state": {}
@@ -182,10 +184,12 @@
     "vilb1": {
       "name": "vilb1",
       "text": {
-        "init_desc": "Village B1",
+        "init_core": "You are in the southeast part of the village (it's a small village). Your best buddy, Jimbo, lives here. You are right outside his house.",
+        "short_core": "You are in the southeast part of the village, right outside Jimbo's house.",
+        "long_core": "You are in the southeast part of Floonyloon Village. Your best buddy, Jimbo, lives here. You are right outside his house.",
         "state": {
           "dug": {
-            "0": "The earth is soft here. You may be able to dig.",
+            "0": "",
             "1": "At your feet there is a small hole."
           }
         },
@@ -193,15 +197,28 @@
           "already_dug": "You can't dig any further."
         }
       },
-      "items": ["diamond"],
+      "items": ["sword"],
       "state": {
+        "extra_directions": {"in": [1, 6, 7]},
         "dug": 0
+      }
+    },
+    "jimbg": {
+      "name": "jimbg",
+      "text": {
+        "init_core": "You're inside Jimbo's place. He's in bed, looking all gaunt and sick. He starts to talk in a hoarse voice, and he's all like:\n\n\"Ugh, {}, is that you? How's it going buddy? As if you're not sick - you're like the only one in town dude! Everyone else woke up today feeling like shit, plus the weather's all messed up. There were even rumours of monsters in the forest!\"\n\n\"I dunno what's going on man, but since you're looking so sprightly, could you go and see the Potion Master on the other side of town? She at least might be able to mix something up to make everyone feel better.\"\n\n\"Oh, and take my sword with you, just in case. I buried it just outside, once it became clear I wasn't going to be able to use it.\"",
+        "short_core": "This is Jimbo's house. He says: \"Go see the Potion Master and help her cook something up for everyone!\"",
+        "state": {}
+      },
+      "items": [],
+      "state": {
+        "extra_directions": {"out": [3, 6, 6]}
       }
     },
     "vilb2": {
       "name": "vilb2",
       "text": {
-        "init_desc": "Village B2"
+        "init_core": "You are in the northeast part of the village. All the shops are closed, so you won't be able to get any supplies here."
       },
       "items": ["shovel"],
       "state": {}
@@ -210,7 +227,7 @@
   "items": {
     "shovel": {
       "name": "Shovel",
-      "init_desc": "You notice a shovel lying on the ground.",
+      "init_desc": "However, you notice a shovel lying on the ground nearby.",
       "visible": 1
     },
     "diamond": {
@@ -227,6 +244,11 @@
       "name": "Key",
       "init_desc": "There's a key on the table.",
       "visible": 1
+    },
+    "sword": {
+      "name": "Sword",
+      "init_desc": "Inside is a majestic sword.",
+      "visible": 0
     }
   },
   "starting_inventory": []

@@ -5,11 +5,17 @@ from items import game_items as items
 class Room:
     def __init__(self, room_data):
         self.name = room_data['name']
-        self.text = {'desc': room_data['text']['init_desc']}
-        self.text.update(room_data['text'])
+        self.text = room_data['text']
+        self.init_core = self.text['init_core']
+        self.short_core = self.text['short_core'] if 'short_core' in self.text else self.text['init_core']
+        self.long_core = self.text['long_core'] if 'long_core' in self.text else self.text['init_core']
+        self.init_desc = ''
+        self.short_desc = ''
+        self.long_desc = ''
         self.inventory = {item: items[item] for item in room_data['items']}
         self.state = room_data['state']
         self.commands = {}
+        self.first_visit = 1
         self.update_desc()
 
     def lose_items(self, items_to_lose):
@@ -30,23 +36,27 @@ class Room:
         return count
 
     def update_desc(self):
-        text_components = [self.text['init_desc']]
+        text_components = [[self.init_core], [self.short_core], [self.long_core]]
+        descs = []
 
-        for x, y in self.state.items():
+        for core in text_components:
 
-            if 'state' in self.text and x in self.text['state']:
-                text_components.append(self.text['state'][x][str(y)])
+            for x, y in self.state.items():
 
-        for key, value in self.inventory.items():
+                if 'state' in self.text and x in self.text['state']:
+                    core.append(self.text['state'][x][str(y)])
 
-            if value.taken:
-                item_name = value.name.lower()
-                determiner = 'an' if item_name[0] in 'aeiou' else 'a'
-                text_components.append('\nThere is {} {} here.'.format(determiner, item_name))
+            for key, value in self.inventory.items():
 
-            elif value.visible:
-                text_components.append(value.init_desc)
-        self.text['desc'] = ' '.join(text_components)
+                if value.taken:
+                    item_name = value.name.lower()
+                    determiner = 'an' if item_name[0] in 'aeiou' else 'a'
+                    core.append('\nThere is {} {} here.'.format(determiner, item_name))
+
+                elif value.visible:
+                    core.append(value.init_desc)
+            descs.append(' '.join(core))
+        self.init_desc, self.short_desc, self.long_desc = descs[0], descs[1], descs[2]
 
 
 game_rooms = game_map['rooms']

@@ -22,9 +22,20 @@ class Avatar:
         self.room_name = game_map['layout'][self.coords[0]][self.coords[1]][self.coords[2]]
         self.room = rooms[self.room_name]
 
-    def describe_current_room(self):
+    def describe_current_room(self, desc_type='short'):
         self.room.update_desc()
-        return self.room.text['desc']
+
+        if desc_type == 'init':
+            return self.room.init_desc
+
+        elif desc_type == 'short':
+            return self.room.short_desc
+
+        elif desc_type == 'long':
+            return self.room.long_desc
+
+        else:
+            raise ValueError('Unhandled description type')
 
     def get_items(self, new_items):
         self.inventory.update(new_items)
