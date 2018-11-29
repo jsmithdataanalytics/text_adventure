@@ -15,7 +15,7 @@ class Response:
 class InvalidResponse(Response):
 
     def text_constructor(self):
-        return 'Invalid command.'
+        return 'You can\'t do that.'
 
 
 class GoResponse(Response):
@@ -33,7 +33,7 @@ class GoResponse(Response):
             return 'You can\'t go that way.'
 
         else:
-            return 'Invalid command.'
+            return 'You can\'t do that.'
 
 
 class WaitResponse(Response):
@@ -44,7 +44,7 @@ class WaitResponse(Response):
             return 'Time passes...'
 
         else:
-            return 'Invalid command.'
+            return 'You can\'t do that.'
 
 
 class LookResponse(Response):
@@ -55,7 +55,7 @@ class LookResponse(Response):
             return player.describe_current_room(desc_type='long')
 
         else:
-            return 'Invalid command.'
+            return 'You can\'t do that.'
 
 
 class InventoryResponse(Response):
@@ -71,7 +71,7 @@ class InventoryResponse(Response):
                 return 'You have no items!'
 
         else:
-            return 'Invalid command.'
+            return 'You can\'t do that.'
 
 
 class GetResponse(Response):

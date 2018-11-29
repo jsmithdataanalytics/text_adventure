@@ -213,6 +213,29 @@ class UnlockChestHomeCommand(Command):
             return Response(text=player.room.text['responses']['unlocked'])
 
 
+class CutVinesCommand(Command):
+
+    def execute(self):
+
+        if player.room_name == 'vila2':
+
+            if player.room.state['cut'] == 0:
+
+                if 'sword' in player.inventory:
+                    game_map['layout'][3][4][5] = 'wood1'
+                    player.room.state['cut'] = 1
+                    return Response(text=player.room.text['responses']['cut_success'])
+
+                else:
+                    return Response(text=player.room.text['responses']['nothing_to_cut_with'])
+
+            else:
+                return Response(text=player.room.text['responses']['already_cut'])
+
+        else:
+            return InvalidResponse()
+
+
 generic_commands = {
     '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|in|out|inside|outside)': GoCommand,
     'wait': WaitCommand,
@@ -233,6 +256,12 @@ rooms['home1'].commands.update(
     {
         'open(?: +chest)?': OpenChestHomeCommand,
         'unlock(?: +chest)?': UnlockChestHomeCommand
+    }
+)
+
+rooms['vila2'].commands.update(
+    {
+        'cut(?: +vines)?': CutVinesCommand
     }
 )
 

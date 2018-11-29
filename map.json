@@ -6,7 +6,7 @@
       "Fade in.",
       "We start with a traditional twee, idyllic fantasy village... Floonyloon Village. It's like The Shire, but without the hairy feet. Enter our hero:... wait. What's your name?",
       "Enter your name: ",
-      "Nice. Enter our hero, {}. You're a young lad / lass, living in the village. Like 9 or 10 years old. The kind of age where your parents definitely shouldn't be letting you go off on dangerous adventures without supervision, but for some reason that doesn't seem to matter here.",
+      "Nice. Enter our hero, {name}. You're a young lad / lass, living in the village. Like 9 or 10 years old. The kind of age where your parents definitely shouldn't be letting you go off on dangerous adventures without supervision, but for some reason that doesn't seem to matter here.",
       "You're a stoic, quiet kid. A real Thomas Anderson. Very easy from a dialogue-writing perspective.",
       "You've just woken up at home..."
     ]
@@ -31,7 +31,7 @@
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
-      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "apoth", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "homeg", "block", "jimbg", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
@@ -55,11 +55,11 @@
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"]
     ],
     [
-      ["woods", "woods", "woods", "woods", "woods", "woods", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["woods", "woods", "woods", "woods", "woods", "woods", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["woods", "woods", "woods", "woods", "woods", "woods", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["woods", "woods", "woods", "woods", "woods", "woods", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["woods", "woods", "woods", "woods", "woods", "wood1", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["block", "block", "block", "block", "block", "block", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["block", "block", "block", "block", "block", "block", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["dingl", "woods", "block", "woods", "woods", "woods", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["block", "woods", "block", "woods", "block", "woods", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["block", "woods", "woods", "woods", "block", "block", "block", "mount", "mount", "mount", "mount", "mount"],
       ["block", "block", "block", "block", "block", "vila2", "vilb2", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "vila1", "vilb1", "block", "block", "block", "block", "block"],
       ["magma", "magma", "magma", "magma", "magma", "block", "block", "ocean", "ocean", "ocean", "ocean", "ocean"],
@@ -90,7 +90,7 @@
     "wood1": {
       "name": "wood1",
       "text": {
-        "init_core": "You have entered a forest."
+        "init_core": "You have entered Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Dense thickets block your ways east and west, leaving only a northward path."
       },
       "items": [],
       "state": {}
@@ -176,10 +176,40 @@
     "vila2": {
       "name": "vila2",
       "text": {
-        "init_core": "Village A2"
+        "init_core": "This is the northeast part of the village, where the Potion Master's apothecary is. It's a weird tipi thing, made of all sorts of exotic plants and animal skins. Plumes of brightly coloured smoke rise from the top.\n\nTo the north, a path leads into Robinett Forest.",
+        "short_core": "This is the northeast part of the village, where the Potion Master's apothecary is. To the north, a path leads into Robinett Forest.",
+        "long_core": "This is the northeast part of Floonyloon Village, where the Potion Master's apothecary is. It's a weird tipi thing, made of all sorts of exotic plants and animal skins. Plumes of brightly coloured smoke rise from the top.\n\nTo the north, a path leads into Robinett Forest.",
+        "state": {
+          "cut": {
+            "0": "However, the path is obstructed by a thicket of thorny vines.",
+            "1": ""
+          }
+        },
+        "responses": {
+          "already_cut": "You've already cut the vines away you mug.",
+          "cut_success": "You've successfully cut away the vines, revealing a path into the forest.",
+          "nothing_to_cut_with": "You have nothing to cut with."
+        }
       },
       "items": [],
-      "state": {}
+      "state": {
+        "extra_directions": {"in": [1, 4, 5]},
+        "cut": 0
+      }
+    },
+    "apoth": {
+      "name": "apoth",
+      "text": {
+        "init_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of blue coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience to whatever's out there. I heard there are strange creatures roaming The Vista, turning it into a cursed land.\"\n\n\"I'm sure I could make a potion to cure everyone, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. Dingleflowers from Robinett Forest. Alaria Spring Water from the Gygax Mountains. Oleon Seaweed from the Koltaric Ocean. And Crystallised Tallenine from the Sawano Volcano.\"\n\n\"{name}, I'm counting on you to travel to these lands and bring me the vital ingredients for my magic elixir!\"",
+        "short_core": "You're in the Potion Master's tent. She says: \"{name}, go to Robinett Forest and bring me some Dingleflowers!",
+        "long_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of blue coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience to whatever's out there. I heard there are strange creatures roaming The Vista, turning it into a cursed land.\"\n\n\"I'm sure I could make a potion to cure everyone, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. Dingleflowers from Robinett Forest. Alaria Spring Water from the Gygax Mountains. Oleon Seaweed from the Koltaric Ocean. And Crystallised Tallenine from the Sawano Volcano.\"\n\n\"{name}, I'm counting on you to travel to these lands and bring me the vital ingredients for my magic elixir!\"",
+        "state": {},
+        "responses": {}
+      },
+      "items": ["bottle"],
+      "state": {
+        "extra_directions": {"out": [3, 5, 5]}
+      }
     },
     "vilb1": {
       "name": "vilb1",
@@ -206,7 +236,7 @@
     "jimbg": {
       "name": "jimbg",
       "text": {
-        "init_core": "You're inside Jimbo's place. He's in bed, looking all gaunt and sick. He starts to talk in a hoarse voice, and he's all like:\n\n\"Ugh, {}, is that you? How's it going buddy? As if you're not sick - you're like the only one in town dude! Everyone else woke up today feeling like shit, plus the weather's all messed up. There were even rumours of monsters in the forest!\"\n\n\"I dunno what's going on man, but since you're looking so sprightly, could you go and see the Potion Master on the other side of town? She at least might be able to mix something up to make everyone feel better.\"\n\n\"Oh, and take my sword with you, just in case. I buried it just outside, once it became clear I wasn't going to be able to use it.\"",
+        "init_core": "You're inside Jimbo's place. He's in bed, looking all gaunt and sick. He starts to talk in a hoarse voice, and he's all like:\n\n\"Ugh, {name}, is that you? How's it going buddy? As if you're not sick - you're like the only one in town dude! Everyone else woke up today feeling like shit, plus the weather's all messed up. There were even rumours of monsters in the forest!\"\n\n\"I dunno what's going on man, but since you're looking so sprightly, could you go and see the Potion Master on the other side of town? She at least might be able to mix something up to make everyone feel better.\"\n\n\"Oh, and take my sword with you, just in case. I buried it just outside the house, so the monsters don't find it.\"",
         "short_core": "This is Jimbo's house. He says: \"Go see the Potion Master and help her cook something up for everyone!\"",
         "state": {}
       },
@@ -222,8 +252,16 @@
       },
       "items": ["shovel"],
       "state": {}
-      }
     },
+    "dingl": {
+      "name": "dingl",
+      "text": {
+        "init_core": "You have reached the end of the forest trail. There are some Dingleflowers here."
+      },
+      "items": [],
+      "state": {}
+    }
+  },
   "items": {
     "shovel": {
       "name": "Shovel",
@@ -249,6 +287,11 @@
       "name": "Sword",
       "init_desc": "Inside is a majestic sword.",
       "visible": 0
+    },
+    "bottle": {
+      "name": "Bottle",
+      "init_desc": "\n\nThere is an empty bottle on a nearby table. It looks perfect for storing strange ingredients.",
+      "visible": 1
     }
   },
   "starting_inventory": []

@@ -17,7 +17,7 @@ def text_constructor(resp):
         return 'Congratulations! You win!'
 
     else:
-        return resp.text_constructor()
+        return resp.text_constructor().format(name=player.name)
 
 
 def match_command(string, command_list):
@@ -41,7 +41,7 @@ print('\n' + '~' * TEXT_WIDTH + '\n' + game_map['opening']['title'].center(TEXT_
 for text in game_map['opening']['intro'][:4]:
     display(text)
 player.set_name(input().strip())
-display(game_map['opening']['intro'][4].format(player.name))
+display(game_map['opening']['intro'][4].format(name=player.name))
 
 for text in game_map['opening']['intro'][5:]:
     display(text)
@@ -72,14 +72,14 @@ while game_complete is False and player_dead is False:
     command.parse()
     response = command.execute()
 
-    if 'sword' in player.inventory:
+    if player.room_name == 'dingl':
         game_complete = True
 
     if player.dead is True:
         player_dead = True
 
     text_output = text_constructor(response)
-    display(text_output.format(player.name), before=0, after=1)
+    display(text_output, before=0, after=1)
 
 if player_dead:
     display('Thy game is over.')
