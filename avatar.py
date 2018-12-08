@@ -13,7 +13,8 @@ class Avatar:
         self.room = None
         self.update_room()
         self.inventory = {item: items[item] for item in game_map['starting_inventory']}
-        self.dead = False
+        self.health = 120
+        self.mode = 'normal'
 
     def set_name(self, name):
         self.name = name

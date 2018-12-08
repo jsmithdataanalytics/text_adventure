@@ -1,5 +1,6 @@
-from items import *
+from enemies import *
 from items import game_items as items
+from enemies import game_enemies as enemies
 
 
 class Room:
@@ -13,6 +14,7 @@ class Room:
         self.short_desc = ''
         self.long_desc = ''
         self.inventory = {item: items[item] for item in room_data['items']}
+        self.enemies = {e: enemies[e] for e in room_data['enemies']} if 'enemies' in room_data else {}
         self.state = room_data['state']
         self.commands = {}
         self.first_visit = 1
@@ -55,8 +57,21 @@ class Room:
 
                 elif value.visible:
                     core.append(value.init_desc)
+
+            for value in self.enemies.values():
+                if value.active:
+                    core.append(value.init_desc)
+
             descs.append(' '.join(core))
         self.init_desc, self.short_desc, self.long_desc = descs[0], descs[1], descs[2]
+
+    def enemies_active(self):
+
+        for enemy in self.enemies.values():
+
+            if enemy.active:
+                return True
+        return False
 
 
 game_rooms = game_map['rooms']

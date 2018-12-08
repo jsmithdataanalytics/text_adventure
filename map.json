@@ -56,11 +56,11 @@
     ],
     [
       ["block", "block", "block", "block", "block", "block", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["block", "block", "block", "block", "block", "block", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["dingl", "woods", "block", "woods", "woods", "woods", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["block", "woods", "block", "woods", "block", "woods", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["block", "woods", "woods", "woods", "block", "block", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["block", "block", "block", "block", "block", "vila2", "vilb2", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "deade", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["dingl", "woo11", "block", "block", "wood4", "wood3", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["block", "woo10", "block", "wood6", "block", "wood2", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["block", "wood9", "wood8", "wood7", "block", "block", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["block", "block", "dead2", "block", "block", "vila2", "vilb2", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "vila1", "vilb1", "block", "block", "block", "block", "block"],
       ["magma", "magma", "magma", "magma", "magma", "block", "block", "ocean", "ocean", "ocean", "ocean", "ocean"],
       ["magma", "magma", "magma", "magma", "magma", "block", "block", "ocean", "ocean", "ocean", "ocean", "ocean"],
@@ -83,14 +83,6 @@
       "name": "woods",
       "text": {
         "init_core": "You are in a forest."
-      },
-      "items": [],
-      "state": {}
-    },
-    "wood1": {
-      "name": "wood1",
-      "text": {
-        "init_core": "You have entered Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Dense thickets block your ways east and west, leaving only a northward path."
       },
       "items": [],
       "state": {}
@@ -200,13 +192,13 @@
     "apoth": {
       "name": "apoth",
       "text": {
-        "init_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of blue coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience to whatever's out there. I heard there are strange creatures roaming The Vista, turning it into a cursed land.\"\n\n\"I'm sure I could make a potion to cure everyone, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. Dingleflowers from Robinett Forest. Alaria Spring Water from the Gygax Mountains. Oleon Seaweed from the Koltaric Ocean. And Crystallised Tallenine from the Sawano Volcano.\"\n\n\"{name}, I'm counting on you to travel to these lands and bring me the vital ingredients for my magic elixir!\"",
+        "init_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of blue coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience to whatever's out there. I heard there are strange creatures roaming The Vista, turning it into a cursed land.\"\n\n\"I'm sure I could make a potion to cure everyone, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. Dingleflowers from Robinett Forest. Alaria Spring Water from the Gygax Mountains. Oleon Seaweed from the Koltaric Ocean. And Crystallised Tallenine from the Sawano Volcano.\"\n\n\"{name}, I'm counting on you to travel to these lands and bring me the vital ingredients for my magic elixir!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
         "short_core": "You're in the Potion Master's tent. She says: \"{name}, go to Robinett Forest and bring me some Dingleflowers!",
-        "long_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of blue coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience to whatever's out there. I heard there are strange creatures roaming The Vista, turning it into a cursed land.\"\n\n\"I'm sure I could make a potion to cure everyone, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. Dingleflowers from Robinett Forest. Alaria Spring Water from the Gygax Mountains. Oleon Seaweed from the Koltaric Ocean. And Crystallised Tallenine from the Sawano Volcano.\"\n\n\"{name}, I'm counting on you to travel to these lands and bring me the vital ingredients for my magic elixir!\"",
+        "long_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of blue coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience to whatever's out there. I heard there are strange creatures roaming The Vista, turning it into a cursed land.\"\n\n\"I'm sure I could make a potion to cure everyone, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. Dingleflowers from Robinett Forest. Alaria Spring Water from the Gygax Mountains. Oleon Seaweed from the Koltaric Ocean. And Crystallised Tallenine from the Sawano Volcano.\"\n\n\"{name}, I'm counting on you to travel to these lands and bring me the vital ingredients for my magic elixir!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
         "state": {},
         "responses": {}
       },
-      "items": ["bottle"],
+      "items": ["bottle", "book"],
       "state": {
         "extra_directions": {"out": [3, 5, 5]}
       }
@@ -253,6 +245,132 @@
       "items": ["shovel"],
       "state": {}
     },
+    "wood1": {
+      "name": "wood1",
+      "text": {
+        "init_core": "You have entered Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Dense thickets block your ways east and west, leaving only a northward path.",
+        "short_core": "You are just inside the forest. Floonyloon Village lies to the south, and a path into the forest runs north.",
+        "long_core": "You are just inside Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Dense thickets block your ways east and west, leaving only a northward path into the forest, and a southward exit into Floonyloon Village."
+      },
+      "items": [],
+      "state": {}
+    },
+    "wood2": {
+      "name": "wood2",
+      "text": {
+        "init_core": "You have moved further into the forest. The path runs north-south here.",
+        "short_core": "You are in the forest. The path runs north-south here.",
+        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Dense thickets block your ways east and west, leaving only a north-south path."
+      },
+      "items": [],
+      "state": {}
+    },
+    "wood3": {
+      "name": "wood3",
+      "text": {
+        "init_core": "You have moved further into the forest. Paths run north, south, and west from here.",
+        "short_core": "You are in the forest. Paths run north, south, and west from here.",
+        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Paths run north, south, and west from here."
+      },
+      "items": [],
+      "state": {}
+    },
+    "wood4": {
+      "name": "wood4",
+      "text": {
+        "init_core": "You have moved into a clearing, with paths leaving to the east and west.",
+        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. You are in a clearing, with paths leaving to the east and west."
+      },
+      "items": [],
+      "enemies": ["wood4goblin"],
+      "state": {}
+    },
+    "wood5": {
+      "name": "wood5",
+      "text": {
+        "init_core": "You have moved further into the forest. Paths run south and east from here.",
+        "short_core": "You are in the forest. Paths run south and east from here.",
+        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Paths run south and east from here."
+      },
+      "items": [],
+      "state": {}
+    },
+    "wood6": {
+      "name": "wood6",
+      "text": {
+        "init_core": "You have moved further into the forest. The path runs north-south here.",
+        "short_core": "You are in the forest. The path runs north-south here.",
+        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. The path runs north-south here."
+      },
+      "items": [],
+      "state": {}
+    },
+    "wood7": {
+      "name": "wood7",
+      "text": {
+        "init_core": "You have moved further into the forest. Paths run north and west from here.",
+        "short_core": "You are in the forest. Paths run north and west from here.",
+        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Paths run north and west from here."
+      },
+      "items": [],
+      "state": {}
+    },
+    "wood8": {
+      "name": "wood8",
+      "text": {
+        "init_core": "You have moved further into the forest. Paths run east, west, and south from here.",
+        "short_core": "You are in the forest. Paths run east, west, and south from here.",
+        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Paths run east, west, and south from here."
+      },
+      "items": [],
+      "state": {}
+    },
+    "wood9": {
+      "name": "wood9",
+      "text": {
+        "init_core": "You have moved further into the forest. Paths run north and east from here.",
+        "short_core": "You are in the forest. Paths run north and east from here.",
+        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Paths run north and east from here."
+      },
+      "items": [],
+      "state": {}
+    },
+    "woo10": {
+      "name": "woo10",
+      "text": {
+        "init_core": "You have moved further into the forest. The path runs north-south here.",
+        "short_core": "You are in the forest. The path runs north-south here.",
+        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. The path runs north-south here."
+      },
+      "items": [],
+      "state": {}
+    },
+    "woo11": {
+      "name": "woo11",
+      "text": {
+        "init_core": "You have moved further into the forest. Paths run south and west from here.",
+        "short_core": "You are in the forest. Paths run south and west from here.",
+        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Paths run south and west from here."
+      },
+      "items": [],
+      "state": {}
+    },
+    "deade": {
+      "name": "deade",
+      "text": {
+        "init_core": "This is a dead-end."
+      },
+      "items": [],
+      "state": {}
+    },
+    "dead2": {
+      "name": "dead2",
+      "text": {
+        "init_core": "This is a dead-end."
+      },
+      "items": [],
+      "state": {}
+    },
     "dingl": {
       "name": "dingl",
       "text": {
@@ -265,33 +383,62 @@
   "items": {
     "shovel": {
       "name": "Shovel",
-      "init_desc": "However, you notice a shovel lying on the ground nearby.",
+      "text": {
+        "init_desc": "However, you notice a shovel lying on the ground nearby."
+      },
       "visible": 1
     },
     "diamond": {
       "name": "Diamond",
-      "init_desc": "Inside is an enormous diamond, probably worth an absolute fortune!",
+      "text": {
+        "init_desc": "Inside is an enormous diamond, probably worth an absolute fortune!"
+      },
       "visible": 0
     },
     "shield": {
       "name": "Shield",
-      "init_desc": "Inside the chest is an antique shield.",
+      "text": {
+        "init_desc": "Inside the chest is an antique shield."
+      },
       "visible": 0
     },
     "key": {
       "name": "Key",
-      "init_desc": "There's a key on the table.",
+      "text": {
+        "init_desc": "There's a key on the table."
+      },
       "visible": 1
     },
     "sword": {
       "name": "Sword",
-      "init_desc": "Inside is a majestic sword.",
+      "text": {
+        "init_desc": "Inside is a majestic sword."
+      },
       "visible": 0
     },
     "bottle": {
       "name": "Bottle",
-      "init_desc": "\n\nThere is an empty bottle on a nearby table. It looks perfect for storing strange ingredients.",
+      "text": {
+        "init_desc": "There is an empty bottle on a nearby table, which looks perfect for storing strange ingredients."
+      },
       "visible": 1
+    },
+    "book": {
+      "name": "Book",
+      "text": {
+        "init_desc": "On the bookshelf is a dusty book, entitled \"Magical Medicines of The Vista\".",
+        "responses": {
+          "read": "The book is entitled \"Magical Medicines of The Vista\". A particular page has been bookmarked. On this page, there is a riddle:\n\n\"In the woods, a magic flower\nof crimson colour and healing power\nSearch the dark, but note the way\nif you hope to see the light of day\""
+        }
+      },
+      "visible": 1
+    }
+  },
+  "enemies": {
+    "wood4goblin": {
+      "name": "wood4goblin",
+      "type": "goblin",
+      "init_desc": "However, a nasty looking goblin blocks your way west."
     }
   },
   "starting_inventory": []

@@ -1,4 +1,6 @@
 from responses import *
+from numpy.random import choice
+import re
 
 
 class Command:
@@ -55,14 +57,24 @@ class GoCommand(Command):
 
     def execute(self):
         result, direction = player.go(self.parsed['direction'])
+
+        if player.mode == 'combat' and result != 'new_room':
+            c = TakeHitCommand()
+            c.parse()
+            return c.execute()
+
         if result == 'invalid_command':
-            return GoResponse('invalid', 'failure')
+            return InvalidResponse()
+
         elif result == 'invalid_movement':
             return GoResponse('valid', 'failure', direction=direction)
+
         elif result == 'no_stairs':
             return Response(text='There aren\'t any stairs here.')
+
         elif result == 'no_inout':
             return Response(text='You can\'t go that way.')
+
         elif result == 'new_room':
             desc_type = 'init' if player.room.first_visit else 'short'
             player.room.first_visit = 0
@@ -236,6 +248,89 @@ class CutVinesCommand(Command):
             return InvalidResponse()
 
 
+class ReadCommand(Command):
+
+    def execute(self):
+        verb = self.match[1]
+        subject = self.match[2].strip() if self.match[2] is not None else ''
+
+        if subject == '':
+            return Response(text=verb.title() + ' what?')
+
+        elif subject == 'book':
+            return Response(text=items['book'].text['responses']['read'])
+
+        else:
+            return InvalidResponse()
+
+
+class AttackCommand(Command):
+    enemy = None
+    weapon = None
+
+    valid_weapons = ['sword']
+
+    def parse(self):
+        text = self.match.string
+        m = re.search(' +with( +.*)?$', text)
+
+        if m:
+            if m[1] and m[1].strip():
+                self.weapon = m[1].strip()
+            text = re.sub(' +with( +.*)?$', '', text)
+        remainder = re.sub('^attack *', '', text)
+
+        if remainder:
+            self.enemy = remainder
+
+    def execute(self):
+
+        if self.enemy is None:
+            return Response(text='Attack what?')
+
+        elif self.enemy not in [enemy.type for enemy in player.room.enemies.values() if enemy.active]:
+            return Response(text='There isn\'t one of those nearby.')
+
+        elif self.weapon is None:
+            return Response(text='Attack with what?')
+
+        elif self.weapon not in player.inventory:
+            return Response(text='You don\'t have one of those.')
+
+        elif self.weapon not in self.valid_weapons:
+            return Response(text='You can\'t attack with that.')
+
+        elif self.weapon == 'sword':
+            return self.sword_attack()
+
+    def sword_attack(self):
+        weapon = player.inventory[self.weapon]
+        enemy = None
+
+        for e in player.room.enemies.values():
+            enemy = e
+
+            if enemy.type == self.enemy and enemy.active:
+                break
+        damage = choice(weapon.damage_dist[0], p=weapon.damage_dist[1])
+        text = choice(weapon.combat_text['goblin'][damage])
+        more_text = enemy.lose_health(damage)
+        return Response(text=text + '\n' + more_text)
+
+
+class TakeHitCommand(Command):
+
+    def execute(self):
+        active_enemies = [enemy for enemy in player.room.enemies.values() if enemy.active]
+        text = []
+
+        for enemy in active_enemies:
+            damage = choice(enemy.damage_dist[0], p=enemy.damage_dist[1])
+            text.append(choice(enemy.attack_text[damage]))
+            player.health -= damage
+        return Response(text='Hardly appropriate for a combat situation!\n' + '\n'.join(text))
+
+
 generic_commands = {
     '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|in|out|inside|outside)': GoCommand,
     'wait': WaitCommand,
@@ -268,5 +363,18 @@ rooms['vila2'].commands.update(
 items['shovel'].commands.update(
     {
         'dig': DigCommand
+    }
+)
+
+items['book'].commands.update(
+    {
+        '(read|examine|inspect)( +.+)?': ReadCommand
+    }
+)
+
+items['sword'].combat_commands.update(
+    {
+        'attack( +.*)?': AttackCommand,
+
     }
 )
