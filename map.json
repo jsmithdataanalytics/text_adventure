@@ -46,7 +46,7 @@
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
-      ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "treeh", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
@@ -57,9 +57,9 @@
     [
       ["block", "block", "block", "block", "block", "block", "block", "mount", "mount", "mount", "mount", "mount"],
       ["block", "block", "block", "block", "block", "deade", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["dingl", "woo11", "block", "block", "wood4", "wood3", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["block", "woo10", "block", "wood6", "block", "wood2", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["block", "wood9", "wood8", "wood7", "block", "block", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["block", "block", "block", "wood5", "wood4", "wood3", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["block", "block", "block", "wood6", "block", "wood2", "block", "mount", "mount", "mount", "mount", "mount"],
+      ["dingl", "wood9", "wood8", "wood7", "block", "wood1", "block", "mount", "mount", "mount", "mount", "mount"],
       ["block", "block", "dead2", "block", "block", "vila2", "vilb2", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "vila1", "vilb1", "block", "block", "block", "block", "block"],
       ["magma", "magma", "magma", "magma", "magma", "block", "block", "ocean", "ocean", "ocean", "ocean", "ocean"],
@@ -187,7 +187,8 @@
       "state": {
         "extra_directions": {"in": [1, 4, 5]},
         "cut": 0
-      }
+      },
+      "blocks": ["north"]
     },
     "apoth": {
       "name": "apoth",
@@ -298,9 +299,9 @@
     "wood6": {
       "name": "wood6",
       "text": {
-        "init_core": "You have moved further into the forest. The path runs north-south here.",
-        "short_core": "You are in the forest. The path runs north-south here.",
-        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. The path runs north-south here."
+        "init_core": "You have moved further into the forest. The path runs north-south here. A sign reads: \"Are you remembering the way? All who lose their way in these woods will perish!\"",
+        "short_core": "You are in the forest. The path runs north-south here. A sign reads: \"Are you remembering the way? All who lose their way in these woods will perish!\"",
+        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. The path runs north-south here. A sign reads: \"Are you remembering the way? All who lose their way in these woods will perish!\""
       },
       "items": [],
       "state": {}
@@ -313,6 +314,7 @@
         "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Paths run north and west from here."
       },
       "items": [],
+      "enemies": ["wood7goblin"],
       "state": {}
     },
     "wood8": {
@@ -335,26 +337,6 @@
       "items": [],
       "state": {}
     },
-    "woo10": {
-      "name": "woo10",
-      "text": {
-        "init_core": "You have moved further into the forest. The path runs north-south here.",
-        "short_core": "You are in the forest. The path runs north-south here.",
-        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. The path runs north-south here."
-      },
-      "items": [],
-      "state": {}
-    },
-    "woo11": {
-      "name": "woo11",
-      "text": {
-        "init_core": "You have moved further into the forest. Paths run south and west from here.",
-        "short_core": "You are in the forest. Paths run south and west from here.",
-        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Paths run south and west from here."
-      },
-      "items": [],
-      "state": {}
-    },
     "deade": {
       "name": "deade",
       "text": {
@@ -366,7 +348,15 @@
     "dead2": {
       "name": "dead2",
       "text": {
-        "init_core": "This is a dead-end."
+        "init_core": "This is a dead-end. One of the trees here has some low branches. You can leave via a path to the north."
+      },
+      "items": [],
+      "state": {}
+    },
+    "treeh": {
+      "name": "treeh",
+      "text": {
+        "init_core": "You are in an abandoned treehouse, apparently built by the young kid stood in front of you. He says: \"I heard the monsters talking about taking over The Vista! Oh, and there was some stuff about three precious stones, which apparently can be used against them or something?\""
       },
       "items": [],
       "state": {}
@@ -438,7 +428,14 @@
     "wood4goblin": {
       "name": "wood4goblin",
       "type": "goblin",
-      "init_desc": "However, a nasty looking goblin blocks your way west."
+      "init_desc": "However, a nasty looking goblin blocks your way west.",
+      "blocks": ["west"]
+    },
+    "wood7goblin": {
+      "name": "wood7goblin",
+      "type": "goblin",
+      "init_desc": "There is a goblin blocking your path here. It says \"Turn back now, or meet your doom! My master will slay all who oppose him!\"",
+      "blocks": ["west"]
     }
   },
   "starting_inventory": []

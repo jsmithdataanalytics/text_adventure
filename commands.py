@@ -234,7 +234,7 @@ class CutVinesCommand(Command):
             if player.room.state['cut'] == 0:
 
                 if 'sword' in player.inventory:
-                    game_map['layout'][3][4][5] = 'wood1'
+                    player.room.room_blocks = []
                     player.room.state['cut'] = 1
                     return Response(text=player.room.text['responses']['cut_success'])
 
@@ -315,7 +315,7 @@ class AttackCommand(Command):
         damage = choice(weapon.damage_dist[0], p=weapon.damage_dist[1])
         text = choice(weapon.combat_text['goblin'][damage])
         more_text = enemy.lose_health(damage)
-        return Response(text=text + '\n' + more_text)
+        return Response(text=text + more_text)
 
 
 class TakeHitCommand(Command):
@@ -331,6 +331,39 @@ class TakeHitCommand(Command):
         return Response(text='Hardly appropriate for a combat situation!\n' + '\n'.join(text))
 
 
+class ClimbTreeCommand(Command):
+
+    def execute(self):
+
+        g = self.match[1].strip() if self.match[1] is not None else None
+        direction = g if g != 'tree' else None
+
+        if player.room_name == 'dead2':
+
+            if direction == 'down':
+                return InvalidResponse()
+
+            else:
+                match = re.fullmatch('go (up)', 'go up')
+                c = GoCommand(match)
+                c.parse()
+                return c.execute()
+
+        elif player.room_name == 'treeh':
+
+            if direction == 'up':
+                return InvalidResponse()
+
+            else:
+                match = re.fullmatch('go (down)', 'go down')
+                c = GoCommand(match)
+                c.parse()
+                return c.execute()
+
+        else:
+            return Response(text='You can\'t climb here.')
+
+
 generic_commands = {
     '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|in|out|inside|outside)': GoCommand,
     'wait': WaitCommand,
@@ -338,7 +371,8 @@ generic_commands = {
     '(?:(?:check|inspect|examine) +)?(?:items|inventory)': InventoryCommand,
     '(?:get|take) +(.+)': GetCommand,
     '(?:drop|put +down) +(.+)': DropCommand,
-    'dig': DigCommand
+    'dig': DigCommand,
+    'climb( +(?:up|down|tree))?': ClimbTreeCommand
 }
 
 rooms['vilb1'].commands.update(

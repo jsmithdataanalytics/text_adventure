@@ -18,6 +18,10 @@ class Room:
         self.state = room_data['state']
         self.commands = {}
         self.first_visit = 1
+        self.room_blocks = room_data['blocks'] if 'blocks' in room_data else []
+        self.enemy_blocks = []
+        self.blocks = []
+        self.update_blocks()
         self.update_desc()
 
     def lose_items(self, items_to_lose):
@@ -72,6 +76,11 @@ class Room:
             if enemy.active:
                 return True
         return False
+
+    def update_blocks(self):
+        self.enemy_blocks = [block for enemy in self.enemies.values() if enemy.active for block in enemy.blocks]
+        self.blocks = list(set(self.room_blocks + self.enemy_blocks))
+        return self.blocks
 
 
 game_rooms = game_map['rooms']

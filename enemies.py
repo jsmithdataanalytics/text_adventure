@@ -7,10 +7,11 @@ class Enemy:
     active = True
     health = 0
 
-    def __init__(self, name, init_desc, enemy_type):
+    def __init__(self, name, init_desc, enemy_type, blocks):
         self.name = name
         self.init_desc = init_desc
         self.type = enemy_type
+        self.blocks = blocks
 
     def lose_health(self, damage):
         self.health = max(self.health - damage, 0)
@@ -18,9 +19,6 @@ class Enemy:
         if self.health == 0:
             self.active = False
             self.alive = False
-
-            if self.name == 'wood4goblin':
-                game_map['layout'][3][2][3] = 'wood5'
 
 
 class Goblin(Enemy):
@@ -45,7 +43,7 @@ class Goblin(Enemy):
 
     def lose_health(self, damage):
         super().lose_health(damage)
-        return choice(self.death_text) if self.alive is False else ''
+        return ('\n' + choice(self.death_text)) if self.alive is False else ''
 
 
 enemy_constructors = {
@@ -53,5 +51,5 @@ enemy_constructors = {
 }
 
 game_enemies = game_map['enemies']
-game_enemies = {key: enemy_constructors[value['type']](value['name'], value['init_desc'], value['type'])
-                for key, value in game_enemies.items()}
+game_enemies = {key: enemy_constructors[value['type']](
+    value['name'], value['init_desc'], value['type'], value['blocks']) for key, value in game_enemies.items()}

@@ -31,6 +31,7 @@ if __name__ == '__main__':
 
         text_output = text_constructor(response)
         display(text_output, before=0, after=1)
+        updates()
 
     if player_dead:
         display('You have died.', before=0)

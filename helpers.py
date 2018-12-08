@@ -80,3 +80,7 @@ def generate_command(user_input, mode):
                 return command
 
     return command
+
+
+def updates():
+    player.room.update_blocks()

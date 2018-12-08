@@ -66,6 +66,11 @@ class Avatar:
             'up': (-1, 0, 0),
             'down': (1, 0, 0)
         }
+        blocked = self.room.update_blocks()
+
+        if direction in blocked:
+            return 'invalid_movement', direction
+
         if direction in valid_moves:
             coord_bounds = [levels - 1, height - 1, width - 1]
             self.coords = [x + y for x, y in zip(self.coords, valid_moves[direction])]
