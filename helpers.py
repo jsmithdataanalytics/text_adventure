@@ -84,3 +84,5 @@ def generate_command(user_input, mode):
 
 def updates():
     player.room.update_blocks()
+    player.room.update_item_aliases()
+    player.update_item_aliases()

@@ -6,6 +6,14 @@ levels, height, width = len(game_map['layout']), len(game_map['layout'][0]), len
 
 
 class Avatar:
+    checkpoints = {
+        'jimbo': False,
+        'apoth': False,
+        'vines': False,
+        'escape': False,
+        'dingleflowers': False
+    }
+
     def __init__(self):
         self.name = ''
         self.coords = game_map['spawn_point']
@@ -15,6 +23,8 @@ class Avatar:
         self.inventory = {item: items[item] for item in game_map['starting_inventory']}
         self.health = 120
         self.mode = 'normal'
+        self.item_aliases = {}
+        self.update_item_aliases()
 
     def set_name(self, name):
         self.name = name
@@ -51,10 +61,13 @@ class Avatar:
         new_items = {key: value for key, value in self.room.inventory.items() if value.visible}
         return self.get_items(new_items)
 
-    def drop_items(self, to_drop):
+    def lose_items(self, items_to_lose):
 
-        for item in to_drop:
-            self.inventory.pop(item)
+        for item in items_to_lose:
+            del self.inventory[item]
+
+    def drop_items(self, to_drop):
+        self.lose_items(to_drop)
         self.room.gain_items(to_drop)
 
     def go(self, direction):
@@ -94,6 +107,12 @@ class Avatar:
         elif direction in ['in', 'out']:
             self.coords = player.room.state['extra_directions'][direction]
             self.update_room()
+
+            if self.room_name == 'jimbg':
+                self.checkpoints['jimbo'] = True
+
+            if self.room_name == 'apoth':
+                self.checkpoints['apoth'] = True
             return 'new_room', direction
 
         elif direction == 'no_stairs':
@@ -107,6 +126,9 @@ class Avatar:
 
         else:
             raise(ValueError('Unhandled direction'))
+
+    def update_item_aliases(self):
+        self.item_aliases = {key: value.aliases for key, value in self.inventory.items()}
 
 
 player = Avatar()

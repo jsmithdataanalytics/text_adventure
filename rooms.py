@@ -21,6 +21,8 @@ class Room:
         self.room_blocks = room_data['blocks'] if 'blocks' in room_data else []
         self.enemy_blocks = []
         self.blocks = []
+        self.item_aliases = {}
+        self.update_item_aliases()
         self.update_blocks()
         self.update_desc()
 
@@ -56,8 +58,16 @@ class Room:
 
                 if value.taken:
                     item_name = value.name.lower()
-                    determiner = 'an' if item_name[0] in 'aeiou' else 'a'
-                    core.append('\nThere is {} {} here.'.format(determiner, item_name))
+
+                    if item_name[-1] == 's':
+                        verb, determiner = 'are', 'some'
+
+                    elif item_name[0] in 'aeiou':
+                        verb, determiner = 'is', 'an'
+
+                    else:
+                        verb, determiner = 'is', 'a'
+                    core.append('\nThere {} {} {} here.'.format(verb, determiner, item_name))
 
                 elif value.visible:
                     core.append(value.init_desc)
@@ -81,6 +91,9 @@ class Room:
         self.enemy_blocks = [block for enemy in self.enemies.values() if enemy.active for block in enemy.blocks]
         self.blocks = list(set(self.room_blocks + self.enemy_blocks))
         return self.blocks
+
+    def update_item_aliases(self):
+        self.item_aliases = {key: value.aliases for key, value in self.inventory.items()}
 
 
 game_rooms = game_map['rooms']

@@ -128,11 +128,22 @@ class GetCommand(Command):
         if item in player.room.inventory and items[item].visible:
             self.parsed['validity'] = 'valid'
             self.parsed['item'] = item
+
         elif item == 'all':
             self.parsed['validity'] = 'valid'
             self.parsed['item'] = 'all'
+
         else:
             self.parsed = {'validity': 'invalid'}
+
+            for key, value in player.room.item_aliases.items():
+
+                for alias in value:
+
+                    if item == alias:
+                        self.parsed['validity'] = 'valid'
+                        self.parsed['item'] = key
+                        break
 
     def execute(self):
         if self.parsed['validity'] == 'valid':
@@ -153,8 +164,28 @@ class GetCommand(Command):
 
 class DropCommand(Command):
 
-    def execute(self):
+    def parse(self):
         item = self.match.group(1).strip()
+
+        if item in player.inventory:
+            self.parsed['item'] = item
+
+        elif item == 'all':
+            self.parsed['item'] = 'all'
+
+        else:
+            self.parsed['item'] = None
+
+            for key, value in player.item_aliases.items():
+
+                for alias in value:
+
+                    if item == alias:
+                        self.parsed['item'] = key
+                        break
+
+    def execute(self):
+        item = self.parsed['item']
 
         if item in player.inventory:
             player.drop_items([item])
@@ -231,18 +262,27 @@ class CutVinesCommand(Command):
 
         if player.room_name == 'vila2':
 
-            if player.room.state['cut'] == 0:
+            if 'sword' in player.inventory:
 
-                if 'sword' in player.inventory:
-                    player.room.room_blocks = []
-                    player.room.state['cut'] = 1
-                    return Response(text=player.room.text['responses']['cut_success'])
+                if player.checkpoints['apoth']:
+
+                    if player.room.state['cut'] == 0:
+
+                        player.room.room_blocks = []
+                        player.room.state['cut'] = 1
+                        return Response(text=player.room.text['responses']['cut_success'])
+
+                    else:
+                        return Response(text=player.room.text['responses']['already_cut'])
+
+                elif player.checkpoints['jimbo']:
+                    return Response(text='Hang on, you\'re supposed to be going to see the Potion Master!')
 
                 else:
-                    return Response(text=player.room.text['responses']['nothing_to_cut_with'])
+                    return Response(text='Hang on, you\'re supposed to be going to see Jimbo!')
 
             else:
-                return Response(text=player.room.text['responses']['already_cut'])
+                return Response(text=player.room.text['responses']['nothing_to_cut_with'])
 
         else:
             return InvalidResponse()
@@ -364,6 +404,34 @@ class ClimbTreeCommand(Command):
             return Response(text='You can\'t climb here.')
 
 
+class GiveCommand(DropCommand):
+
+    def execute(self):
+        item = self.parsed['item']
+
+        if player.room_name == 'apoth':
+
+            if item in player.inventory:
+
+                if item == 'dingleflowers':
+                    player.lose_items([item])
+                    player.room.short_core = player.room.text['short_core2']
+                    player.room.long_core = player.room.text['long_core2']
+                    player.checkpoints['dingleflowers'] = True
+                    rooms['vilb2'].room_blocks = []
+                    return Response(text=player.room.text['responses']['dingleflowers'])
+
+                else:
+                    return Response(text='Potion Master: "Hm, not really what I was looking for. '
+                                         'Perhaps you have something else for me?"')
+
+            else:
+                return Response(text='You don\'t have one of those.')
+
+        else:
+            return InvalidResponse()
+
+
 generic_commands = {
     '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|in|out|inside|outside)': GoCommand,
     'wait': WaitCommand,
@@ -391,6 +459,12 @@ rooms['home1'].commands.update(
 rooms['vila2'].commands.update(
     {
         'cut(?: +vines)?': CutVinesCommand
+    }
+)
+
+rooms['apoth'].commands.update(
+    {
+        'give +(.+)': GiveCommand
     }
 )
 

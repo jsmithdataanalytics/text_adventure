@@ -23,7 +23,7 @@ if __name__ == '__main__':
         command.parse()
         response = command.execute()
 
-        if player.room_name == 'dingl':
+        if player.room_name == 'mount':
             game_complete = True
 
         if player.health <= 0:

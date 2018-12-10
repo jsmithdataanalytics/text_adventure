@@ -8,6 +8,7 @@ with open('map.json') as f:
 class Item:
     def __init__(self, item_data):
         self.name = item_data['name']
+        self.aliases = item_data['aliases'] if 'aliases' in item_data else []
         self.init_desc = item_data['text']['init_desc']
         self.text = item_data['text']
         self.taken = 0

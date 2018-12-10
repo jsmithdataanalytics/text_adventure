@@ -30,7 +30,12 @@ class GoResponse(Response):
             return player.describe_current_room(desc_type=self.desc_type)
 
         elif self.validity == 'valid':
-            return 'You can\'t go that way.'
+            if player.room_name == 'vilb2' and self.direction == 'east':
+                return 'That path leads into the Gygax Mountains. Don\'t you have somewhere else that you\'re ' \
+                       'supposed to be going?'
+
+            else:
+                return 'You can\'t go that way.'
 
         else:
             return 'You can\'t do that.'

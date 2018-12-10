@@ -60,7 +60,7 @@
       ["block", "block", "block", "wood5", "wood4", "wood3", "block", "mount", "mount", "mount", "mount", "mount"],
       ["block", "block", "block", "wood6", "block", "wood2", "block", "mount", "mount", "mount", "mount", "mount"],
       ["dingl", "wood9", "wood8", "wood7", "block", "wood1", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["block", "block", "dead2", "block", "block", "vila2", "vilb2", "block", "block", "block", "block", "block"],
+      ["block", "block", "dead2", "block", "block", "vila2", "vilb2", "mount", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "vila1", "vilb1", "block", "block", "block", "block", "block"],
       ["magma", "magma", "magma", "magma", "magma", "block", "block", "ocean", "ocean", "ocean", "ocean", "ocean"],
       ["magma", "magma", "magma", "magma", "magma", "block", "block", "ocean", "ocean", "ocean", "ocean", "ocean"],
@@ -114,7 +114,7 @@
     "vila1": {
       "name": "vila1",
       "text": {
-        "init_core": "You're in the southwest part of Floonyloon Village, right outside your house / hut thing. Normally you'd be met by sunshine, birdsong, and a dozen cheery greetings from impossibly upbeat neighbours. But something is different today. Dark clouds cover the land in all directions, and there doesn't seem to be a soul in sight.",
+        "init_core": "You're in the southwest part of Floonyloon Village, right outside your house. Normally you'd be met by sunshine, birdsong, and a dozen cheery greetings from impossibly upbeat neighbours. But something is different today. Dark clouds cover the land in all directions, and there doesn't seem to be a soul in sight. You'd better go find your buddy, Jimbo, and see if he knows what's going on.",
         "short_core": "You're in the southwest part of Floonyloon Village, right next to your house.",
         "long_core": "You're in the southwest part of Floonyloon Village, right outside your house. Usually the village is a happy and upbeat place, but something seems different today. Dark clouds cover the land in all directions, and there doesn't seem to be a soul in sight."
       },
@@ -196,10 +196,14 @@
         "init_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of blue coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience to whatever's out there. I heard there are strange creatures roaming The Vista, turning it into a cursed land.\"\n\n\"I'm sure I could make a potion to cure everyone, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. Dingleflowers from Robinett Forest. Alaria Spring Water from the Gygax Mountains. Oleon Seaweed from the Koltaric Ocean. And Crystallised Tallenine from the Sawano Volcano.\"\n\n\"{name}, I'm counting on you to travel to these lands and bring me the vital ingredients for my magic elixir!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
         "short_core": "You're in the Potion Master's tent. She says: \"{name}, go to Robinett Forest and bring me some Dingleflowers!",
         "long_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of blue coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience to whatever's out there. I heard there are strange creatures roaming The Vista, turning it into a cursed land.\"\n\n\"I'm sure I could make a potion to cure everyone, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. Dingleflowers from Robinett Forest. Alaria Spring Water from the Gygax Mountains. Oleon Seaweed from the Koltaric Ocean. And Crystallised Tallenine from the Sawano Volcano.\"\n\n\"{name}, I'm counting on you to travel to these lands and bring me the vital ingredients for my magic elixir!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
+        "short_core2": "You're in the Potion Master's tent. She says: \"{name}, you must now go to the Gygax Mountains and bring me some Alaria Spring Water! Hurry!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
+        "long_core2": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir. She says: \"{name}, you must now go to the Gygax Mountains and bring me some Alaria Spring Water! Hurry!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
         "state": {},
-        "responses": {}
+        "responses": {
+          "dingleflowers": "Potion Master: \"Ah! Dingleflowers! Excellent work, {name}! I'll add them to the potion right away!\"\n\nThe Potion Master takes the flowers, and tosses them into the cauldron. The potion immediately turns from blue to red.\n\n\"Yes, yes, that's right. Great work, {name}! Now, head to the Gygax Mountains and fetch me some Alaria Spring Water!\""
+        }
       },
-      "items": ["bottle", "book"],
+      "items": ["book"],
       "state": {
         "extra_directions": {"out": [3, 5, 5]}
       }
@@ -244,6 +248,7 @@
         "init_core": "You are in the northeast part of the village. All the shops are closed, so you won't be able to get any supplies here."
       },
       "items": ["shovel"],
+      "blocks": ["east"],
       "state": {}
     },
     "wood1": {
@@ -330,9 +335,9 @@
     "wood9": {
       "name": "wood9",
       "text": {
-        "init_core": "You have moved further into the forest. Paths run north and east from here.",
-        "short_core": "You are in the forest. Paths run north and east from here.",
-        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Paths run north and east from here."
+        "init_core": "You have moved further into the forest. Paths run east and west from here.",
+        "short_core": "You are in the forest. Paths run east and west from here.",
+        "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Paths run east and west from here."
       },
       "items": [],
       "state": {}
@@ -364,9 +369,9 @@
     "dingl": {
       "name": "dingl",
       "text": {
-        "init_core": "You have reached the end of the forest trail. There are some Dingleflowers here."
+        "init_core": "You have reached the end of the forest trail. The path opens out into a clearing, filled with all sorts of exotic plants and flowers."
       },
-      "items": [],
+      "items": ["dingleflowers"],
       "state": {}
     }
   },
@@ -420,6 +425,15 @@
         "responses": {
           "read": "The book is entitled \"Magical Medicines of The Vista\". A particular page has been bookmarked. On this page, there is a riddle:\n\n\"In the woods, a magic flower\nof crimson colour and healing power\nSearch the dark, but note the way\nif you hope to see the light of day\""
         }
+      },
+      "visible": 1
+    },
+    "dingleflowers": {
+      "name": "Dingleflowers",
+      "aliases": ["dingleflower", "flowers", "flower"],
+      "text": {
+        "init_desc": "Among them, you notice a small patch of crimson-coloured Dingleflowers.",
+        "responses": {}
       },
       "visible": 1
     }
