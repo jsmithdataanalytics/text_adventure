@@ -353,7 +353,7 @@ class AttackCommand(Command):
             if enemy.type == self.enemy and enemy.active:
                 break
         damage = choice(weapon.damage_dist[0], p=weapon.damage_dist[1])
-        text = choice(weapon.combat_text['goblin'][damage])
+        text = choice(weapon.combat_text[self.enemy][damage])
         more_text = enemy.lose_health(damage)
         return Response(text=text + more_text)
 

@@ -1,5 +1,4 @@
 from enemies import *
-from items import game_items as items
 from enemies import game_enemies as enemies
 
 

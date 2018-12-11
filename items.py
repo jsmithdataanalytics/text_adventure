@@ -29,4 +29,12 @@ game_items['sword'].combat_text['goblin'] = {0: ['You swing your sword at the go
                                                   'You lunge at the goblin with your sword. It\'s a hit!',
                                                   'The goblin is too slow for you, and gets caught by your attack.'],
                                              40: ['Critical hit! Your blade strikes the goblin for double damage!']}
+game_items['sword'].combat_text['troll'] = {0: ['You swing your sword at the troll, but miss.',
+                                                'You lunge at the troll, but it brushes off your attack like it ' +
+                                                'was nothing.'],
+                                            20: ['Your slice attack finds the weak spot in the troll\'s armour.',
+                                                 'You lunge fiercely at the troll with your sword. Got the bastard!',
+                                                 'You\'re too fast for the sluggish troll, who takes the full brunt ' +
+                                                 'of your attack.'],
+                                            40: ['Critical hit! Your blade strikes the troll for double damage!']}
 game_items['sword'].damage_dist = [[0, 20, 40], [0.4, 0.4, 0.2]]

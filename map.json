@@ -339,7 +339,8 @@
         "short_core": "You are in the forest. Paths run east and west from here.",
         "long_core": "You are in Robinett Forest. You are surrounded by strange, twisted trees, which tower above you and block out almost all sunlight. Paths run east and west from here."
       },
-      "items": [],
+      "items": ["sapphire", "axe"],
+      "enemies": ["wood9troll"],
       "state": {}
     },
     "deade": {
@@ -436,6 +437,23 @@
         "responses": {}
       },
       "visible": 1
+    },
+    "axe": {
+      "name": "Axe",
+      "text": {
+        "init_desc": "The late troll's axe lies on the spot where he died.",
+        "responses": {}
+      },
+      "visible": 0
+    },
+    "sapphire": {
+      "name": "Blue Orb",
+      "aliases": ["orb", "sapphire orb", "blue orb"],
+      "text": {
+        "init_desc": "In the grass is a gleaming, sapphire coloured orb.",
+        "responses": {}
+      },
+      "visible": 1
     }
   },
   "enemies": {
@@ -449,6 +467,12 @@
       "name": "wood7goblin",
       "type": "goblin",
       "init_desc": "There is a goblin blocking your path here. It says \"Turn back now, or meet your doom! My master will slay all who oppose him!\"",
+      "blocks": ["west"]
+    },
+    "wood9troll": {
+      "name": "wood9troll",
+      "type": "troll",
+      "init_desc": "A mighty troll towers over you, blocking your path. He wields an enormous axe, and clearly means to use it to put an end to your quest.\n\nTroll: \"You've done well to make it this far, kid... but it ends now. There's nothing you can do for your friends in the village. Surrender now, and I'll make this quick!\"",
       "blocks": ["west"]
     }
   },
