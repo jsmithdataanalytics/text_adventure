@@ -40,7 +40,14 @@ class Avatar:
             return self.room.init_desc
 
         elif desc_type == 'short':
-            return self.room.short_desc
+
+            if player.checkpoints['vines'] and not player.checkpoints['escape'] and \
+                    player.room_name not in ['deade', 'dead2']:
+                return self.room.short_desc + ' Thorny vines continue to spring up just behind you, trying to stop ' \
+                                              'you escaping with the Dingleflowers!'
+
+            else:
+                return self.room.short_desc
 
         elif desc_type == 'long':
             return self.room.long_desc
@@ -50,7 +57,7 @@ class Avatar:
 
     def get_items(self, new_items):
         self.inventory.update(new_items)
-        item_list = list(new_items.keys())
+        item_list = {key: value.taken for key, value in new_items.items()}
         self.room.lose_items(item_list)
 
         for item in item_list:

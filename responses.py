@@ -91,14 +91,23 @@ class GetResponse(Response):
 
             if self.outcome == 'success':
 
-                if len(self.new_items) > 1:
-                    return '\n'.join([items[item].name + ': taken.' for item in self.new_items])
-
-                elif self.method == 'all':
-                    return items[self.new_items[0]].name + ': taken.'
+                if self.method == 'all':
+                    to_return = '\n'.join([items[item].name + ': taken.' for item in self.new_items])
 
                 elif self.method == 'specific':
-                    return 'Taken.'
+                    to_return = 'Taken.'
+
+                else:
+                    raise ValueError('Unexpected get method')
+
+                if 'dingleflowers' in self.new_items and self.new_items['dingleflowers'] == 0:
+                    player.checkpoints['vines'] = True
+                    return to_return + '\n\nAs soon as you take the Dingleflowers, thorny vines spring up from the ' \
+                                       'earth and attempt to grab you. Time to leave! Escape to the village without ' \
+                                       'taking a wrong turn!'
+
+                else:
+                    return to_return
 
             else:
                 return 'There are no items here.'

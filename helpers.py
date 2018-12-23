@@ -76,6 +76,9 @@ def generate_command(user_input, mode):
             if mode == 'combat':
                 return TakeHitCommand(command.match)
 
+            elif mode == 'escape' and not isinstance(command, GoCommand):
+                return DeadByVinesCommand(command.match)
+
             else:
                 return command
 
@@ -86,3 +89,15 @@ def updates():
     player.room.update_blocks()
     player.room.update_item_aliases()
     player.update_item_aliases()
+
+
+def choose_mode():
+
+    if player.checkpoints['vines'] and not player.checkpoints['escape']:
+        return 'escape'
+
+    elif player.room.enemies_active():
+        return 'combat'
+
+    else:
+        return 'normal'

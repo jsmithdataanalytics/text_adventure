@@ -46,7 +46,7 @@ class Goblin(Enemy):
 
 
 class Troll(Enemy):
-    health = 100
+    health = 140
 
     damage_dist = [[20, 40],
                    [0.5, 0.5]]

@@ -10,7 +10,8 @@ if __name__ == '__main__':
     intro()
 
     while game_complete is False and player_dead is False:
-        player.mode = 'combat' if player.room.enemies_active() else 'normal'
+        # commands are interpreted differently depending on whether mode is "combat", "escape" or "normal"
+        player.mode = choose_mode()
         user_input = input().strip().lower()
 
         # if the user entered no text, and the previous command was

@@ -2,9 +2,9 @@
   "opening": {
     "title": "THE VISTA",
     "intro": [
-      "Welcome to The Very-Improvised Satirical Text Adventure - The Vista! In this 1980s-style text adventure, we'll explore the fantasy realm known only as 'The Vista', so named for its breathtaking landscapes, and not at all for the half-arsed nature of this game. Okay, let's set the scene.",
+      "Welcome to The Vista, a retro text adventure - one of those games that's like \"go north\", \"get sword\" etc. In this game, we'll explore the fantasy realm known only as 'The Vista', so named for its breathtaking landscapes. Let's set the scene.",
       "Fade in.",
-      "We start with a traditional twee, idyllic fantasy village... Floonyloon Village. It's like The Shire, but without the hairy feet. Enter our hero:... wait. What's your name?",
+      "We start with a traditional, twee fantasy village... Floonyloon Village. It's like The Shire, but without the hairy feet. Enter our hero:... wait, what's your name?",
       "Enter your name: ",
       "Nice. Enter our hero, {name}. You're a young lad / lass, living in the village. Like 9 or 10 years old. The kind of age where your parents definitely shouldn't be letting you go off on dangerous adventures without supervision, but for some reason that doesn't seem to matter here.",
       "You're a stoic, quiet kid. A real Thomas Anderson. Very easy from a dialogue-writing perspective.",

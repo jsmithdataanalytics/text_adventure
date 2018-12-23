@@ -56,9 +56,33 @@ class GoCommand(Command):
             self.parsed['direction'] = 'invalid'
 
     def execute(self):
+        escape_direction = {'wood1': 'south',
+                            'wood2': 'south',
+                            'wood3': 'south',
+                            'wood4': 'east',
+                            'wood5': 'east',
+                            'wood6': 'north',
+                            'wood7': 'north',
+                            'wood8': 'east',
+                            'wood9': 'east',
+                            'dingl': 'east'}
+        right_way = self.parsed['direction'] == escape_direction[player.room_name] if player.mode == 'escape' else True
         result, direction = player.go(self.parsed['direction'])
 
-        if player.mode == 'combat' and result != 'new_room':
+        if player.mode == 'escape' and result != 'invalid_command':
+
+            if not right_way:
+                player.health = 0
+
+                if player.room_name in ['deade', 'dead2']:
+                    return Response(text='This is a dead-end. With nowhere to run, you\'re powerless to resist as the '
+                                         'vines seize you and crush you!')
+
+                else:
+                    return Response(text='Wrong way! You\'ve run straight into the '
+                                         'vines, which promptly seize you and crush you!')
+
+        if player.mode == 'combat' and result not in ['new_room', 'invalid_command']:
             c = TakeHitCommand()
             c.parse()
             return c.execute()
@@ -78,6 +102,12 @@ class GoCommand(Command):
         elif result == 'new_room':
             desc_type = 'init' if player.room.first_visit else 'short'
             player.room.first_visit = 0
+
+            if player.room_name == 'vila2' and player.mode == 'escape':
+                player.checkpoints['escape'] = True
+                return Response(text='You have escaped into the northeast part of the village. The vines have '
+                                'retreated, and the forest has returned to its usual, peaceful state. The Potion '
+                                'Master\'s apothecary is here.')
             return GoResponse('valid', 'success', direction=direction, desc_type=desc_type)
 
 
@@ -153,11 +183,11 @@ class GetCommand(Command):
                 if n_visible == 0:
                     return GetResponse('valid', 'failure', method='all')
                 else:
-                    item_list = player.get_all_visible_items()
-                    return GetResponse('valid', 'success', new_items=item_list, method='all')
+                    got = player.get_all_visible_items()
+                    return GetResponse('valid', 'success', new_items=got, method='all')
             else:
-                player.get_items(new_items={self.parsed['item']: player.room.inventory[self.parsed['item']]})
-                return GetResponse('valid', 'success', new_items=[self.parsed['item']], method='specific')
+                got = player.get_items(new_items={self.parsed['item']: player.room.inventory[self.parsed['item']]})
+                return GetResponse('valid', 'success', new_items=got, method='specific')
         else:
             return GetResponse('invalid', 'failure', method='specific')
 
@@ -430,6 +460,14 @@ class GiveCommand(DropCommand):
 
         else:
             return InvalidResponse()
+
+
+class DeadByVinesCommand(Command):
+
+    def execute(self):
+        player.health = 0
+        return Response(text='While you waste time doing something other than running away, '
+                             'the vines seize you and crush you!')
 
 
 generic_commands = {
