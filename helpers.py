@@ -21,7 +21,7 @@ def intro():
     print(game_map['opening']['title'].center(TEXT_WIDTH, ' '))
     print('~' * TEXT_WIDTH)
 
-    for text in game_map['opening']['intro'][:4]:
+    for text in game_map['opening']['intro'][:5]:
         display(text)
 
     player.set_name(input().strip())

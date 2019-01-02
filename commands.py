@@ -265,9 +265,9 @@ class OpenChestHomeCommand(Command):
 
         else:
             player.room.state['opened'] = 1
-            items['shield'].visible = 1
+            items['ruby'].visible = 1
             player.room.update_desc()
-            return Response(text='Done. ' + items['shield'].init_desc)
+            return Response(text='The chest is open. ' + items['ruby'].init_desc)
 
 
 class UnlockChestHomeCommand(Command):
@@ -282,8 +282,9 @@ class UnlockChestHomeCommand(Command):
 
         else:
             player.room.state['locked'] = 0
-            player.room.update_desc()
-            return Response(text=player.room.text['responses']['unlocked'])
+            c = OpenChestHomeCommand(self.match)
+            c.parse()
+            return c.execute()
 
 
 class CutVinesCommand(Command):
@@ -322,7 +323,7 @@ class ReadCommand(Command):
 
     def execute(self):
         verb = self.match[1]
-        subject = self.match[2].strip() if self.match[2] is not None else ''
+        subject = re.sub('^the +', '', self.match[2].strip())
 
         if subject == '':
             return Response(text=verb.title() + ' what?')
@@ -335,27 +336,32 @@ class ReadCommand(Command):
 
 
 class AttackCommand(Command):
+    verb = None
     enemy = None
     weapon = None
-
     valid_weapons = ['sword']
 
     def parse(self):
         text = self.match.string
+        self.verb = self.match[1]
+
         m = re.search(' +with( +.*)?$', text)
 
         if m:
             if m[1] and m[1].strip():
-                self.weapon = m[1].strip()
+                self.weapon = re.sub('^the +', '', m[1].strip())
             text = re.sub(' +with( +.*)?$', '', text)
         remainder = re.sub('^attack *', '', text)
 
         if remainder:
-            self.enemy = remainder
+            self.enemy = re.sub('^the +', '', remainder.strip())
 
     def execute(self):
 
-        if self.enemy is None:
+        if self.verb != 'attack':
+            return Response(text='The word you\'re looking for is "attack".')
+
+        elif self.enemy is None:
             return Response(text='Attack what?')
 
         elif self.enemy not in [enemy.type for enemy in player.room.enemies.values() if enemy.active]:
@@ -404,9 +410,7 @@ class TakeHitCommand(Command):
 class ClimbTreeCommand(Command):
 
     def execute(self):
-
-        g = self.match[1].strip() if self.match[1] is not None else None
-        direction = g if g != 'tree' else None
+        direction = self.match[1].strip() if self.match[1] is not None else None
 
         if player.room_name == 'dead2':
 
@@ -473,54 +477,56 @@ class DeadByVinesCommand(Command):
 generic_commands = {
     '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|in|out|inside|outside)': GoCommand,
     'wait': WaitCommand,
-    'look(?: +around)?': LookCommand,
+    'look(?: +a?round)?': LookCommand,
     '(?:(?:check|inspect|examine) +)?(?:items|inventory)': InventoryCommand,
-    '(?:get|take) +(.+)': GetCommand,
-    '(?:drop|put +down) +(.+)': DropCommand,
-    'dig': DigCommand,
-    'climb( +(?:up|down|tree))?': ClimbTreeCommand
+    '(?:get|take|grab|pick +up) +(.+)': GetCommand,
+    '(?:drop|leave|put +down) +(.+)': DropCommand,
+    'put +(.+) +(?:down|on +floor|on +ground)': DropCommand,
+    'dig(?: +(?:a +)?hole)?(?: +with +(?:the +)?(?:shovel|spade))?': DigCommand,
+    'climb( +(?:up|down))?(?: +(?:the +)?tree)?': ClimbTreeCommand,
 }
 
 rooms['vilb1'].commands.update(
     {
-        'dig': DigCommand
+        'dig(?: +(?:a +)?hole)?(?: +with +(?:the +)?(?:shovel|spade))?': DigCommand,
+        'dig +up +(?:the +)?sword': DigCommand
     }
 )
 
 rooms['home1'].commands.update(
     {
-        'open(?: +chest)?': OpenChestHomeCommand,
-        'unlock(?: +chest)?': UnlockChestHomeCommand
+        '(?:unlock|open)(?: +(?:the +)?chest(?: +with +(?:the +)?key)?)?': UnlockChestHomeCommand,
+        'insert +(?:the +)?key(?: +into +(?:the +)?(?:chest|lock))?': UnlockChestHomeCommand
     }
 )
 
 rooms['vila2'].commands.update(
     {
-        'cut(?: +vines)?': CutVinesCommand
+        '(?:cut|slice|clear|sever)(?: +(?:the +)?(?:vines|thicket))?(?: +with +(?:the +)?(?:sword))?': CutVinesCommand
     }
 )
 
 rooms['apoth'].commands.update(
     {
-        'give +(.+)': GiveCommand
+        '(?:give|present|show|hand +over) +(.+)': GiveCommand
     }
 )
 
 items['shovel'].commands.update(
     {
-        'dig': DigCommand
+        'dig(?: +(?:a +)?hole)?(?: +with +(?:the +)?(?:shovel|spade))?': DigCommand
     }
 )
 
 items['book'].commands.update(
     {
-        '(read|examine|inspect)( +.+)?': ReadCommand
+        '(read|examine|inspect|open)( +(?:the +)?book)': ReadCommand
     }
 )
 
 items['sword'].combat_commands.update(
     {
-        'attack( +.*)?': AttackCommand,
-
+        '(attack|hit|stab)( +.*)?': AttackCommand,
+        '(swing) +(?:the +)?sword.*': AttackCommand
     }
 )
