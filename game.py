@@ -1,17 +1,14 @@
 from helpers import *
 
-game_complete = False
-player_dead = False
 command = InvalidCommand()
 
-
 if __name__ == '__main__':
+    game = Game()
+    game.intro()
 
-    intro()
-
-    while game_complete is False and player_dead is False:
+    while game.complete is False and game.over is False:
         # commands are interpreted differently depending on whether mode is "combat", "escape" or "normal"
-        player.mode = choose_mode()
+        game.player.mode = game.choose_mode()
         user_input = input().strip().lower()
 
         # if the user entered no text, and the previous command was
@@ -19,25 +16,16 @@ if __name__ == '__main__':
         if user_input == '' and command.match is not None:
             user_input = command.match.string
 
-        command = generate_command(user_input, player.mode)
-
+        command = game.generate_command(user_input, game.player.mode)
         command.parse()
         response = command.execute()
-
-        if player.room_name == 'mount':
-            game_complete = True
-
-        if player.health <= 0:
-            player_dead = True
-
-        text_output = text_constructor(response)
+        text_output = game.text_constructor(response)
         display(text_output, before=0, after=1)
-        updates()
+        game.updates()
 
-    if player_dead:
-        display('You have died.', before=0)
+    if game.over:
         display('Thy game is over.')
 
-    elif game_complete:
+    elif game.complete:
         display('Congratulations! You win!', before=0)
         display('Created by James Smith.')

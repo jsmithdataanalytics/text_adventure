@@ -22,6 +22,8 @@ class Avatar:
         self.update_room()
         self.inventory = {item: items[item] for item in game_map['starting_inventory']}
         self.health = 120
+        self.dead = False
+        self.lives = 3
         self.mode = 'normal'
         self.item_aliases = {}
         self.update_item_aliases()

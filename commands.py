@@ -127,17 +127,8 @@ class WaitCommand(Command):
 
 class LookCommand(Command):
 
-    def parse(self):
-        if self.text == 'look' or self.text == 'look around':
-            self.parsed = {'validity': 'valid',
-                           'outcome': 'success'}
-
-        else:
-            self.parsed = {'validity': 'invalid',
-                           'outcome': 'failure'}
-
     def execute(self):
-        return LookResponse(**self.parsed)
+        return LookResponse()
 
 
 class InventoryCommand(Command):
@@ -403,7 +394,7 @@ class TakeHitCommand(Command):
         for enemy in active_enemies:
             damage = choice(enemy.damage_dist[0], p=enemy.damage_dist[1])
             text.append(choice(enemy.attack_text[damage]))
-            player.health -= damage
+            player.health = max(player.health - damage, 0)
         return Response(text='Hardly appropriate for a combat situation!\n' + '\n'.join(text))
 
 

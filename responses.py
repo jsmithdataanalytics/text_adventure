@@ -55,12 +55,7 @@ class WaitResponse(Response):
 class LookResponse(Response):
 
     def text_constructor(self):
-
-        if self.validity == 'valid':
-            return player.describe_current_room(desc_type='long')
-
-        else:
-            return 'You can\'t do that.'
+        return player.describe_current_room(desc_type='long')
 
 
 class InventoryResponse(Response):
