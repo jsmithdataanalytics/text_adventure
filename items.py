@@ -1,8 +1,15 @@
 from json import load
 
-
 with open('map.json') as f:
     game_map = load(f)
+
+checkpoints = {
+    'jimbo': False,
+    'apoth': False,
+    'vines': False,
+    'escape': False,
+    'dingleflowers': False
+}
 
 
 class Item:

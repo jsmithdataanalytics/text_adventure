@@ -6,13 +6,6 @@ levels, height, width = len(game_map['layout']), len(game_map['layout'][0]), len
 
 
 class Avatar:
-    checkpoints = {
-        'jimbo': False,
-        'apoth': False,
-        'vines': False,
-        'escape': False,
-        'dingleflowers': False
-    }
 
     def __init__(self):
         self.name = ''
@@ -43,7 +36,7 @@ class Avatar:
 
         elif desc_type == 'short':
 
-            if player.checkpoints['vines'] and not player.checkpoints['escape'] and \
+            if checkpoints['vines'] and not checkpoints['escape'] and \
                     player.room_name not in ['deade', 'dead2']:
                 return self.room.short_desc + ' Thorny vines continue to spring up just behind you, trying to stop ' \
                                               'you escaping with the Dingleflowers!'
@@ -118,10 +111,10 @@ class Avatar:
             self.update_room()
 
             if self.room_name == 'jimbg':
-                self.checkpoints['jimbo'] = True
+                checkpoints['jimbo'] = True
 
             if self.room_name == 'apoth':
-                self.checkpoints['apoth'] = True
+                checkpoints['apoth'] = True
             return 'new_room', direction
 
         elif direction == 'no_stairs':

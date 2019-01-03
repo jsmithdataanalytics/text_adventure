@@ -14,6 +14,7 @@ class Game:
         self.rooms = rooms
         self.enemies = enemies
         self.items = items
+        self.checkpoints = checkpoints
 
     def updates(self):
         self.player.room.update_blocks()
