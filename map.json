@@ -244,7 +244,7 @@
     "vilb2": {
       "name": "vilb2",
       "text": {
-        "init_core": "You are in the northeast part of the village. All the shops are closed, so you won't be able to get any supplies here. Paths run south and west."
+        "init_core": "You are in the northeast part of the village. All the shops are closed, so you won't be able to get any supplies here. Paths run south, west, and east."
       },
       "items": ["shovel"],
       "blocks": ["east"],
