@@ -21,6 +21,9 @@ class Avatar:
         self.item_aliases = {}
         self.update_item_aliases()
 
+    def mimc(self, avatar):
+        self.__dict__.update(avatar.__dict__)
+
     def set_name(self, name):
         self.name = name
 

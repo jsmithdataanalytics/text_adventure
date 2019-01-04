@@ -2,11 +2,12 @@ from avatar import *
 
 
 class Response:
-    def __init__(self, validity='valid', outcome='success', dead=False, text=''):
+    def __init__(self, validity='valid', outcome='success', dead=False, text='', checkpoint=False):
         self.validity = validity
         self.outcome = outcome
         self.dead = dead
         self.text = text
+        self.checkpoint = checkpoint
 
     def text_constructor(self):
         return self.text
@@ -96,7 +97,7 @@ class GetResponse(Response):
                     raise ValueError('Unexpected get method')
 
                 if 'dingleflowers' in self.new_items and self.new_items['dingleflowers'] == 0:
-                    player.checkpoints['vines'] = True
+                    checkpoints['vines'] = True
                     return to_return + '\n\nAs soon as you take the Dingleflowers, thorny vines spring up from the ' \
                                        'earth and attempt to grab you. Time to leave! Escape to the village without ' \
                                        'taking a wrong turn!'

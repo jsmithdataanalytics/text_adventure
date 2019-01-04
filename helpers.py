@@ -1,6 +1,7 @@
 from commands import *
 import re
 from textwrap import fill
+from copy import deepcopy
 
 TEXT_WIDTH = 80
 
@@ -15,6 +16,8 @@ class Game:
         self.enemies = enemies
         self.items = items
         self.checkpoints = checkpoints
+        self.old_checkpoints = deepcopy(checkpoints)
+        self.snapshot = None
 
     def updates(self):
         self.player.room.update_blocks()
@@ -23,19 +26,35 @@ class Game:
 
         if self.player.room_name == 'mount':
             self.complete = True
+            return
 
         if self.player.health <= 0:
             self.player.lives -= 1
             display('You have died.', before=0)
 
             if self.player.lives > 0:
-                display('Reverting to last checkpoint...', after=1)
+
+                if self.player.lives == 1:
+                    display('You have {} life left. Reverting to the last checkpoint...'.format(
+                        self.player.lives), after=1)
+
+                else:
+                    display('You have {} lives left. Reverting to the last checkpoint...'.format(
+                        self.player.lives), after=1)
+                self.restore(self.player.lives)
                 self.player.health = 120
-                self.player.dead = False
-                display(self.text_constructor(LookResponse()), before=0, after=1)
+                display(self.player.describe_current_room(desc_type='short').format(
+                    name=self.player.name), before=0, after=1)
 
             else:
                 self.over = True
+                return
+
+        if self.checkpoints != self.old_checkpoints:
+            self.old_checkpoints = deepcopy(checkpoints)
+            self.snapshot = None
+            snapshot = deepcopy(self)
+            self.snapshot = snapshot
 
     def intro(self):
         print('')
@@ -57,7 +76,7 @@ class Game:
 
     def choose_mode(self):
 
-        if self.player.checkpoints['vines'] and not self.player.checkpoints['escape']:
+        if self.checkpoints['vines'] and not self.checkpoints['escape']:
             return 'escape'
 
         elif self.player.room.enemies_active():
@@ -104,6 +123,21 @@ class Game:
                     return command
 
         return command
+
+    def restore(self, lives):
+        self.complete = False
+        self.over = False
+        self.checkpoints.clear()
+        self.checkpoints.update(self.snapshot.checkpoints)
+        self.old_checkpoints = None
+        self.rooms.clear()
+        self.rooms.update(self.snapshot.rooms)
+        self.enemies.clear()
+        self.enemies.update(self.snapshot.enemies)
+        self.items.clear()
+        self.items.update(self.snapshot.items)
+        self.player.mimc(self.snapshot.player)
+        self.player.lives = lives
 
 
 def display(string, text_width=TEXT_WIDTH, before=1, after=0):

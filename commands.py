@@ -104,7 +104,7 @@ class GoCommand(Command):
             player.room.first_visit = 0
 
             if player.room_name == 'vila2' and player.mode == 'escape':
-                player.checkpoints['escape'] = True
+                checkpoints['escape'] = True
                 return Response(text='You have escaped into the northeast part of the village. The vines have '
                                 'retreated, and the forest has returned to its usual, peaceful state. The Potion '
                                 'Master\'s apothecary is here.')
@@ -286,7 +286,7 @@ class CutVinesCommand(Command):
 
             if 'sword' in player.inventory:
 
-                if player.checkpoints['apoth']:
+                if checkpoints['apoth']:
 
                     if player.room.state['cut'] == 0:
 
@@ -297,7 +297,7 @@ class CutVinesCommand(Command):
                     else:
                         return Response(text=player.room.text['responses']['already_cut'])
 
-                elif player.checkpoints['jimbo']:
+                elif checkpoints['jimbo']:
                     return Response(text='Hang on, you\'re supposed to be going to see the Potion Master!')
 
                 else:
@@ -442,7 +442,7 @@ class GiveCommand(DropCommand):
                     player.lose_items([item])
                     player.room.short_core = player.room.text['short_core2']
                     player.room.long_core = player.room.text['long_core2']
-                    player.checkpoints['dingleflowers'] = True
+                    checkpoints['dingleflowers'] = True
                     rooms['vilb2'].room_blocks = []
                     return Response(text=player.room.text['responses']['dingleflowers'])
 
