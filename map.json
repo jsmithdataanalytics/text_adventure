@@ -1,4 +1,5 @@
 {
+  "command_history": ["down", "out", "east", "north", "get all", "south", "dig", "get all", "in", "out", "north", "west", "in", "get all", "out", "cut", "north", "", "", "", "get dot", "south", "", "", "", "", "in", "out", "north", "", "", "", "west", "attack goblin with dot", "south", "", "west", "south", "", "attack goblin with sword", "attack goblin with dot", "west", "", "attack troll with dot", "get all", "west", "get all", "east", "", "", "north", "", "east", "", "south"],
   "opening": {
     "title": "THE VISTA",
     "intro": [
@@ -156,7 +157,7 @@
     "homeg": {
       "name": "homeg",
       "text": {
-        "init_core": "This is the living room of your house. A wooden staircase leads up from here, and a door leads outside."
+        "init_core": "You are in the living room of your house. A wooden staircase leads up from here, and a door leads outside."
       },
       "items": [],
       "state": {
@@ -347,7 +348,7 @@
       "text": {
         "init_core": "This is a dead-end."
       },
-      "items": [],
+      "items": ["dot"],
       "state": {}
     },
     "dead2": {
@@ -468,6 +469,15 @@
         "responses": {}
       },
       "visible": 0
+    },
+    "dot": {
+      "name": "Dot",
+      "aliases": [],
+      "text": {
+        "init_desc": "",
+        "responses": {}
+      },
+      "visible": 1
     }
   },
   "enemies": {

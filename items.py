@@ -8,7 +8,8 @@ checkpoints = {
     'apoth': False,
     'vines': False,
     'escape': False,
-    'dingleflowers': False
+    'dingleflowers': False,
+    'easter': False
 }
 
 

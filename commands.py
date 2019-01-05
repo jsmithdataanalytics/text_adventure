@@ -66,6 +66,7 @@ class GoCommand(Command):
                             'wood8': 'east',
                             'wood9': 'east',
                             'dingl': 'east'}
+
         right_way = self.parsed['direction'] == escape_direction[player.room_name] if player.mode == 'escape' else True
         result, direction = player.go(self.parsed['direction'])
 
@@ -108,6 +109,15 @@ class GoCommand(Command):
                 return Response(text='You have escaped into the northeast part of the village. The vines have '
                                 'retreated, and the forest has returned to its usual, peaceful state. The Potion '
                                 'Master\'s apothecary is here.')
+
+            if player.room_name == 'homeg' and "dot" in player.inventory and checkpoints['easter'] is False:
+                checkpoints['easter'] = True
+                return Response(text='Wow! You found the invisible dot and brought it home. You are a thorough and '
+                                     'dedicated player of The Vista... thank you! As a reward, I\'ve granted you a '
+                                     'special power. The dot can now be used as a weapon, with guaranteed one hit KOs!'
+                                     '\n\nThanks again,\nJames Smith, Creator\n\n' +
+                                     player.describe_current_room(desc_type))
+
             return GoResponse('valid', 'success', direction=direction, desc_type=desc_type)
 
 
@@ -349,6 +359,9 @@ class AttackCommand(Command):
 
     def execute(self):
 
+        if checkpoints['easter']:
+            self.valid_weapons.append('dot')
+
         if self.verb != 'attack':
             return Response(text='The word you\'re looking for is "attack".')
 
@@ -367,22 +380,26 @@ class AttackCommand(Command):
         elif self.weapon not in self.valid_weapons:
             return Response(text='You can\'t attack with that.')
 
-        elif self.weapon == 'sword':
-            return self.sword_attack()
+        else:
+            weapon = player.inventory[self.weapon]
+            enemy = None
 
-    def sword_attack(self):
-        weapon = player.inventory[self.weapon]
-        enemy = None
+            for e in player.room.enemies.values():
+                enemy = e
 
-        for e in player.room.enemies.values():
-            enemy = e
+                if enemy.type == self.enemy and enemy.active:
+                    break
 
-            if enemy.type == self.enemy and enemy.active:
-                break
-        damage = choice(weapon.damage_dist[0], p=weapon.damage_dist[1])
-        text = choice(weapon.combat_text[self.enemy][damage])
-        more_text = enemy.lose_health(damage)
-        return Response(text=text + more_text)
+            if self.weapon == 'sword':
+                damage = choice(weapon.damage_dist[0], p=weapon.damage_dist[1])
+                text = choice(weapon.combat_text[self.enemy][damage])
+
+            else:
+                damage = enemy.health
+                text = 'One hit KO!'
+
+            more_text = enemy.lose_health(damage)
+            return Response(text=text + more_text)
 
 
 class TakeHitCommand(Command):

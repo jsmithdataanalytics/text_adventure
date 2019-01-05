@@ -17,6 +17,8 @@ class Game:
         self.items = items
         self.checkpoints = checkpoints
         self.old_checkpoints = deepcopy(checkpoints)
+        self.output = None
+        self.last_checkpoint = None
         self.snapshot = None
 
     def updates(self):
@@ -42,15 +44,37 @@ class Game:
                     display('You have {} lives left. Reverting to the last checkpoint...'.format(
                         self.player.lives), after=1)
                 self.restore(self.player.lives)
-                self.player.health = 120
-                display(self.player.describe_current_room(desc_type='short').format(
-                    name=self.player.name), before=0, after=1)
+                self.player.health = 60
+
+                if self.last_checkpoint == 'vines':
+                    text = 'You are at the end of the forest trail, about to take the Dingleflowers.\n\n'
+                    output = self.output.split('\n')[-1]
+                    display(text + output, before=0, after=1)
+
+                elif self.last_checkpoint == 'dingleflowers':
+                    text = 'You are in the Potion Master\'s apothecary, and have just given her the Dingleflowers.\n\n'
+                    display(text + self.output, before=0, after=1)
+
+                elif self.last_checkpoint == 'easter':
+                    display(self.player.describe_current_room('long'), before=0, after=1)
+
+                else:
+                    display(self.output, before=0, after=1)
 
             else:
                 self.over = True
                 return
 
         if self.checkpoints != self.old_checkpoints:
+
+            if self.old_checkpoints is not None:
+
+                for checkpoint in self.checkpoints:
+
+                    if self.checkpoints[checkpoint] != self.old_checkpoints[checkpoint]:
+                        self.last_checkpoint = checkpoint
+                        break
+
             self.old_checkpoints = deepcopy(checkpoints)
             self.snapshot = None
             snapshot = deepcopy(self)
@@ -138,6 +162,8 @@ class Game:
         self.items.update(self.snapshot.items)
         self.player.mimc(self.snapshot.player)
         self.player.lives = lives
+        self.output = self.snapshot.output
+        self.last_checkpoint = self.snapshot.last_checkpoint
 
 
 def display(string, text_width=TEXT_WIDTH, before=1, after=0):
