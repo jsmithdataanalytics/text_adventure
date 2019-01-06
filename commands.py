@@ -79,6 +79,10 @@ class GoCommand(Command):
                     return Response(text='This is a dead-end. With nowhere to run, you\'re powerless to resist as the '
                                          'vines seize you and crush you!')
 
+                elif result != 'new_room':
+                    return Response(text='Wrong way! While you waste time going the wrong way, the '
+                                         'vines seize you and crush you!')
+
                 else:
                     return Response(text='Wrong way! You\'ve run straight into the '
                                          'vines, which promptly seize you and crush you!')

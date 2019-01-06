@@ -1,5 +1,5 @@
 {
-  "command_history": ["down", "out", "east", "north", "get all", "south", "dig", "get all", "in", "out", "north", "west", "in", "get all", "out", "cut", "north", "", "", "", "get dot", "south", "", "", "", "", "in", "out", "north", "", "", "", "west", "attack goblin with dot", "south", "", "west", "south", "", "attack goblin with sword", "attack goblin with dot", "west", "", "attack troll with dot", "get all", "west", "get all", "east", "", "", "north", "", "east", "", "south"],
+  "command_history": ["down", "out", "east", "north", "get all", "south", "dig", "get all", "in", "out", "north", "west", "in", "get all", "out", "cut", "north", "", "", "", "get dot", "south", "", "", "", "", "in", "out", "north", "", "", "", "west", "attack goblin with dot", "south", "", "west", "south", "", "attack goblin with sword", "attack goblin with dot", "west", "", "attack troll with dot", "get all", "west", "get all", "east", "", "", "north", "", "east", "", "south", "", "", "in"],
   "opening": {
     "title": "THE VISTA",
     "intro": [
