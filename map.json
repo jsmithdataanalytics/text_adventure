@@ -1,5 +1,5 @@
 {
-  "command_history": ["down", "out", "east", "north", "get all", "south", "dig", "get all", "in", "out", "north", "west", "in", "get all", "out", "cut", "north", "", "", "", "get dot", "south", "", "", "", "", "in", "out", "north", "", "", "", "west", "attack goblin with dot", "south", "", "west", "south", "", "attack goblin with sword", "attack goblin with dot", "west", "", "attack troll with dot", "get all", "west", "get all", "east", "", "", "north", "", "east", "", "south", "", "", "in"],
+  "command_history": ["down", "out", "east", "north", "get all", "south", "dig", "get all", "in", "out", "north", "west", "in", "get all", "out", "cut", "north", "", "", "", "get dot", "south", "", "", "", "", "in", "out", "north", "", "", "", "west", "attack goblin with dot", "south", "", "west", "south", "", "attack goblin with sword", "attack goblin with dot", "west", "", "attack troll with dot", "get all", "west", "get all", "east", "", "", "north", "", "east", "", "south", "", "", "in", "give flowers", "out", "south", "in", "up", "get all", "open", "get all", "down", "out", "north", "east", ""],
   "opening": {
     "title": "THE VISTA",
     "intro": [
@@ -59,10 +59,10 @@
     [
       ["block", "block", "block", "block", "block", "block", "block", "mount", "mount", "mount", "mount", "mount"],
       ["block", "block", "block", "block", "block", "deade", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["block", "block", "block", "wood5", "wood4", "wood3", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["block", "block", "block", "wood6", "block", "wood2", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["dingl", "wood9", "wood8", "wood7", "block", "wood1", "block", "mount", "mount", "mount", "mount", "mount"],
-      ["block", "block", "dead2", "block", "block", "vila2", "vilb2", "mount", "block", "block", "block", "block"],
+      ["block", "block", "block", "wood5", "wood4", "wood3", "block", "block", "block", "block", "block", "mount"],
+      ["block", "block", "block", "wood6", "block", "wood2", "block", "moua3", "moub3", "mouc3", "block", "mount"],
+      ["dingl", "wood9", "wood8", "wood7", "block", "wood1", "block", "moua2", "moub2", "mouc2", "block", "mount"],
+      ["block", "block", "dead2", "block", "block", "vila2", "vilb2", "moua1", "moub1", "mouc1", "block", "block"],
       ["block", "block", "block", "block", "block", "vila1", "vilb1", "block", "block", "block", "block", "block"],
       ["magma", "magma", "magma", "magma", "magma", "block", "block", "ocean", "ocean", "ocean", "ocean", "ocean"],
       ["magma", "magma", "magma", "magma", "magma", "block", "block", "ocean", "ocean", "ocean", "ocean", "ocean"],
@@ -104,6 +104,111 @@
       },
       "items": [],
       "state": {}
+    },
+    "moua1": {
+      "name": "moua1",
+      "text": {
+        "init_core": "You have reached the Gygax Mountains. The vast mountain range sprawls out before you, covered in a thick blanket of snow. You can travel north or east to go further into the mountains, or go west to return to Floonyloon Village.",
+        "short_core": "You are in the Gygax Mountains. You can travel north or east to go further into the mountains, or go west to return to Floonyloon Village.",
+        "long_core": "You are in the Gygax Mountains. The vast mountain range sprawls out to the north and east, covered in a thick blanket of snow. Floonyloon Village lies to the west.",
+        "state": {},
+        "responses": {}
+      },
+      "items": [],
+      "state": {},
+      "blocks": []
+    },
+    "moua2": {
+      "name": "moua2",
+      "text": {
+        "init_core": "You are in the mountains. You can travel north, south, or east from here.",
+        "state": {},
+        "responses": {}
+      },
+      "items": [],
+      "enemies": ["moua2wolf"],
+      "state": {},
+      "blocks": []
+    },
+    "moua3": {
+      "name": "moua3",
+      "text": {
+        "init_core": "You are in the mountains. You can travel south or east from here.",
+        "state": {},
+        "responses": {}
+      },
+      "items": [],
+      "state": {},
+      "blocks": []
+    },
+    "moub1": {
+      "name": "moub1",
+      "text": {
+        "init_core": "You are in the mountains. You can travel north or west from here. To the east, there is a steep, icy incline, which might be climbable were you to wear some kind of snow boots.",
+        "state": {},
+        "responses": {}
+      },
+      "items": ["sticks"],
+      "state": {},
+      "blocks": []
+    },
+    "moub2": {
+      "name": "moub2",
+      "text": {
+        "init_core": "You are in the mountains. You can travel west or south from here.",
+        "state": {},
+        "responses": {}
+      },
+      "items": [],
+      "state": {},
+      "blocks": ["north", "east"]
+    },
+    "moub3": {
+      "name": "moub3",
+      "text": {
+        "init_core": "This is a dead end, from which you can only travel west.",
+        "state": {},
+        "responses": {}
+      },
+      "items": ["matchbook"],
+      "enemies": ["moub3wolf"],
+      "state": {},
+      "blocks": ["south", "east"]
+    },
+    "mouc1": {
+      "name": "mouc1",
+      "text": {
+        "init_core": "You are high up in the mountains. To the north, there is a steep, icy incline. An equally treacherous, downward slope leads west.",
+        "state": {},
+        "responses": {}
+      },
+      "items": [],
+      "state": {},
+      "blocks": []
+    },
+    "mouc2": {
+      "name": "mouc2",
+      "text": {
+        "init_core": "You are at the peak of the Gygax Mountains. The view from here would be spectacular, were you not stood in the middle of a blizzard, complete with frequent claps of thunder. The summit is a flat platform, suitable for use as a fighting arena.",
+        "short_core": "You are at the flat peak of the Gygax Mountains. From here you can travel north, or head south to begin your descent.",
+        "long_core": "You are at the flat peak of the Gygax Mountains. The view from here would be spectacular, were you not stood in the middle of a blizzard. From here you can travel north, or head south to begin your descent.",
+        "state": {},
+        "responses": {}
+      },
+      "items": [],
+      "state": {},
+      "blocks": ["west"]
+    },
+    "mouc3": {
+      "name": "mouc3",
+      "text": {
+        "init_core": "You are atop the Gygax Mountains. You are at a dead end, with sheer drops on all sides, except to the south. Set into the ground is a circular stone pedestal, which bears an engraving in the shape of a hammer.",
+        "state": {},
+        "responses": {}
+      },
+      "items": [],
+      "state": {},
+      "blocks": ["west"]
     },
     "magma": {
       "name": "magma",
@@ -195,17 +300,17 @@
     "apoth": {
       "name": "apoth",
       "text": {
-        "init_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of blue coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience to whatever's out there. I heard there are strange creatures roaming The Vista, turning it into a cursed land.\"\n\n\"I'm sure I could make a potion to cure everyone, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. Dingleflowers from Robinett Forest. Alaria Spring Water from the Gygax Mountains. Oleon Seaweed from the Koltaric Ocean. And Crystallised Tallenine from the Sawano Volcano.\"\n\n\"{name}, I'm counting on you to travel to these lands and bring me the vital ingredients for my magic elixir!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
-        "short_core": "You're in the Potion Master's tent. She says: \"{name}, go to Robinett Forest and bring me some Dingleflowers!",
-        "long_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of blue coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience to whatever's out there. I heard there are strange creatures roaming The Vista, turning it into a cursed land.\"\n\n\"I'm sure I could make a potion to cure everyone, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. Dingleflowers from Robinett Forest. Alaria Spring Water from the Gygax Mountains. Oleon Seaweed from the Koltaric Ocean. And Crystallised Tallenine from the Sawano Volcano.\"\n\n\"{name}, I'm counting on you to travel to these lands and bring me the vital ingredients for my magic elixir!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
-        "short_core2": "You're in the Potion Master's tent. She says: \"{name}, you must now go to the Gygax Mountains and bring me some Alaria Spring Water! Hurry!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
-        "long_core2": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir. She says: \"{name}, you must now go to the Gygax Mountains and bring me some Alaria Spring Water! Hurry!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
+        "init_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience...\"\n\n\"This land is cursed, {name}. Strange creatures are invading The Vista, using evil magic to transform it into a world of darkness and despair. The only way to stop the onslaught is to gather the three precious orbs hidden throughout the land...\"\n\n\"The Blue Orb, hidden deep in Robinett Forest...\"\n\"The Yellow Orb, lost in the Gygax Mountains...\"\n\"The Red Orb, whose resting place is unknown...\"\n\n\"{name}, you must find the orbs and vanquish the rising evil!\"\n\n\"In the the meantime, I can make a potion to cure everyone here, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. I need you to bring back some Dingleflowers from the forest, and some Alaria Spring Water from the mountains.\"\n\n\"Head to the forest first, find the Blue Orb, and bring me some Dingleflowers! I'm counting on you, {name}!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
+        "short_core": "You're in the Potion Master's tent. She says: \"{name}, go to Robinett Forest, find the Blue Orb, and bring me some Dingleflowers!",
+        "long_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience...\"\n\n\"This land is cursed, {name}. Strange creatures are invading The Vista, using evil magic to transform it into a world of darkness and despair. The only way to stop the onslaught is to gather the three precious orbs hidden throughout the land...\"\n\n\"The Blue Orb, hidden deep in Robinett Forest...\"\n\"The Yellow Orb, lost in the Gygax Mountains...\"\n\"The Red Orb, whose resting place is unknown...\"\n\n\"{name}, you must find the orbs and vanquish the rising evil!\"\n\n\"In the the meantime, I can make a potion to cure everyone here, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. I need you to bring back some Dingleflowers from the forest, and some Alaria Spring Water from the mountains.\"\n\n\"Head to the forest first, find the Blue Orb, and bring me some Dingleflowers! I'm counting on you, {name}!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
+        "short_core2": "You're in the Potion Master's tent. She says: \"{name}, you must now go to the Gygax Mountains, find the Yellow Orb, and bring me some Alaria Spring Water! Hurry!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
+        "long_core2": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir. She says: \"{name}, you must now go to the Gygax Mountains, find the Yellow Orb, and bring me some Alaria Spring Water! Hurry!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
         "state": {},
         "responses": {
-          "dingleflowers": "Potion Master: \"Ah! Dingleflowers! Excellent work, {name}! I'll add them to the potion right away!\"\n\nThe Potion Master takes the flowers, and tosses them into the cauldron. The potion immediately turns from blue to red.\n\n\"Yes, yes, that's right. Great work, {name}! Now, head to the Gygax Mountains and fetch me some Alaria Spring Water!\""
+          "dingleflowers": "Potion Master: \"Ah! Dingleflowers! Excellent work, {name}! I'll add them to the potion right away!\"\n\nThe Potion Master takes the flowers, and tosses them into the cauldron. The potion immediately turns from red to blue.\n\n\"Yes, yes, that's right. Great work, {name}! Now, head to the Gygax Mountains, find the Yellow Orb, and bring me some Alaria Spring Water!\""
         }
       },
-      "items": ["book"],
+      "items": ["book", "bottle"],
       "state": {
         "extra_directions": {"out": [3, 5, 5]}
       }
@@ -419,7 +524,7 @@
     "bottle": {
       "name": "Bottle",
       "text": {
-        "init_desc": "There is an empty bottle on a nearby table, which looks perfect for storing strange ingredients."
+        "init_desc": "There is an empty bottle on a nearby table."
       },
       "visible": 1
     },
@@ -478,6 +583,24 @@
         "responses": {}
       },
       "visible": 1
+    },
+    "sticks": {
+      "name": "Sticks",
+      "aliases": ["wood", "stick", "firewood", "sticks", "the firewood", "the wood", "the stick", "the sticks", "a stick", "some sticks", "some of the sticks", "one of the sticks", "some wood", "some firewood", "some of the firewood", "some of the wood", "one stick"],
+      "text": {
+        "init_desc": "There are some sticks on the floor here, which could be used as firewood.",
+        "responses": {}
+      },
+      "visible": 1
+    },
+    "matchbook": {
+      "name": "Matchbook",
+      "aliases": ["the matchbook", "matches", "the matches"],
+      "text": {
+        "init_desc": "On the floor is a matchbook containing several matches.",
+        "responses": {}
+      },
+      "visible": 0
     }
   },
   "enemies": {
@@ -485,19 +608,36 @@
       "name": "wood4goblin",
       "type": "goblin",
       "init_desc": "However, a nasty looking goblin blocks your way west.",
-      "blocks": ["west"]
+      "blocks": ["west"],
+      "inventory": []
     },
     "wood7goblin": {
       "name": "wood7goblin",
       "type": "goblin",
       "init_desc": "There is a goblin blocking your path here. It says \"Turn back now, or meet your doom! My master will slay all who oppose him!\"",
-      "blocks": ["west"]
+      "blocks": ["west"],
+      "inventory": []
     },
     "wood9troll": {
       "name": "wood9troll",
       "type": "troll",
       "init_desc": "A mighty troll towers over you, blocking your path. He wields an enormous axe, and clearly means to use it to put an end to your quest.\n\nTroll: \"You've done well to make it this far, kid... but it ends now. There's nothing you can do for your friends in the village. Surrender now, and I'll make this quick!\"",
-      "blocks": ["west"]
+      "blocks": ["west"],
+      "inventory": ["axe", "sapphire"]
+    },
+    "moua2wolf": {
+      "name": "moua2wolf",
+      "type": "wolf",
+      "init_desc": "Or at least, you would be able to go north, if it weren't for the vicious winter wolf blocking your way.",
+      "blocks": ["north"],
+      "inventory": []
+    },
+    "moub3wolf": {
+      "name": "moub3wolf",
+      "type": "wolf",
+      "init_desc": "However, a winter wolf, with pointed teeth and razor sharp claws, is blocking your way back.",
+      "blocks": ["west"],
+      "inventory": ["matchbook"]
     }
   },
   "starting_inventory": []

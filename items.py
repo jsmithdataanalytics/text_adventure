@@ -45,4 +45,11 @@ game_items['sword'].combat_text['troll'] = {0: ['You swing your sword at the tro
                                                  'You\'re too fast for the sluggish troll, who takes the full brunt ' +
                                                  'of your attack.'],
                                             40: ['Critical hit! Your blade strikes the troll for double damage!']}
+game_items['sword'].combat_text['wolf'] = {0: ['You swing your sword at the wolf, but miss.',
+                                               'You lunge at the wolf, but it leaps aside.'],
+                                           20: ['Your slice attack makes contact. Take that!',
+                                                'You lunge fiercely at the wolf with your sword. Got the bastard!',
+                                                'Your speed catches the wolf off guard. It takes the full brunt ' +
+                                                'of your attack!'],
+                                           40: ['Critical hit! Your blade strikes the wolf for double damage!']}
 game_items['sword'].damage_dist = [[0, 20, 40], [0.4, 0.4, 0.2]]

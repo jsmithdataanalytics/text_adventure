@@ -486,16 +486,33 @@ class DeadByVinesCommand(Command):
                              'the vines seize you and crush you!')
 
 
+class EnterExitCommand(Command):
+
+    def execute(self):
+
+        if self.match == 'enter':
+            match = re.fullmatch('(?:go +)?(in|out)', 'go in')
+
+        else:
+            match = re.fullmatch('(?:go +)?(in|out)', 'go out')
+
+        c = GoCommand(match)
+        c.parse()
+        return c.execute()
+
+
 generic_commands = {
     '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|in|out|inside|outside)': GoCommand,
     'wait': WaitCommand,
     'look(?: +a?round)?': LookCommand,
     '(?:(?:check|inspect|examine) +)?(?:items|inventory)': InventoryCommand,
     '(?:get|take|grab|pick +up) +(.+)': GetCommand,
+    'pick +(.+) +up': GetCommand,
     '(?:drop|leave|put +down) +(.+)': DropCommand,
-    'put +(.+) +(?:down|on +floor|on +ground)': DropCommand,
+    'put +(.+) +(?:down|on +(?:the +)?floor|on +(?:the +)?ground)': DropCommand,
     'dig(?: +(?:a +)?hole)?(?: +with +(?:the +)?(?:shovel|spade))?': DigCommand,
     'climb( +(?:up|down))?(?: +(?:the +)?tree)?': ClimbTreeCommand,
+    'enter|exit': EnterExitCommand()
 }
 
 rooms['vilb1'].commands.update(
@@ -520,7 +537,8 @@ rooms['vila2'].commands.update(
 
 rooms['apoth'].commands.update(
     {
-        '(?:give|present|show|hand +over) +(.+)': GiveCommand
+        '(?:give +her|show +her) +(.+)': GiveCommand,
+        '(?:give|present|show|hand +over) +(.+?)(?: +to +(?:her|(?:the +)?(?:potion +)?master))?': GiveCommand
     }
 )
 
