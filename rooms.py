@@ -1,5 +1,6 @@
 from enemies import *
 from enemies import game_enemies as enemies
+from collections import OrderedDict
 
 
 class Room:
@@ -51,7 +52,10 @@ class Room:
             for x, y in self.state.items():
 
                 if 'state' in self.text and x in self.text['state']:
-                    core.append(self.text['state'][x][str(y)])
+                    string = self.text['state'][x][str(y)]
+
+                    if string:
+                        core.append(string)
 
             for key, value in self.inventory.items():
 
@@ -97,3 +101,10 @@ class Room:
 
 game_rooms = game_map['rooms']
 game_rooms = {name.lower(): Room(data) for name, data in game_rooms.items()}
+
+game_rooms['mohut'].state = OrderedDict([
+    ("frozen", 1),
+    ("firewood", 0),
+    ("open", 0),
+    ("extra_directions", {"out": [3, 4, 8]})
+])

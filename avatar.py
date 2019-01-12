@@ -20,8 +20,13 @@ class Avatar:
         self.mode = 'normal'
         self.item_aliases = {}
         self.update_item_aliases()
+        self.boots = False
+        self.lit_match = {
+            'status': False,
+            'count': 4
+        }
 
-    def mimc(self, avatar):
+    def mimic(self, avatar):
         self.__dict__.update(avatar.__dict__)
 
     def set_name(self, name):
@@ -60,6 +65,9 @@ class Avatar:
 
         for item in item_list:
             items[item].taken = 1
+
+            if item == 'snow boots':
+                self.room.state['open'] = 2
         return item_list
 
     def get_all_visible_items(self):
@@ -84,6 +92,13 @@ class Avatar:
             'up': (-1, 0, 0),
             'down': (1, 0, 0)
         }
+
+        if (self.room_name == 'moub1' and direction == 'east') or \
+            (self.room_name == 'mouc1' and direction == 'north'):
+
+            if self.boots is False:
+                return 'no_boots', direction
+
         blocked = self.room.update_blocks()
 
         if direction in blocked:

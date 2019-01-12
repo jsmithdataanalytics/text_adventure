@@ -53,3 +53,11 @@ game_items['sword'].combat_text['wolf'] = {0: ['You swing your sword at the wolf
                                                 'of your attack!'],
                                            40: ['Critical hit! Your blade strikes the wolf for double damage!']}
 game_items['sword'].damage_dist = [[0, 20, 40], [0.4, 0.4, 0.2]]
+game_items['axe'].combat_text['wolf'] = {0: ['You swing your axe at the wolf, but miss.',
+                                             'You lunge at the wolf with your axe, but it leaps aside.'],
+                                         30: ['Your axe attack makes contact. Take that!',
+                                              'You swing your axe at the wolf. Got the bastard!',
+                                              'Your speed catches the wolf off guard. It takes the full brunt ' +
+                                              'of your attack!'],
+                                         60: ['Critical hit! Your axe strikes the wolf for double damage!']}
+game_items['axe'].damage_dist = [[0, 30, 60], [0.4, 0.4, 0.2]]

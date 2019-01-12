@@ -95,6 +95,9 @@ class GoCommand(Command):
         if result == 'invalid_command':
             return InvalidResponse()
 
+        elif result == 'no_boots':
+            return Response(text='It\'s too steep. You need to be wearing snow boots to go that way.')
+
         elif result == 'invalid_movement':
             return GoResponse('valid', 'failure', direction=direction)
 
@@ -111,8 +114,8 @@ class GoCommand(Command):
             if player.room_name == 'vila2' and player.mode == 'escape':
                 checkpoints['escape'] = True
                 return Response(text='You have escaped into the northeast part of the village. The vines have '
-                                'retreated, and the forest has returned to its usual, peaceful state. The Potion '
-                                'Master\'s apothecary is here.')
+                                     'retreated, and the forest has returned to its usual, peaceful state. The Potion '
+                                     'Master\'s apothecary is here.')
 
             if player.room_name == 'homeg' and "dot" in player.inventory and checkpoints['easter'] is False:
                 checkpoints['easter'] = True
@@ -175,7 +178,7 @@ class GetCommand(Command):
 
                 for alias in value:
 
-                    if item == alias:
+                    if re.fullmatch(alias, item):
                         self.parsed['validity'] = 'valid'
                         self.parsed['item'] = key
                         break
@@ -215,21 +218,36 @@ class DropCommand(Command):
 
                 for alias in value:
 
-                    if item == alias:
+                    if re.fullmatch(alias, item):
                         self.parsed['item'] = key
                         break
 
     def execute(self):
+        boots_message = 'You can\'t drop the snow boots because you\'re wearing them!'
         item = self.parsed['item']
 
-        if item in player.inventory:
+        if item == 'snow boots' and player.boots:
+            return Response(text=boots_message)
+
+        elif item in player.inventory:
             player.drop_items([item])
             return Response(text='Dropped.')
 
         elif item == 'all':
-            to_return = Response(text='\n'.join([item.name + ': dropped.' for item in player.inventory.values()]))
-            player.drop_items(list(player.inventory.keys()))
-            return to_return
+
+            if player.boots:
+                text = [item.name + ': dropped.' for key, item in player.inventory.items() if key != 'snow boots']
+                text.append(boots_message)
+                player.drop_items([key for key in player.inventory.keys() if key != 'snow boots'])
+                return Response(text='\n'.join(text))
+
+            elif not player.inventory:
+                return Response(text='You have nothing to drop!')
+
+            else:
+                text = [item.name + ': dropped.' for key, item in player.inventory.items()]
+                player.drop_items([key for key in player.inventory.keys()])
+                return Response(text='\n'.join(text))
 
         else:
             return Response(text='You don\'t have one of those.')
@@ -292,6 +310,19 @@ class UnlockChestHomeCommand(Command):
             return c.execute()
 
 
+class OpenChestHutCommand(Command):
+
+    def execute(self):
+
+        if player.room.state['frozen'] == 1:
+            return Response(text='It\'s frozen shut.')
+
+        else:
+            player.room.state['open'] = 1
+            items['snow boots'].visible = 1
+            return Response(text=items['snow boots'].init_desc)
+
+
 class CutVinesCommand(Command):
 
     def execute(self):
@@ -344,7 +375,7 @@ class AttackCommand(Command):
     verb = None
     enemy = None
     weapon = None
-    valid_weapons = ['sword']
+    valid_weapons = ['sword', 'axe']
 
     def parse(self):
         text = self.match.string
@@ -394,7 +425,7 @@ class AttackCommand(Command):
                 if enemy.type == self.enemy and enemy.active:
                     break
 
-            if self.weapon == 'sword':
+            if self.weapon != 'dot':
                 damage = choice(weapon.damage_dist[0], p=weapon.damage_dist[1])
                 text = choice(weapon.combat_text[self.enemy][damage])
 
@@ -501,6 +532,66 @@ class EnterExitCommand(Command):
         return c.execute()
 
 
+class LightMatchCommand(Command):
+
+    def execute(self):
+
+        if player.lit_match['status']:
+            return Response(text='You are already carrying a lit match.')
+
+        else:
+            player.lit_match['status'] = 1
+            player.lit_match['count'] = 4
+            return Response(text='The match is burning.')
+
+
+class FireplaceCommand(Command):
+
+    def execute(self):
+        item = self.match[1]
+        stick_checks = [re.fullmatch(regex, item) for regex in items['sticks'].aliases]
+        inv_checks = [re.fullmatch(regex, item) for itm in player.inventory for regex in items[itm].aliases]
+
+        if not any(inv_checks):
+            return Response(text='You don\'t have one of those.')
+
+        elif any(stick_checks):
+            rooms['mohut'].state['firewood'] = 1
+            player.lose_items(['sticks'])
+            return Response(text='Done.')
+
+        else:
+            return Response(text='That doesn\'t belong in there.')
+
+
+class FireCommand(Command):
+
+    def execute(self):
+
+        if player.room.state['firewood'] == 0:
+            return Response(text='The fireplace is empty.')
+
+        elif player.room.state['frozen'] == 0:
+            return Response(text='The fire is already lit!')
+
+        elif player.lit_match['status'] is False:
+            return Response(text='You\'ll need to light a match first.')
+
+        else:
+            player.room.state['frozen'] = 0
+            rooms['moub2'].state['frozen'] = 0
+            player.room.state['firewood'] = 2
+            return Response(text='The fireplace is filled with a roaring fire. You feel the '
+                                 'sensation return to your hands and feet as the room around you slowly thaws out.')
+
+
+class BootsCommand(Command):
+
+    def execute(self):
+        player.boots = True
+        return Response(text='You are now wearing the snow boots.')
+
+
 generic_commands = {
     '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|in|out|inside|outside)': GoCommand,
     'wait': WaitCommand,
@@ -529,6 +620,12 @@ rooms['home1'].commands.update(
     }
 )
 
+rooms['mohut'].commands.update(
+    {
+        '(?:unlock|open)(?: +(?:the +)?chest)?': OpenChestHutCommand
+    }
+)
+
 rooms['vila2'].commands.update(
     {
         '(?:cut|slice|clear|sever)(?: +(?:the +)?(?:vines|thicket))?(?: +with +(?:the +)?(?:sword))?': CutVinesCommand
@@ -539,6 +636,21 @@ rooms['apoth'].commands.update(
     {
         '(?:give +her|show +her) +(.+)': GiveCommand,
         '(?:give|present|show|hand +over) +(.+?)(?: +to +(?:her|(?:the +)?(?:potion +)?master))?': GiveCommand
+    }
+)
+
+rooms['mohut'].commands.update(
+    {
+        '(?:put|place) +(.+) +(?:in(?:(?:to|side))? +(?:the +)?fireplace)': FireplaceCommand
+    }
+)
+
+rooms['mohut'].commands.update(
+    {
+        '(?:light|ignite) +(?:(?:the|a) +)?fire': FireCommand,
+        '(?:light|ignite) +(?:the +)?fire(?:wood|place)': FireCommand,
+        'start +(?:(?:the|a) +)?fire': FireCommand,
+        '(?:light|ignite|burn) +(?:the +)?(?:fire)?wood': FireCommand
     }
 )
 
@@ -556,7 +668,32 @@ items['book'].commands.update(
 
 items['sword'].combat_commands.update(
     {
-        '(attack|hit|stab)( +.*)?': AttackCommand,
-        '(swing) +(?:the +)?sword.*': AttackCommand
+        '(attack|hit|strike|stab)( +.*)?': AttackCommand
+    }
+)
+
+items['axe'].combat_commands.update(
+    {
+        '(attack|hit|strike)( +.*)?': AttackCommand
+    }
+)
+
+items['dot'].combat_commands.update(
+    {
+        '(attack|hit|strike|kill)( +.*)?': AttackCommand
+    }
+)
+
+items['matchbook'].commands.update(
+    {
+        '(?:light|strike|ignite|burn) +(?:a +)?match': LightMatchCommand
+    }
+)
+items['snow boots'].commands.update(
+    {
+        '(?:wear|equip|put +on|strap +on|don) +(the +)?(snow *)?boots': BootsCommand,
+        'put +(the +)?(snow *)?boots +on': BootsCommand,
+        'change +into +(the +)?(snow *)?boots': BootsCommand,
+        '(change|swap|switch) +(boots|shoes)': BootsCommand
     }
 )

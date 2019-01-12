@@ -28,7 +28,18 @@ class GoResponse(Response):
     def text_constructor(self):
 
         if self.outcome == 'success':
-            return player.describe_current_room(desc_type=self.desc_type)
+            text = player.describe_current_room(desc_type=self.desc_type)
+
+            if (player.room_name == 'mouc1' and self.direction == 'east') or \
+                (player.room_name == 'mouc2' and self.direction == 'north'):
+                return 'With the snow boots on, you\'re able to scramble up the steep hill...\n\n' + text
+
+            elif (player.room_name == 'mouc1' and self.direction == 'south') or \
+                    (player.room_name == 'moub1' and self.direction == 'west'):
+                return 'With the snow boots on, you\'re able to safely descend the steep hill...\n\n' + text
+
+            else:
+                return text
 
         elif self.validity == 'valid':
             if player.room_name == 'vilb2' and self.direction == 'east':

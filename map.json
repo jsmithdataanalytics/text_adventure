@@ -1,5 +1,5 @@
 {
-  "command_history": ["down", "out", "east", "north", "get all", "south", "dig", "get all", "in", "out", "north", "west", "in", "get all", "out", "cut", "north", "", "", "", "get dot", "south", "", "", "", "", "in", "out", "north", "", "", "", "west", "attack goblin with dot", "south", "", "west", "south", "", "attack goblin with sword", "attack goblin with dot", "west", "", "attack troll with dot", "get all", "west", "get all", "east", "", "", "north", "", "east", "", "south", "", "", "in", "give flowers", "out", "south", "in", "up", "get all", "open", "get all", "down", "out", "north", "east", ""],
+  "command_history": ["down", "out", "east", "north", "get all", "south", "dig", "get all", "in", "out", "north", "west", "in", "get all", "out", "cut", "north", "", "", "", "get dot", "south", "", "", "", "", "in", "out", "north", "", "", "", "west", "attack goblin with dot", "south", "", "west", "south", "", "attack goblin with sword", "attack goblin with dot", "west", "", "attack troll with dot", "get all", "west", "get all", "east", "", "", "north", "", "east", "", "south", "", "", "in", "give flowers", "out", "south", "in", "up", "get all", "open", "get all", "down", "out", "north", "east", "", "east", "get the wood", "north", "east", "west", "attack wolf with dot", "north", "east", "attack wolf with dot", "get all", "west", "south", "east", "in"],
   "opening": {
     "title": "THE VISTA",
     "intro": [
@@ -33,7 +33,7 @@
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
-      ["block", "block", "block", "block", "block", "apoth", "block", "block", "block", "block", "block", "block"],
+      ["block", "block", "block", "block", "block", "apoth", "block", "block", "mohut", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "homeg", "block", "jimbg", "block", "block", "block", "block"],
       ["block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block", "block"],
@@ -155,12 +155,22 @@
     "moub2": {
       "name": "moub2",
       "text": {
-        "init_core": "You are in the mountains. You can travel west or south from here.",
-        "state": {},
+        "init_core": "You are in the mountains, stood just outside a small mountain hut.",
+        "state": {
+          "frozen": {
+            "0": "The door is wide open, and there seems to be a fire burning inside.",
+            "1": "It seems to be frozen solid, but the door is wide open."
+          }
+        },
         "responses": {}
       },
       "items": [],
-      "state": {},
+      "state": {
+        "frozen": 1,
+        "extra_directions": {
+          "in": [1, 4, 8]
+        }
+      },
       "blocks": ["north", "east"]
     },
     "moub3": {
@@ -209,6 +219,37 @@
       "items": [],
       "state": {},
       "blocks": ["west"]
+    },
+    "mohut": {
+      "name": "mohut",
+      "text": {
+        "init_core": "You are inside the mountain hut.",
+        "state": {
+          "frozen": {
+            "0": "There is a hearty fire burning in the fireplace, and a chest in the corner...",
+            "1": "All the furniture is frozen, including the chest in the corner."
+          },
+          "firewood": {
+            "0": "There is an empty fireplace, which looks like it hasn't been used in years.",
+            "1": "There is an old fireplace with some firewood in it.",
+            "2": ""
+          },
+          "open": {
+            "0": "",
+            "1": "it's open.",
+            "2": "it's empty."
+          }
+        }
+      },
+      "items": ["snow boots"],
+      "state": {
+        "frozen": 1,
+        "firewood": 0,
+        "open": 0,
+        "extra_directions": {
+          "out": [3, 4, 8]
+        }
+      }
     },
     "magma": {
       "name": "magma",
@@ -484,30 +525,15 @@
   "items": {
     "shovel": {
       "name": "Shovel",
-      "aliases": ["the shovel", "spade", "the spade"],
+      "aliases": ["the +shovel", "spade", "the +spade"],
       "text": {
         "init_desc": "You notice a shovel lying on the ground nearby."
       },
       "visible": 1
     },
-    "diamond": {
-      "name": "Diamond",
-      "text": {
-        "init_desc": "Inside is an enormous diamond, probably worth an absolute fortune!"
-      },
-      "visible": 0
-    },
-    "shield": {
-      "name": "Shield",
-      "aliases": ["the shield"],
-      "text": {
-        "init_desc": "Inside the chest is an antique shield."
-      },
-      "visible": 0
-    },
     "key": {
       "name": "Key",
-      "aliases": ["the key"],
+      "aliases": ["the +key"],
       "text": {
         "init_desc": "There is also a key on a nearby table."
       },
@@ -515,7 +541,7 @@
     },
     "sword": {
       "name": "Sword",
-      "aliases": ["the sword"],
+      "aliases": ["the +sword"],
       "text": {
         "init_desc": "Inside is a majestic sword."
       },
@@ -523,6 +549,7 @@
     },
     "bottle": {
       "name": "Bottle",
+      "aliases": ["the +bottle"],
       "text": {
         "init_desc": "There is an empty bottle on a nearby table."
       },
@@ -530,7 +557,7 @@
     },
     "book": {
       "name": "Book",
-      "aliases": ["the book"],
+      "aliases": ["the +book"],
       "text": {
         "init_desc": "On the bookshelf is a dusty book, entitled \"Magical Medicines of The Vista\".",
         "responses": {
@@ -541,7 +568,7 @@
     },
     "dingleflowers": {
       "name": "Dingleflowers",
-      "aliases": ["dingleflower", "flowers", "flower", "the dingleflowers", "the flowers", "the flower"],
+      "aliases": ["(the +)?dingleflowers?", "(the +)?flowers?"],
       "text": {
         "init_desc": "Among them, you notice a small patch of crimson-coloured Dingleflowers.",
         "responses": {}
@@ -550,7 +577,7 @@
     },
     "axe": {
       "name": "Axe",
-      "aliases": ["the axe"],
+      "aliases": ["the +axe"],
       "text": {
         "init_desc": "The late troll's axe lies on the spot where he died.",
         "responses": {}
@@ -559,7 +586,7 @@
     },
     "sapphire": {
       "name": "Blue Orb",
-      "aliases": ["orb", "sapphire orb", "blue orb", "the sapphire", "the orb", "the sapphire orb", "the blue orb"],
+      "aliases": ["(the +)?((sapphire|blue) +)?orb", "the +sapphire"],
       "text": {
         "init_desc": "In the grass is a gleaming, sapphire coloured orb.",
         "responses": {}
@@ -568,7 +595,7 @@
     },
     "ruby": {
       "name": "Red Orb",
-      "aliases": ["orb", "ruby orb", "red orb", "the ruby", "the orb", "the ruby orb", "the red orb"],
+      "aliases": ["(the +)?((ruby|red) +)?orb", "the +ruby"],
       "text": {
         "init_desc": "Inside is a gleaming, ruby coloured orb.",
         "responses": {}
@@ -577,7 +604,7 @@
     },
     "dot": {
       "name": "Dot",
-      "aliases": [],
+      "aliases": ["the +dot"],
       "text": {
         "init_desc": "",
         "responses": {}
@@ -586,7 +613,7 @@
     },
     "sticks": {
       "name": "Sticks",
-      "aliases": ["wood", "stick", "firewood", "sticks", "the firewood", "the wood", "the stick", "the sticks", "a stick", "some sticks", "some of the sticks", "one of the sticks", "some wood", "some firewood", "some of the firewood", "some of the wood", "one stick"],
+      "aliases": ["(the +)?(fire)?wood", "(the +)?sticks?", "a +stick", "(some|one) +(of +the +)?sticks", "some +(of +the +)?(fire)?wood", "one +stick"],
       "text": {
         "init_desc": "There are some sticks on the floor here, which could be used as firewood.",
         "responses": {}
@@ -595,9 +622,18 @@
     },
     "matchbook": {
       "name": "Matchbook",
-      "aliases": ["the matchbook", "matches", "the matches"],
+      "aliases": ["the +matchbook", "(the +)?matches"],
       "text": {
         "init_desc": "On the floor is a matchbook containing several matches.",
+        "responses": {}
+      },
+      "visible": 0
+    },
+    "snow boots": {
+      "name": "Snow Boots",
+      "aliases": ["(the +)?(snow *)?boots"],
+      "text": {
+        "init_desc": "Inside is a pair of knackered old snow boots.",
         "responses": {}
       },
       "visible": 0

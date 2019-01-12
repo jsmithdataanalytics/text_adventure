@@ -80,6 +80,13 @@ class Game:
             snapshot = deepcopy(self)
             self.snapshot = snapshot
 
+        if self.player.lit_match['status']:
+            self.player.lit_match['count'] -= 1
+
+            if self.player.lit_match['count'] == 0:
+                self.player.lit_match['status'] = False
+                display('Your match has gone out.', before=0, after=1)
+
     def intro(self):
         print('')
         print('~' * TEXT_WIDTH)
@@ -160,7 +167,7 @@ class Game:
         self.enemies.update(self.snapshot.enemies)
         self.items.clear()
         self.items.update(self.snapshot.items)
-        self.player.mimc(self.snapshot.player)
+        self.player.mimic(self.snapshot.player)
         self.player.lives = lives
         self.output = self.snapshot.output
         self.last_checkpoint = self.snapshot.last_checkpoint
