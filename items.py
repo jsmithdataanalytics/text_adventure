@@ -1,5 +1,7 @@
 from json import load
 
+print('\nLoading...')
+
 with open('map.json') as f:
     game_map = load(f)
 
@@ -9,7 +11,9 @@ checkpoints = {
     'vines': False,
     'escape': False,
     'dingleflowers': False,
-    'easter': False
+    'easter': False,
+    'thaw': False,
+    'water': False
 }
 
 
@@ -52,6 +56,14 @@ game_items['sword'].combat_text['wolf'] = {0: ['You swing your sword at the wolf
                                                 'Your speed catches the wolf off guard. It takes the full brunt ' +
                                                 'of your attack!'],
                                            40: ['Critical hit! Your blade strikes the wolf for double damage!']}
+game_items['sword'].combat_text['giant'] = {0: ['You swing your sword at the frost giant, but miss.',
+                                                'You lunge at the giant, but it leaps aside.'],
+                                            20: ['Your slice attack makes contact. Take that!',
+                                                 'You lunge fiercely at the frost giant with your sword. '
+                                                 'Got the bastard!',
+                                                 'Your speed catches the giant off guard. It takes the full brunt ' +
+                                                 'of your attack!'],
+                                            40: ['Critical hit! Your blade strikes the frost giant for double damage!']}
 game_items['sword'].damage_dist = [[0, 20, 40], [0.4, 0.4, 0.2]]
 game_items['axe'].combat_text['wolf'] = {0: ['You swing your axe at the wolf, but miss.',
                                              'You lunge at the wolf with your axe, but it leaps aside.'],
@@ -60,4 +72,11 @@ game_items['axe'].combat_text['wolf'] = {0: ['You swing your axe at the wolf, bu
                                               'Your speed catches the wolf off guard. It takes the full brunt ' +
                                               'of your attack!'],
                                          60: ['Critical hit! Your axe strikes the wolf for double damage!']}
+game_items['axe'].combat_text['giant'] = {0: ['You swing your axe at the frost giant, but miss.',
+                                              'You lunge at the frost giant with your axe, but it leaps aside.'],
+                                          30: ['Your axe attack makes contact. Take that!',
+                                               'You swing your axe at the frost giant. Got the bastard!',
+                                               'Your speed catches the giant off guard. It takes the full brunt ' +
+                                               'of your attack!'],
+                                          60: ['Critical hit! Your axe strikes the frost giant for double damage!']}
 game_items['axe'].damage_dist = [[0, 30, 60], [0.4, 0.4, 0.2]]

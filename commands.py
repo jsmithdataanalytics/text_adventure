@@ -181,7 +181,7 @@ class GetCommand(Command):
                     if re.fullmatch(alias, item):
                         self.parsed['validity'] = 'valid'
                         self.parsed['item'] = key
-                        break
+                        return
 
     def execute(self):
         if self.parsed['validity'] == 'valid':
@@ -220,7 +220,7 @@ class DropCommand(Command):
 
                     if re.fullmatch(alias, item):
                         self.parsed['item'] = key
-                        break
+                        return
 
     def execute(self):
         boots_message = 'You can\'t drop the snow boots because you\'re wearing them!'
@@ -385,7 +385,7 @@ class AttackCommand(Command):
 
         if m:
             if m[1] and m[1].strip():
-                self.weapon = re.sub('^the +', '', m[1].strip())
+                self.weapon = m[1].strip()
             text = re.sub(' +with( +.*)?$', '', text)
         remainder = re.sub('^attack *', '', text)
 
@@ -393,6 +393,11 @@ class AttackCommand(Command):
             self.enemy = re.sub('^the +', '', remainder.strip())
 
     def execute(self):
+
+        if player.room_name == 'mouc2' and player.mode == 'combat' and enemies['mouc2giant'].charge:
+            c = TakeHitCommand(self.match)
+            c.parse()
+            return c.execute()
 
         if checkpoints['easter']:
             self.valid_weapons.append('dot')
@@ -403,16 +408,29 @@ class AttackCommand(Command):
         elif self.enemy is None:
             return Response(text='Attack what?')
 
-        elif self.enemy not in [enemy.type for enemy in player.room.enemies.values() if enemy.active]:
+        elif not any([re.fullmatch(enemy.type, self.enemy) for enemy in player.room.enemies.values() if enemy.active]):
             return Response(text='There isn\'t one of those nearby.')
 
         elif self.weapon is None:
             return Response(text='Attack with what?')
 
         elif self.weapon not in player.inventory:
-            return Response(text='You don\'t have one of those.')
 
-        elif self.weapon not in self.valid_weapons:
+            for key, item in player.inventory.items():
+
+                for reg in item.aliases:
+
+                    if re.fullmatch(reg, self.weapon):
+                        self.weapon = key
+                        break
+
+                if self.weapon in player.inventory:
+                    break
+
+            if self.weapon not in player.inventory:
+                return Response(text='You don\'t have one of those.')
+
+        if self.weapon not in self.valid_weapons:
             return Response(text='You can\'t attack with that.')
 
         else:
@@ -422,12 +440,12 @@ class AttackCommand(Command):
             for e in player.room.enemies.values():
                 enemy = e
 
-                if enemy.type == self.enemy and enemy.active:
+                if re.fullmatch(enemy.type, self.enemy) and enemy.active:
                     break
 
             if self.weapon != 'dot':
                 damage = choice(weapon.damage_dist[0], p=weapon.damage_dist[1])
-                text = choice(weapon.combat_text[self.enemy][damage])
+                text = choice(weapon.combat_text[enemy.name][damage])
 
             else:
                 damage = enemy.health
@@ -437,17 +455,99 @@ class AttackCommand(Command):
             return Response(text=text + more_text)
 
 
+class HammerCommand(AttackCommand):
+    valid_weapons = ['hammer']
+    verb = None
+    enemy = None
+    weapon = None
+
+    def parse(self):
+        text = self.match.string
+        self.verb = self.match[1]
+
+        m = re.search(' +with( +.*)?$', text)
+
+        if m:
+            if m[1] and m[1].strip():
+                self.weapon = m[1].strip()
+            text = re.sub(' +with( +.*)?$', '', text)
+        remainder = re.sub('^{} *'.format(self.verb), '', text)
+
+        if remainder:
+            self.enemy = re.sub('^the +', '', remainder.strip())
+
+    def execute(self):
+
+        if self.enemy is None:
+            return Response(text=self.verb.title() + ' what?')
+
+        elif not (self.enemy in ['floor', 'ground'] or
+                  (self.enemy in ['pedestal', 'stone'] and player.room_name == 'mouc3')):
+            return Response(text='You can\'t {} that.'.format(self.verb))
+
+        elif self.weapon is None:
+            return Response(text=self.verb.title() + ' with what?')
+
+        elif self.weapon not in player.inventory:
+
+            for key, item in player.inventory.items():
+
+                for reg in item.aliases:
+
+                    if re.fullmatch(reg, self.weapon):
+                        self.weapon = key
+                        break
+
+                if self.weapon in player.inventory:
+                    break
+
+            if self.weapon not in player.inventory:
+                return Response(text='You don\'t have one of those.')
+
+        if self.weapon not in self.valid_weapons:
+            return Response(text='You can\'t {} with that.'.format(self.verb))
+
+        else:
+            text = 'BOOM!'
+
+            if self.enemy in ['pedestal', 'stone'] and rooms['moub3'].state['cave'] == 0:
+                text = text + ' The ground shakes as violent avalanches begin to cascade down the mountains in all ' \
+                              'directions. You stand safely atop the mountains until they all finally dissipate.'
+                rooms['moub3'].state['cave'] = 1
+                rooms['moub3'].state['extra_directions'] = {'in': [3, 1, 8]}
+
+            return Response(text=text)
+
+
 class TakeHitCommand(Command):
 
     def execute(self):
-        active_enemies = [enemy for enemy in player.room.enemies.values() if enemy.active]
-        text = []
 
-        for enemy in active_enemies:
-            damage = choice(enemy.damage_dist[0], p=enemy.damage_dist[1])
-            text.append(choice(enemy.attack_text[damage]))
-            player.health = max(player.health - damage, 0)
-        return Response(text='Hardly appropriate for a combat situation!\n' + '\n'.join(text))
+        if player.room_name == 'mouc2' and player.mode == 'combat' and enemies['mouc2giant'].charge:
+            player.health = 0
+            return Response(text=enemies['mouc2giant'].charge_attack_text)
+
+        else:
+            active_enemies = [enemy for enemy in player.room.enemies.values() if enemy.active]
+            text = []
+
+            for enemy in active_enemies:
+                damage = choice(enemy.damage_dist[0], p=enemy.damage_dist[1])
+                text.append(choice(enemy.attack_text[damage]))
+                player.health = max(player.health - damage, 0)
+            return Response(text='Hardly appropriate for a combat situation!\n' + '\n'.join(text))
+
+
+class EvadeCommand(Command):
+
+    def execute(self):
+        active_enemies = [enemy for enemy in player.room.enemies.values() if enemy.active]
+
+        if active_enemies[0].name == 'giant' and active_enemies[0].charge:
+            return Response(text=choice(active_enemies[0].charge_evade_text))
+
+        else:
+            return Response(text=choice(active_enemies[0].evade_text))
 
 
 class ClimbTreeCommand(Command):
@@ -498,6 +598,14 @@ class GiveCommand(DropCommand):
                     rooms['vilb2'].room_blocks = []
                     return Response(text=player.room.text['responses']['dingleflowers'])
 
+                elif item == 'bottle':
+                    player.lose_items([item])
+                    player.room.short_core = player.room.text['short_core3']
+                    player.room.long_core = player.room.text['long_core3']
+                    checkpoints['water'] = True
+                    rooms['vilb1'].room_blocks = []
+                    return Response(text=player.room.text['responses']['water'])
+
                 else:
                     return Response(text='Potion Master: "Hm, not really what I was looking for. '
                                          'Perhaps you have something else for me?"')
@@ -521,7 +629,7 @@ class EnterExitCommand(Command):
 
     def execute(self):
 
-        if self.match == 'enter':
+        if self.match.string == 'enter':
             match = re.fullmatch('(?:go +)?(in|out)', 'go in')
 
         else:
@@ -581,6 +689,7 @@ class FireCommand(Command):
             player.room.state['frozen'] = 0
             rooms['moub2'].state['frozen'] = 0
             player.room.state['firewood'] = 2
+            checkpoints['thaw'] = True
             return Response(text='The fireplace is filled with a roaring fire. You feel the '
                                  'sensation return to your hands and feet as the room around you slowly thaws out.')
 
@@ -590,6 +699,39 @@ class BootsCommand(Command):
     def execute(self):
         player.boots = True
         return Response(text='You are now wearing the snow boots.')
+
+
+class FillBottleCommand(Command):
+
+    def execute(self):
+
+        if 'bottle' not in player.inventory:
+            return Response(text='You don\'t have a bottle!')
+
+        elif player.inventory['bottle'].name != 'Empty Bottle':
+            return Response(text='Your bottle is already full!')
+
+        else:
+            player.inventory['bottle'].name = 'Bottle of Alaria Spring Water'
+            player.inventory['bottle'].aliases = ['((the|a) +)?bottle( +of +(alaria +)?(spring +)?water)?',
+                                                  '(the +)?(alaria +)?(spring +)?water']
+            return Response(text='Your bottle is now full of Alaria Spring Water.')
+
+
+class PlaceOrbsCommand(Command):
+
+    def execute(self):
+
+        if 'sapphire' not in player.inventory or 'ruby' not in player.inventory or 'citrine' not in player.inventory:
+            return Response(text='You don\'t have all three orbs!')
+
+        else:
+            player.room.state['orbs'] = 1
+            return Response(text='You step up to the alter and place the three orbs onto the pedestals. As you step '
+                                 'back, the ground begins to shake and the orbs start to glow, becoming brighter and '
+                                 'brighter until you have to shield your eyes. Then, with a deafening roar, a huge '
+                                 'beam of white light bursts out of the altar and into the sky, vanquishing the dark '
+                                 'clouds. And then, silence...')
 
 
 generic_commands = {
@@ -603,7 +745,7 @@ generic_commands = {
     'put +(.+) +(?:down|on +(?:the +)?floor|on +(?:the +)?ground)': DropCommand,
     'dig(?: +(?:a +)?hole)?(?: +with +(?:the +)?(?:shovel|spade))?': DigCommand,
     'climb( +(?:up|down))?(?: +(?:the +)?tree)?': ClimbTreeCommand,
-    'enter|exit': EnterExitCommand()
+    'enter|exit': EnterExitCommand
 }
 
 rooms['vilb1'].commands.update(
@@ -654,6 +796,24 @@ rooms['mohut'].commands.update(
     }
 )
 
+rooms['cave1'].commands.update(
+    {
+        'fill +(up +)?((the( +empty)?|a(n? +empty)?) +)?bottle'
+        '( +with +((the|some( +of +the)?) +)?(alaria +)?(spring +)?water)?': FillBottleCommand,
+        'get +((the|some( +of +the)?) +)?(alaria +)?(spring +)?water': FillBottleCommand
+    }
+)
+
+rooms['shrin'].commands.update(
+    {
+        '(put|place|set) +((the|all|all +of +the|the +three|all +three( +of +the)?) +)?orbs? +(on(to)?|upon) +'
+        '(((the|an?) +)?(stone +)?(altar|pedestals?)|'
+        '((the|all|all +of +the|the +three|all +three( +of +the)?) +)?(stone +)?pedestals?)': PlaceOrbsCommand,
+        '(put|place|set) +(((the|an?) +)?((red|blue|yellow|sapphire|ruby|citrine) +)?|(one|each)( +of +the)? +)?orbs? +'
+        '(on(to)?|upon) +((the|an?|(one|each)( +of +the)?) +)?(stone +)?(altar|pedestals?)': PlaceOrbsCommand
+    }
+)
+
 items['shovel'].commands.update(
     {
         'dig(?: +(?:a +)?hole)?(?: +with +(?:the +)?(?:shovel|spade))?': DigCommand
@@ -695,5 +855,10 @@ items['snow boots'].commands.update(
         'put +(the +)?(snow *)?boots +on': BootsCommand,
         'change +into +(the +)?(snow *)?boots': BootsCommand,
         '(change|swap|switch) +(boots|shoes)': BootsCommand
+    }
+)
+items['hammer'].commands.update(
+    {
+        '(hit|strike|pound|smash|hammer)( +.*)?': HammerCommand
     }
 )

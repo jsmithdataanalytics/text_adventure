@@ -31,7 +31,7 @@ class GoResponse(Response):
             text = player.describe_current_room(desc_type=self.desc_type)
 
             if (player.room_name == 'mouc1' and self.direction == 'east') or \
-                (player.room_name == 'mouc2' and self.direction == 'north'):
+                    (player.room_name == 'mouc2' and self.direction == 'north'):
                 return 'With the snow boots on, you\'re able to scramble up the steep hill...\n\n' + text
 
             elif (player.room_name == 'mouc1' and self.direction == 'south') or \
@@ -44,6 +44,10 @@ class GoResponse(Response):
         elif self.validity == 'valid':
             if player.room_name == 'vilb2' and self.direction == 'east':
                 return 'That path leads into the Gygax Mountains. Don\'t you have somewhere else that you\'re ' \
+                       'supposed to be going?'
+
+            elif player.room_name == 'vilb1' and self.direction == 'south':
+                return 'That path leads to Floonyloon Temple. Don\'t you have somewhere else that you\'re ' \
                        'supposed to be going?'
 
             else:

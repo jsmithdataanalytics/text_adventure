@@ -2,6 +2,7 @@ from commands import *
 import re
 from textwrap import fill
 from copy import deepcopy
+from random import randint
 
 TEXT_WIDTH = 80
 
@@ -21,12 +22,12 @@ class Game:
         self.last_checkpoint = None
         self.snapshot = None
 
-    def updates(self):
+    def updates(self, command):
         self.player.room.update_blocks()
         self.player.room.update_item_aliases()
         self.player.update_item_aliases()
 
-        if self.player.room_name == 'mount':
+        if self.rooms['shrin'].state['orbs'] == 1:
             self.complete = True
             return
 
@@ -55,7 +56,7 @@ class Game:
                     text = 'You are in the Potion Master\'s apothecary, and have just given her the Dingleflowers.\n\n'
                     display(text + self.output, before=0, after=1)
 
-                elif self.last_checkpoint == 'easter':
+                elif self.last_checkpoint in ['easter', 'thaw']:
                     display(self.player.describe_current_room('long'), before=0, after=1)
 
                 else:
@@ -80,6 +81,17 @@ class Game:
             snapshot = deepcopy(self)
             self.snapshot = snapshot
 
+        if self.enemies['mouc2giant'].active:
+
+            if not isinstance(command, InvalidCommand):
+                self.enemies['mouc2giant'].charge = False
+
+                if self.player.mode == 'combat' and self.player.room_name == 'mouc2':
+
+                    if randint(0, 1):
+                        self.enemies['mouc2giant'].charge = True
+                        display(self.enemies['mouc2giant'].charge_text, before=0, after=1)
+
         if self.player.lit_match['status']:
             self.player.lit_match['count'] -= 1
 
@@ -97,9 +109,9 @@ class Game:
             display(text)
 
         self.player.set_name(input().strip())
-        display(game_map['opening']['intro'][4].format(name=self.player.name))
+        display(game_map['opening']['intro'][5].format(name=self.player.name))
 
-        for text in game_map['opening']['intro'][5:]:
+        for text in game_map['opening']['intro'][6:]:
             display(text)
 
         display(self.player.room.init_desc, after=1)
@@ -131,9 +143,17 @@ class Game:
             combat_commands = {reg: constr
                                for item in self.player.inventory.values()
                                for reg, constr in item.combat_commands.items()}
-            combat_commands.update(
-                {'(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|in|out|inside|outside)': GoCommand}
-            )
+            combat_commands.update({
+                '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|in|out|inside|outside)': GoCommand,
+                '(dodge|evade|avoid)(( +the)? +attack)?': EvadeCommand,
+                '(attack|hit|strike|stab|kill)( +.*)?': AttackCommand})
+
+            if self.player.room_name == 'mouc2':
+                combat_commands.update(
+                    {'(get|jump|move|leap) +out +of +(the +)?way': EvadeCommand,
+                     '(dodge|evade|avoid)(( +the)? +hammer)?': EvadeCommand,
+                     '(dodge|evade|avoid) +it': EvadeCommand,
+                     '(jump|move|leap) +aside': EvadeCommand})
             command = match_command(user_input, combat_commands)
 
             if not isinstance(command, InvalidCommand):
@@ -181,7 +201,6 @@ def display(string, text_width=TEXT_WIDTH, before=1, after=0):
 
 
 def match_command(string, command_list):
-
     for reg_ex in command_list:
         result = re.fullmatch(reg_ex, string)
 

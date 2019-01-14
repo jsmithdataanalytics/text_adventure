@@ -13,9 +13,11 @@ class Room:
         self.init_desc = ''
         self.short_desc = ''
         self.long_desc = ''
-        self.inventory = {item: items[item] for item in room_data['items']}
-        self.enemies = {e: enemies[e] for e in room_data['enemies']} if 'enemies' in room_data else {}
-        self.state = room_data['state']
+        self.inventory = OrderedDict([(item, items[item]) for item in room_data['items']])
+        self.enemies = OrderedDict([(e, enemies[e]) for e in room_data['enemies']]) \
+            if 'enemies' in room_data else OrderedDict([])
+        self.state_order = room_data['state_order'] if 'state_order' in room_data else list(room_data['state'].keys())
+        self.state = OrderedDict([(key, room_data['state'][key]) for key in self.state_order])
         self.commands = {}
         self.first_visit = 1
         self.room_blocks = room_data['blocks'] if 'blocks' in room_data else []
@@ -101,10 +103,3 @@ class Room:
 
 game_rooms = game_map['rooms']
 game_rooms = {name.lower(): Room(data) for name, data in game_rooms.items()}
-
-game_rooms['mohut'].state = OrderedDict([
-    ("frozen", 1),
-    ("firewood", 0),
-    ("open", 0),
-    ("extra_directions", {"out": [3, 4, 8]})
-])

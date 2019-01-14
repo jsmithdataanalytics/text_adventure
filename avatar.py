@@ -1,7 +1,6 @@
 from rooms import *
 from rooms import game_rooms as rooms
 
-
 levels, height, width = len(game_map['layout']), len(game_map['layout'][0]), len(game_map['layout'][0][0])
 
 
@@ -94,7 +93,7 @@ class Avatar:
         }
 
         if (self.room_name == 'moub1' and direction == 'east') or \
-            (self.room_name == 'mouc1' and direction == 'north'):
+                (self.room_name == 'mouc1' and direction == 'north'):
 
             if self.boots is False:
                 return 'no_boots', direction
@@ -145,7 +144,7 @@ class Avatar:
             return 'invalid_command', direction
 
         else:
-            raise(ValueError('Unhandled direction'))
+            raise (ValueError('Unhandled direction'))
 
     def update_item_aliases(self):
         self.item_aliases = {key: value.aliases for key, value in self.inventory.items()}

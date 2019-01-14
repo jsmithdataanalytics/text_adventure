@@ -1,5 +1,5 @@
 from helpers import *
-from json import dumps
+# from json import dumps
 
 command = InvalidCommand()
 
@@ -30,12 +30,13 @@ if __name__ == '__main__':
         response = command.execute()
         game.output = game.text_constructor(response)
         display(game.output, before=0, after=1)
-        game.updates()
+        game.updates(command)
 
     if game.over:
         display('Thy game is over.')
-        print(dumps(command_history))
+        # print(dumps(command_history))
 
     elif game.complete:
+        display(game_map['ending'].format(name=game.player.name), before=0, after=1)
         display('Congratulations! You win!', before=0)
-        display('Created by James Smith.')
+        display('Thanks for playing!\nJames Smith, Creator')
