@@ -1,15 +1,22 @@
+#!/usr/bin/env python
+
+"""helpers.py: Definition of Game class and general helper functions."""
+
+__author__ = "James Smith"
+
 from commands import *
 import re
 from textwrap import fill
 from copy import deepcopy
 from random import randint
 
-TEXT_WIDTH = 80
+TEXT_WIDTH = 4 * 20
 
 
 class Game:
 
-    def __init__(self, game_map, checkpoints, items, enemies, rooms, player, generic_commands):
+    def __init__(self, text_width, game_map, checkpoints, items, enemies, rooms, player, generic_commands):
+        self.text_width = text_width
         self.complete = False
         self.over = False
         self.quit = False

@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+
+"""responses.py: Defines the response objects that a command can return."""
+
+__author__ = "James Smith"
+
 
 class Response:
     def __init__(self, game, validity='valid', outcome='success', dead=False, text='', checkpoint=False):

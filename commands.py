@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+
+"""commands.py: Defines the Command class and all valid user commands."""
+
+__author__ = "James Smith"
+
 from responses import *
 from numpy.random import choice
 import re
@@ -752,6 +758,18 @@ class PlaceOrbsCommand(Command):
                                  'clouds. And then, silence...')
 
 
+class CommandsCommand(Command):
+
+    def execute(self):
+        examples = ['go north', 'get sword', 'drop sword', 'look around',
+                    'go upstairs', 'get all', 'drop all', 'check inventory',
+                    'go inside', 'give sword', 'attack', 'dodge',
+                    'go out', 'south', 'commands', 'quit']
+        examples = [example.center(len(example) + 2, '"').ljust(int(self.game.text_width / 4), ' ')
+                    for example in examples]
+        return Response(self.game, text='Example commands:\n\n' + ''.join(examples))
+
+
 def initialise_commands(items, rooms):
     generic_commands = {
         '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|in|out|inside|outside)': GoCommand,
@@ -764,7 +782,8 @@ def initialise_commands(items, rooms):
         'put +(.+) +(?:down|on +(?:the +)?floor|on +(?:the +)?ground)': DropCommand,
         'dig(?: +(?:a +)?hole)?(?: +with +(?:the +)?(?:shovel|spade))?': DigCommand,
         'climb( +(?:up|down))?(?: +(?:the +)?tree)?': ClimbTreeCommand,
-        'enter|exit': EnterExitCommand
+        'enter|exit': EnterExitCommand,
+        '((example +)?commands?|hints?|examples?)': CommandsCommand
     }
 
     rooms['vilb1'].commands.update(

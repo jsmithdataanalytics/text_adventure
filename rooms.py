@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+
+"""rooms.py: Defines the Room class and initialises the game's rooms."""
+
+__author__ = "James Smith"
+
 from collections import OrderedDict
 
 

@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+
+"""avatar.py: Defines and initialises the avatar."""
+
+__author__ = "James Smith"
+
 
 class Avatar:
 

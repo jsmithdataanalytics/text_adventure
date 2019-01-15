@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+
+"""items.py: Defines and initialises the game's items."""
+
+__author__ = "James Smith"
+
 from json import load
 
 

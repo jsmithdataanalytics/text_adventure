@@ -1,9 +1,15 @@
+#!/usr/bin/env python
+
+"""game.py: Initialises and runs the game."""
+
+__author__ = "James Smith"
+
+# from json import dumps
 from items import *
 from enemies import *
 from rooms import *
 from avatar import *
 from helpers import *
-# from json import dumps
 
 
 def load_game():
@@ -14,7 +20,7 @@ def load_game():
     rooms = initialise_rooms(game_map, items, enemies)
     player = initialise_player(game_map, checkpoints, items, rooms)
     generic_commands = initialise_commands(items, rooms)
-    _game = Game(game_map, checkpoints, items, enemies, rooms, player, generic_commands)
+    _game = Game(TEXT_WIDTH, game_map, checkpoints, items, enemies, rooms, player, generic_commands)
     _game.intro()
     return _game, InvalidCommand(_game)
 

@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+
+"""enemies.py: Defines and initialises the game's enemies."""
+
+__author__ = "James Smith"
+
 from numpy.random import choice
 
 
