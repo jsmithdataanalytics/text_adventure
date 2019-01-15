@@ -1,12 +1,15 @@
-from rooms import *
-from rooms import game_rooms as rooms
-
-levels, height, width = len(game_map['layout']), len(game_map['layout'][0]), len(game_map['layout'][0][0])
-
 
 class Avatar:
 
-    def __init__(self):
+    def __init__(self, game_map, checkpoints, items, rooms):
+        self.game_map = game_map
+        self.levels = len(game_map['layout'])
+        self.height = len(game_map['layout'][0])
+        self.width = len(game_map['layout'][0][0])
+        self.checkpoints = checkpoints
+        self.items = items
+        self.rooms = rooms
+        self.game_map = game_map
         self.name = ''
         self.coords = game_map['spawn_point']
         self.room_name = ''
@@ -32,8 +35,8 @@ class Avatar:
         self.name = name
 
     def update_room(self):
-        self.room_name = game_map['layout'][self.coords[0]][self.coords[1]][self.coords[2]]
-        self.room = rooms[self.room_name]
+        self.room_name = self.game_map['layout'][self.coords[0]][self.coords[1]][self.coords[2]]
+        self.room = self.rooms[self.room_name]
 
     def describe_current_room(self, desc_type='short'):
         self.room.update_desc()
@@ -43,8 +46,8 @@ class Avatar:
 
         elif desc_type == 'short':
 
-            if checkpoints['vines'] and not checkpoints['escape'] and \
-                    player.room_name not in ['deade', 'dead2']:
+            if self.checkpoints['vines'] and not self.checkpoints['escape'] and \
+                    self.room_name not in ['deade', 'dead2']:
                 return self.room.short_desc + ' Thorny vines continue to spring up just behind you, trying to stop ' \
                                               'you escaping with the Dingleflowers!'
 
@@ -63,7 +66,7 @@ class Avatar:
         self.room.lose_items(item_list)
 
         for item in item_list:
-            items[item].taken = 1
+            self.items[item].taken = 1
 
             if item == 'snow boots':
                 self.room.state['open'] = 2
@@ -104,7 +107,7 @@ class Avatar:
             return 'invalid_movement', direction
 
         if direction in valid_moves:
-            coord_bounds = [levels - 1, height - 1, width - 1]
+            coord_bounds = [self.levels - 1, self.height - 1, self.width - 1]
             self.coords = [x + y for x, y in zip(self.coords, valid_moves[direction])]
             coord_checks = [(coord < 0 or coord > bound) for coord, bound in zip(self.coords, coord_bounds)]
 
@@ -124,14 +127,14 @@ class Avatar:
                     return 'new_room', direction
 
         elif direction in ['in', 'out']:
-            self.coords = player.room.state['extra_directions'][direction]
+            self.coords = self.room.state['extra_directions'][direction]
             self.update_room()
 
             if self.room_name == 'jimbg':
-                checkpoints['jimbo'] = True
+                self.checkpoints['jimbo'] = True
 
             if self.room_name == 'apoth':
-                checkpoints['apoth'] = True
+                self.checkpoints['apoth'] = True
             return 'new_room', direction
 
         elif direction == 'no_stairs':
@@ -150,4 +153,5 @@ class Avatar:
         self.item_aliases = {key: value.aliases for key, value in self.inventory.items()}
 
 
-player = Avatar()
+def initialise_player(game_map, checkpoints, items, rooms):
+    return Avatar(game_map, checkpoints, items, rooms)

@@ -1,8 +1,7 @@
-from avatar import *
-
 
 class Response:
-    def __init__(self, validity='valid', outcome='success', dead=False, text='', checkpoint=False):
+    def __init__(self, game, validity='valid', outcome='success', dead=False, text='', checkpoint=False):
+        self.game = game
         self.validity = validity
         self.outcome = outcome
         self.dead = dead
@@ -20,33 +19,33 @@ class InvalidResponse(Response):
 
 
 class GoResponse(Response):
-    def __init__(self, validity, outcome, dead=False, direction=None, desc_type='short'):
-        super().__init__(validity, outcome, dead)
+    def __init__(self, game, validity, outcome, dead=False, direction=None, desc_type='short'):
+        super().__init__(game, validity, outcome, dead)
         self.direction = direction
         self.desc_type = desc_type
 
     def text_constructor(self):
 
         if self.outcome == 'success':
-            text = player.describe_current_room(desc_type=self.desc_type)
+            text = self.game.player.describe_current_room(desc_type=self.desc_type)
 
-            if (player.room_name == 'mouc1' and self.direction == 'east') or \
-                    (player.room_name == 'mouc2' and self.direction == 'north'):
+            if (self.game.player.room_name == 'mouc1' and self.direction == 'east') or \
+                    (self.game.player.room_name == 'mouc2' and self.direction == 'north'):
                 return 'With the snow boots on, you\'re able to scramble up the steep hill...\n\n' + text
 
-            elif (player.room_name == 'mouc1' and self.direction == 'south') or \
-                    (player.room_name == 'moub1' and self.direction == 'west'):
+            elif (self.game.player.room_name == 'mouc1' and self.direction == 'south') or \
+                    (self.game.player.room_name == 'moub1' and self.direction == 'west'):
                 return 'With the snow boots on, you\'re able to safely descend the steep hill...\n\n' + text
 
             else:
                 return text
 
         elif self.validity == 'valid':
-            if player.room_name == 'vilb2' and self.direction == 'east':
+            if self.game.player.room_name == 'vilb2' and self.direction == 'east':
                 return 'That path leads into the Gygax Mountains. Don\'t you have somewhere else that you\'re ' \
                        'supposed to be going?'
 
-            elif player.room_name == 'vilb1' and self.direction == 'south':
+            elif self.game.player.room_name == 'vilb1' and self.direction == 'south':
                 return 'That path leads to Floonyloon Temple. Don\'t you have somewhere else that you\'re ' \
                        'supposed to be going?'
 
@@ -71,7 +70,7 @@ class WaitResponse(Response):
 class LookResponse(Response):
 
     def text_constructor(self):
-        return player.describe_current_room(desc_type='long')
+        return self.game.player.describe_current_room(desc_type='long')
 
 
 class InventoryResponse(Response):
@@ -80,8 +79,9 @@ class InventoryResponse(Response):
 
         if self.validity == 'valid':
 
-            if len(player.inventory) > 0:
-                return '\n'.join(['Your inventory consists of:'] + [item.name for item in player.inventory.values()])
+            if len(self.game.player.inventory) > 0:
+                return '\n'.join(['Your inventory consists of:'] +
+                                 [item.name for item in self.game.player.inventory.values()])
 
             else:
                 return 'You have no items!'
@@ -91,8 +91,8 @@ class InventoryResponse(Response):
 
 
 class GetResponse(Response):
-    def __init__(self, validity, outcome, method, dead=False, new_items=None):
-        super().__init__(validity, outcome, dead)
+    def __init__(self, game, validity, outcome, method, dead=False, new_items=None):
+        super().__init__(game, validity, outcome, dead)
         self.new_items = new_items
         self.method = method
 
@@ -103,7 +103,7 @@ class GetResponse(Response):
             if self.outcome == 'success':
 
                 if self.method == 'all':
-                    to_return = '\n'.join([items[item].name + ': taken.' for item in self.new_items])
+                    to_return = '\n'.join([self.game.items[item].name + ': taken.' for item in self.new_items])
 
                 elif self.method == 'specific':
                     to_return = 'Taken.'
@@ -112,7 +112,7 @@ class GetResponse(Response):
                     raise ValueError('Unexpected get method')
 
                 if 'dingleflowers' in self.new_items and self.new_items['dingleflowers'] == 0:
-                    checkpoints['vines'] = True
+                    self.game.checkpoints['vines'] = True
                     return to_return + '\n\nAs soon as you take the Dingleflowers, thorny vines spring up from the ' \
                                        'earth and attempt to grab you. Time to leave! Escape to the village without ' \
                                        'taking a wrong turn!'

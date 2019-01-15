@@ -9,15 +9,18 @@ TEXT_WIDTH = 80
 
 class Game:
 
-    def __init__(self):
+    def __init__(self, game_map, checkpoints, items, enemies, rooms, player, generic_commands):
         self.complete = False
         self.over = False
-        self.player = player
-        self.rooms = rooms
-        self.enemies = enemies
-        self.items = items
+        self.quit = False
+        self.game_map = game_map
         self.checkpoints = checkpoints
         self.old_checkpoints = deepcopy(checkpoints)
+        self.items = items
+        self.enemies = enemies
+        self.rooms = rooms
+        self.player = player
+        self.generic_commands = generic_commands
         self.output = None
         self.last_checkpoint = None
         self.snapshot = None
@@ -76,7 +79,7 @@ class Game:
                         self.last_checkpoint = checkpoint
                         break
 
-            self.old_checkpoints = deepcopy(checkpoints)
+            self.old_checkpoints = deepcopy(self.checkpoints)
             self.snapshot = None
             snapshot = deepcopy(self)
             self.snapshot = snapshot
@@ -102,16 +105,16 @@ class Game:
     def intro(self):
         print('')
         print('~' * TEXT_WIDTH)
-        print(game_map['opening']['title'].center(TEXT_WIDTH, ' '))
+        print(self.game_map['opening']['title'].center(TEXT_WIDTH, ' '))
         print('~' * TEXT_WIDTH)
 
-        for text in game_map['opening']['intro'][:5]:
+        for text in self.game_map['opening']['intro'][:5]:
             display(text)
 
         self.player.set_name(input().strip())
-        display(game_map['opening']['intro'][5].format(name=self.player.name))
+        display(self.game_map['opening']['intro'][5].format(name=self.player.name))
 
-        for text in game_map['opening']['intro'][6:]:
+        for text in self.game_map['opening']['intro'][6:]:
             display(text)
 
         display(self.player.room.init_desc, after=1)
@@ -136,8 +139,8 @@ class Game:
         item_commands = {regex: constructor
                          for item in self.player.inventory.values()
                          for regex, constructor in item.commands.items()}
-        command_lists = [room_commands, item_commands, generic_commands]
-        command = InvalidCommand()
+        command_lists = [room_commands, item_commands, self.generic_commands]
+        command = InvalidCommand(self)
 
         if mode == 'combat':
             combat_commands = {reg: constr
@@ -154,13 +157,13 @@ class Game:
                      '(dodge|evade|avoid)(( +the)? +hammer)?': EvadeCommand,
                      '(dodge|evade|avoid) +it': EvadeCommand,
                      '(jump|move|leap) +aside': EvadeCommand})
-            command = match_command(user_input, combat_commands)
+            command = match_command(self, user_input, combat_commands)
 
             if not isinstance(command, InvalidCommand):
                 return command
 
         for command_list in command_lists:
-            command = match_command(user_input, command_list)
+            command = match_command(self, user_input, command_list)
 
             if not isinstance(command, InvalidCommand):
 
@@ -200,10 +203,10 @@ def display(string, text_width=TEXT_WIDTH, before=1, after=0):
     print('\n' * before + string + '\n' * after)
 
 
-def match_command(string, command_list):
+def match_command(game, string, command_list):
     for reg_ex in command_list:
         result = re.fullmatch(reg_ex, string)
 
         if result:
-            return command_list[reg_ex](result)
-    return InvalidCommand()
+            return command_list[reg_ex](game=game, match=result)
+    return InvalidCommand(game)

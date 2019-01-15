@@ -1,10 +1,10 @@
-from enemies import *
-from enemies import game_enemies as enemies
 from collections import OrderedDict
 
 
 class Room:
-    def __init__(self, room_data):
+    def __init__(self, room_data, items, enemies):
+        self.items = items
+        self.enemies = enemies
         self.name = room_data['name']
         self.text = room_data['text']
         self.init_core = self.text['init_core']
@@ -34,7 +34,7 @@ class Room:
             del self.inventory[item]
 
     def gain_items(self, items_to_gain):
-        self.inventory.update({item: items[item] for item in items_to_gain})
+        self.inventory.update({item: self.items[item] for item in items_to_gain})
 
     def count_visible_items(self):
         count = 0
@@ -101,5 +101,6 @@ class Room:
         self.item_aliases = {key: value.aliases for key, value in self.inventory.items()}
 
 
-game_rooms = game_map['rooms']
-game_rooms = {name.lower(): Room(data) for name, data in game_rooms.items()}
+def initialise_rooms(game_map, items, enemies):
+    game_rooms = game_map['rooms']
+    return {name.lower(): Room(data, items, enemies) for name, data in game_rooms.items()}

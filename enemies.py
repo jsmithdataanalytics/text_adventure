@@ -1,12 +1,11 @@
-from items import *
-from items import game_items as items
 from numpy.random import choice
 
 
 class Enemy:
     health = 1
 
-    def __init__(self, enemy_data):
+    def __init__(self, enemy_data, items):
+        self.items = items
         self.alive = True
         self.active = True
         self.name = enemy_data['name']
@@ -30,7 +29,7 @@ class Enemy:
             self.alive = False
 
             for item in self.inventory:
-                items[item].visible = 1
+                self.items[item].visible = 1
         return ('\n\n' + choice(self.death_text)) if self.alive is False else ''
 
 
@@ -92,17 +91,19 @@ class Giant(Enemy):
                          'hammer comes crashing down on you!'
 
 
-enemy_constructors = {
-    'goblin': Goblin,
-    'troll': Troll,
-    'wolf': Wolf,
-    'giant': Giant
-}
+def initialise_enemies(game_map, items):
+    enemy_constructors = {
+        'goblin': Goblin,
+        'troll': Troll,
+        'wolf': Wolf,
+        'giant': Giant
+    }
 
-game_enemies = game_map['enemies']
-game_enemies = {key: enemy_constructors[value['name']](value) for key, value in game_enemies.items()}
+    game_enemies = game_map['enemies']
+    game_enemies = {key: enemy_constructors[value['name']](value, items) for key, value in game_enemies.items()}
 
-dt = game_enemies['moub3wolf'].death_text
+    dt = game_enemies['moub3wolf'].death_text
 
-for i in range(len(dt)):
-    dt[i] = dt[i] + ' Left behind, in the snow, is a matchbook containing several matches.'
+    for i in range(len(dt)):
+        dt[i] = dt[i] + ' Left behind, in the snow, is a matchbook containing several matches.'
+    return game_enemies
