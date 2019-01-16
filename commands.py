@@ -99,12 +99,12 @@ class GoCommand(Command):
                                                     'vines, which promptly seize you and crush you!')
 
         if self.game.player.mode == 'combat' and result not in ['new_room', 'invalid_command']:
-            c = TakeHitCommand(self.game)
+            c = TakeHitCommand(self.game, self.match)
             c.parse()
             return c.execute()
 
         if result == 'invalid_command':
-            return InvalidResponse(self.game, )
+            return InvalidResponse(self.game)
 
         elif result == 'no_boots':
             return Response(self.game, text='It\'s too steep. You need to be wearing snow boots to go that way.')
@@ -414,7 +414,7 @@ class AttackCommand(Command):
 
         if self.game.player.room_name == 'mouc2' and self.game.player.mode == 'combat' and self.game.enemies[
                 'mouc2giant'].charge:
-            c = TakeHitCommand(self.game)
+            c = TakeHitCommand(self.game, self.match)
             c.parse()
             return c.execute()
 

@@ -4,7 +4,7 @@
     "title": "THE VISTA",
     "intro": [
       "Welcome to The Vista, a retro text adventure.",
-      "In this game, you'll explore the fantasy realm known only as \"The Vista\". You'll do so via a simple text interface, typing commands and receiving text responses. As with every text-based game, you have to provide commands that the game can recognise, which can involve some guesswork. The best strategy is to keep it simple. Pretty much every command in the game is four words or fewer, e.g. \"go north\", \"get sword\", \"drop all\", \"look around\", \"check inventory\", \"attack goblin with sword\" etc. So basically just \"verb noun\", or occasionally \"verb noun with noun\". You get the idea.\n\nType \"commands\" to see a list of example commands. Type \"quit\" to exit the game. Now let's set the scene...",
+      "In this game, you'll explore the fantasy realm known only as \"The Vista\". You'll do so via a simple text interface, typing commands and receiving text responses. As with every text-based game, you have to provide commands that the game can recognise, which can involve some guesswork. The best strategy is to keep it simple. Pretty much every command in the game is four words or fewer, e.g. \"go north\", \"get sword\", \"drop all\", \"look around\", \"check inventory\", \"attack goblin with sword\" etc. So basically just \"verb noun\", or occasionally \"verb noun with noun\". You get the idea.\n\nType \"commands\" to see a list of example commands. Hit enter to repeat the previous command. Type \"quit\" to exit the game. Now let's set the scene...",
       "Fade in.",
       "We start with a traditional, twee fantasy village... Floonyloon Village. It's like The Shire, but without the hairy feet. Enter our hero:... wait, what's your name?",
       "Enter your name: ",
@@ -385,7 +385,7 @@
     "vilb1": {
       "name": "vilb1",
       "text": {
-        "init_core": "You are in the southeast part of the village, right outside Jimbo's house. The earth is soft here. Paths lead to the north and west.",
+        "init_core": "You are in the southeast part of the village, right outside Jimbo's house. The earth is soft here. Paths lead to the north, south, and west.",
         "state": {
           "dug": {
             "0": "",
@@ -615,14 +615,14 @@
       "name": "Dingleflowers",
       "aliases": ["(the +)?dingleflowers?", "(the +)?flowers?"],
       "text": {
-        "init_desc": "Among them, you notice a small patch of crimson-coloured Dingleflowers.",
+        "init_desc": "Among them, you notice a small patch of crimson coloured Dingleflowers.",
         "responses": {}
       },
       "visible": 1
     },
     "axe": {
       "name": "Axe",
-      "aliases": ["the +axe"],
+      "aliases": ["(the +)?(troll('?s)? +)?axe"],
       "text": {
         "init_desc": "The late troll's axe lies on the spot where it died.",
         "responses": {}
@@ -631,7 +631,7 @@
     },
     "sapphire": {
       "name": "Blue Orb",
-      "aliases": ["(the +)?((sapphire|blue) +)?orb", "the +sapphire"],
+      "aliases": ["(the +)?((sapphire|blue) +(colou?red +)?)?orb", "the +sapphire"],
       "text": {
         "init_desc": "In the grass is a gleaming, sapphire coloured orb.",
         "responses": {}
@@ -640,7 +640,7 @@
     },
     "ruby": {
       "name": "Red Orb",
-      "aliases": ["(the +)?((ruby|red) +)?orb", "the +ruby"],
+      "aliases": ["(the +)?((ruby|red) +(colou?red +)?)?orb", "the +ruby"],
       "text": {
         "init_desc": "Inside is a gleaming, ruby coloured orb.",
         "responses": {}
@@ -694,7 +694,7 @@
     },
     "citrine": {
       "name": "Yellow Orb",
-      "aliases": ["(the +)?((citrine|yellow) +)?orb", "the +citrine"],
+      "aliases": ["(the +)?((citrine|yellow) +(colou?red +)?)?orb", "the +citrine"],
       "text": {
         "init_desc": "In the snow is a gleaming, yellow coloured citrine... the yellow orb.",
         "responses": {}
@@ -717,7 +717,7 @@
     "wood7goblin": {
       "name": "goblin",
       "type": "goblin",
-      "init_desc": "There is a goblin blocking your path here. It says \"Turn back now, or meet your doom! My master will slay all who oppose him!\"",
+      "init_desc": "There is a goblin blocking your path. It says \"Turn back now, or meet your doom! My master will slay all who oppose him!\"",
       "blocks": ["west"],
       "inventory": [],
       "death_text": [

@@ -58,7 +58,7 @@ class Game:
                 self.player.health = 60
 
                 if self.last_checkpoint == 'vines':
-                    text = 'You are at the end of the forest trail, about to take the Dingleflowers.\n\n'
+                    text = 'You are at the end of the forest trail, in the process of taking the Dingleflowers.\n\n'
                     output = self.output.split('\n')[-1]
                     display(text + output, before=0, after=1)
 
@@ -175,10 +175,10 @@ class Game:
             if not isinstance(command, InvalidCommand):
 
                 if mode == 'combat':
-                    return TakeHitCommand(command.match)
+                    return TakeHitCommand(self, command.match)
 
                 elif mode == 'escape' and not isinstance(command, GoCommand):
-                    return DeadByVinesCommand(command.match)
+                    return DeadByVinesCommand(self, command.match)
 
                 else:
                     return command
@@ -186,21 +186,26 @@ class Game:
         return command
 
     def restore(self, lives):
-        self.complete = False
-        self.over = False
-        self.checkpoints.clear()
-        self.checkpoints.update(self.snapshot.checkpoints)
+
+        for key in self.__dict__:
+
+            if key != 'snapshot':
+                self.__dict__[key] = self.snapshot.__dict__[key]
+        # self.complete = False
+        # self.over = False
+        # self.checkpoints.clear()
+        # self.checkpoints.update(self.snapshot.checkpoints)
         self.old_checkpoints = None
-        self.rooms.clear()
-        self.rooms.update(self.snapshot.rooms)
-        self.enemies.clear()
-        self.enemies.update(self.snapshot.enemies)
-        self.items.clear()
-        self.items.update(self.snapshot.items)
-        self.player.mimic(self.snapshot.player)
+        # self.rooms.clear()
+        # self.rooms.update(self.snapshot.rooms)
+        # self.enemies.clear()
+        # self.enemies.update(self.snapshot.enemies)
+        # self.items.clear()
+        # self.items.update(self.snapshot.items)
+        # self.player.mimic(self.snapshot.player)
         self.player.lives = lives
-        self.output = self.snapshot.output
-        self.last_checkpoint = self.snapshot.last_checkpoint
+        # self.output = self.snapshot.output
+        # self.last_checkpoint = self.snapshot.last_checkpoint
 
 
 def display(string, text_width=TEXT_WIDTH, before=1, after=0):
