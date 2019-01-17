@@ -4,6 +4,8 @@
 
 __author__ = "James Smith"
 
+import re
+
 
 class Avatar:
 
@@ -91,7 +93,7 @@ class Avatar:
         self.lose_items(to_drop)
         self.room.gain_items(to_drop)
 
-    def go(self, direction):
+    def go(self, direction, reference):
         valid_moves = {
             'north': (0, -1, 0),
             'south': (0, 1, 0),
@@ -133,15 +135,23 @@ class Avatar:
                     return 'new_room', direction
 
         elif direction in ['in', 'out']:
-            self.coords = self.room.state['extra_directions'][direction]
-            self.update_room()
+            aliases = [alias.format(player_name=self.name.lower())
+                       for alias in self.room.state['extra_directions']['aliases']]
+            ref_checks = [re.fullmatch(alias, reference) for alias in aliases]
 
-            if self.room_name == 'jimbg':
-                self.checkpoints['jimbo'] = True
+            if reference == '' or any(ref_checks):
+                self.coords = self.room.state['extra_directions'][direction]
+                self.update_room()
 
-            if self.room_name == 'apoth':
-                self.checkpoints['apoth'] = True
-            return 'new_room', direction
+                if self.room_name == 'jimbg':
+                    self.checkpoints['jimbo'] = True
+
+                if self.room_name == 'apoth':
+                    self.checkpoints['apoth'] = True
+                return 'new_room', direction
+
+            else:
+                return 'invalid_command', direction
 
         elif direction == 'no_stairs':
             return 'no_stairs', direction

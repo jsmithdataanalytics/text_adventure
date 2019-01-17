@@ -4,7 +4,7 @@
 
 __author__ = "James Smith"
 
-# from json import dumps
+from json import dumps
 from items import *
 from enemies import *
 from rooms import *
@@ -69,7 +69,7 @@ if __name__ == '__main__':
 
     if game.quit:
         display('Quitting game...', before=0)
-        # print(dumps(command_history))
+        print(dumps(command_history))
 
     elif game.complete:
         display(game.game_map['ending'].format(name=game.player.name), before=0, after=1)

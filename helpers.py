@@ -154,7 +154,7 @@ class Game:
                                for item in self.player.inventory.values()
                                for reg, constr in item.combat_commands.items()}
             combat_commands.update({
-                '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|in|out|inside|outside)': GoCommand,
+                go_regex: GoCommand,
                 '(dodge|evade|avoid)(( +the)? +attack)?': EvadeCommand,
                 '(attack|hit|strike|stab|kill)( +.*)?': AttackCommand})
 
@@ -191,21 +191,8 @@ class Game:
 
             if key != 'snapshot':
                 self.__dict__[key] = self.snapshot.__dict__[key]
-        # self.complete = False
-        # self.over = False
-        # self.checkpoints.clear()
-        # self.checkpoints.update(self.snapshot.checkpoints)
         self.old_checkpoints = None
-        # self.rooms.clear()
-        # self.rooms.update(self.snapshot.rooms)
-        # self.enemies.clear()
-        # self.enemies.update(self.snapshot.enemies)
-        # self.items.clear()
-        # self.items.update(self.snapshot.items)
-        # self.player.mimic(self.snapshot.player)
         self.player.lives = lives
-        # self.output = self.snapshot.output
-        # self.last_checkpoint = self.snapshot.last_checkpoint
 
 
 def display(string, text_width=TEXT_WIDTH, before=1, after=0):

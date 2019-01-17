@@ -1,5 +1,5 @@
 {
-  "command_history": [],
+  "command_history": ["get all", "open", "get all", "down", "out", "east", "north", "get all", "south", "get all", "dig", "get all", "in", "out", "north", "west", "in", "get all", "out", "cut", "north", "", "", "west", "attack goblin with sword", "", "east", "north", "get all", "south", "", "", "", "", "in", "out", "north", "", "", "", "", "south", "west", "", "south", "", "attack goblin with dot", "west", "", "attack troll with dot", "get all", "west", "get all", "east", "", "", "north", "", "east", "", "south", "", "", "in", "show the flowers to the potion master", "look", "out", "in", "east", "west", "out", "east", "south", "", "north", "east", "north", "east", "go inside"],
   "opening": {
     "title": "THE VISTA",
     "intro": [
@@ -168,7 +168,8 @@
       "state": {
         "frozen": 1,
         "extra_directions": {
-          "in": [1, 4, 8]
+          "in": [1, 4, 8],
+          "aliases": ["(the +)?(small +)?(mountain +)?hut"]
         }
       },
       "blocks": ["north", "east"]
@@ -201,7 +202,8 @@
       "enemies": [],
       "state": {
         "extra_directions": {
-          "out": [3, 3, 8]
+          "out": [3, 3, 8],
+          "aliases": ["(the +)?((secret|hidden) +)?cave(rn)?"]
         }
       },
       "blocks": []
@@ -270,7 +272,8 @@
         "firewood": 0,
         "open": 0,
         "extra_directions": {
-          "out": [3, 4, 8]
+          "out": [3, 4, 8],
+          "aliases": ["(the +)?(small +)?(mountain +)?hut"]
         }
       }
     },
@@ -292,7 +295,8 @@
       "items": [],
       "state": {
         "extra_directions": {
-          "in": [1, 6, 5]
+          "in": [1, 6, 5],
+          "aliases": ["((the|your|my) +)?house", "{player_name}'?s?( +house)?"]
         }
       }
     },
@@ -332,7 +336,8 @@
       "state": {
         "extra_directions": {
           "upstairs": null,
-          "out": [3, 6, 5]
+          "out": [3, 6, 5],
+          "aliases": ["((the|your|my) +)?house", "{player_name}'?s?( +house)?"]
         }
       }
     },
@@ -356,7 +361,10 @@
       },
       "items": [],
       "state": {
-        "extra_directions": {"in": [1, 4, 5]},
+        "extra_directions": {
+          "in": [1, 4, 5],
+          "aliases": ["(the +)?potion +master('?s)?( +(house|tipi|teepee|tent|apothecary))?", "(the +)?(house|tipi|teepee|tent|apothecary)"]
+        },
         "cut": 0
       },
       "blocks": ["north"]
@@ -379,7 +387,10 @@
       },
       "items": ["book", "bottle"],
       "state": {
-        "extra_directions": {"out": [3, 5, 5]}
+        "extra_directions": {
+          "out": [3, 5, 5],
+          "aliases": ["(the +)?potion +master('?s)?( +(house|tipi|teepee|tent|apothecary))?", "(the +)?(house|tipi|teepee|tent|apothecary)"]
+        }
       }
     },
     "vilb1": {
@@ -399,7 +410,10 @@
       "items": ["sword"],
       "blocks": ["south"],
       "state": {
-        "extra_directions": {"in": [1, 6, 7]},
+        "extra_directions": {
+          "in": [1, 6, 7],
+          "aliases": ["jimbo('?s)?( +house)?", "(the +)?house"]
+        },
         "dug": 0
       }
     },
@@ -412,7 +426,10 @@
       },
       "items": [],
       "state": {
-        "extra_directions": {"out": [3, 6, 6]}
+        "extra_directions": {
+          "out": [3, 6, 6],
+          "aliases": ["jimbo('?s)?( +house)?", "(the +)?house"]
+        }
       }
     },
     "vilb2": {

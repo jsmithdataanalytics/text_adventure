@@ -37,8 +37,10 @@ class InvalidCommand(Command):
 class GoCommand(Command):
 
     def parse(self):
-        group = self.match.group(1).strip()
-        direction = group.replace('stairs', '').replace('side', '')
+        group = self.match.group(1).strip().split()[0]
+        direction = group.replace('stairs', '').replace('side', '').replace('to', '')
+        reference = self.match.group(2) if self.match.group(2) is not None else self.match.group(3)
+        self.parsed['reference'] = reference.strip() if reference is not None else ''
 
         if group in ['north', 'south', 'east', 'west', 'up', 'down']:
             self.parsed['direction'] = group
@@ -78,7 +80,7 @@ class GoCommand(Command):
 
         right_way = self.parsed['direction'] == escape_direction[self.game.player.room_name] \
             if self.game.player.mode == 'escape' else True
-        result, direction = self.game.player.go(self.parsed['direction'])
+        result, direction = self.game.player.go(self.parsed['direction'], self.parsed['reference'])
 
         if self.game.player.mode == 'escape' and result != 'invalid_command':
 
@@ -190,12 +192,14 @@ class GetCommand(Command):
 
             for key, value in self.game.player.room.item_aliases.items():
 
-                for alias in value:
+                if self.game.items[key].visible:
 
-                    if re.fullmatch(alias, item):
-                        self.parsed['validity'] = 'valid'
-                        self.parsed['item'] = key
-                        return
+                    for alias in value:
+
+                        if re.fullmatch(alias, item):
+                            self.parsed['validity'] = 'valid'
+                            self.parsed['item'] = key
+                            return
 
     def execute(self):
         if self.parsed['validity'] == 'valid':
@@ -582,7 +586,7 @@ class ClimbTreeCommand(Command):
                 return InvalidResponse(self.game)
 
             else:
-                match = re.fullmatch('go (up)', 'go up')
+                match = re.fullmatch(go_regex, 'go up')
                 c = GoCommand(self.game, match)
                 c.parse()
                 return c.execute()
@@ -593,7 +597,7 @@ class ClimbTreeCommand(Command):
                 return InvalidResponse(self.game)
 
             else:
-                match = re.fullmatch('go (down)', 'go down')
+                match = re.fullmatch(go_regex, 'go down')
                 c = GoCommand(self.game, match)
                 c.parse()
                 return c.execute()
@@ -649,12 +653,13 @@ class DeadByVinesCommand(Command):
 class EnterExitCommand(Command):
 
     def execute(self):
+        reference = self.match.group(2) if self.match.group(2) is not None else ''
 
-        if self.match.string == 'enter':
-            match = re.fullmatch('(?:go +)?(in|out)', 'go in')
+        if self.match.group(1) == 'enter':
+            match = re.fullmatch(go_regex, 'go in {}'.format(reference).strip())
 
         else:
-            match = re.fullmatch('(?:go +)?(in|out)', 'go out')
+            match = re.fullmatch(go_regex, 'go out {}'.format(reference).strip())
 
         c = GoCommand(self.game, match)
         c.parse()
@@ -770,9 +775,13 @@ class CommandsCommand(Command):
         return Response(self.game, text='Example commands:\n\n' + ''.join(examples))
 
 
+go_regex = '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|' \
+                      'in(?:to|side)?( +.+)?|out(?:side)?(?:(?: +of)?( +.+))?)'
+
+
 def initialise_commands(items, rooms):
     generic_commands = {
-        '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|in|out|inside|outside)': GoCommand,
+        go_regex: GoCommand,
         'wait': WaitCommand,
         'look(?: +a?round)?': LookCommand,
         '(?:(?:check|inspect|examine) +)?(?:items|inventory)': InventoryCommand,
@@ -782,7 +791,7 @@ def initialise_commands(items, rooms):
         'put +(.+) +(?:down|on +(?:the +)?floor|on +(?:the +)?ground)': DropCommand,
         'dig(?: +(?:a +)?hole)?(?: +with +(?:the +)?(?:shovel|spade))?': DigCommand,
         'climb( +(?:up|down))?(?: +(?:the +)?tree)?': ClimbTreeCommand,
-        'enter|exit': EnterExitCommand,
+        '(enter|exit)(?: +(.+))?': EnterExitCommand,
         '((example +)?commands?|hints?|examples?)': CommandsCommand
     }
 
