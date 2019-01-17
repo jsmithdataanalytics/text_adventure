@@ -394,10 +394,13 @@ class ReadCommand(Command):
 
 
 class AttackCommand(Command):
-    verb = None
-    enemy = None
-    weapon = None
-    valid_weapons = ['sword', 'axe']
+
+    def __init__(self, game, match=None):
+        super().__init__(game, match)
+        self.verb = None
+        self.enemy = None
+        self.weapon = None
+        self.valid_weapons = ['sword', 'axe']
 
     def parse(self):
         text = self.match.string
@@ -480,10 +483,10 @@ class AttackCommand(Command):
 
 
 class HammerCommand(AttackCommand):
-    valid_weapons = ['hammer']
-    verb = None
-    enemy = None
-    weapon = None
+
+    def __init__(self, game, match=None):
+        super().__init__(game, match)
+        self.valid_weapons = ['hammer']
 
     def parse(self):
         text = self.match.string
@@ -538,7 +541,8 @@ class HammerCommand(AttackCommand):
                 text = text + ' The ground shakes as violent avalanches begin to cascade down the mountains in all ' \
                               'directions. You stand safely atop the mountains until they all finally dissipate.'
                 self.game.rooms['moub3'].state['cave'] = 1
-                self.game.rooms['moub3'].state['extra_directions'] = {'in': [3, 1, 8]}
+                self.game.rooms['moub3'].state.update(
+                    {'extra_directions': {'in': [3, 1, 8], 'aliases': ['(the +)?((secret|hidden) +)?cave(rn)?']}})
 
             return Response(self.game, text=text)
 
@@ -776,7 +780,7 @@ class CommandsCommand(Command):
 
 
 go_regex = '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|' \
-                      'in(?:to|side)?( +.+)?|out(?:side)?(?:(?: +of)?( +.+))?)'
+           'in(?:to|side)?( +.+)?|out(?:side)?(?:(?: +of)?( +.+))?)'
 
 
 def initialise_commands(items, rooms):

@@ -109,19 +109,20 @@ class Game:
                 self.player.lit_match['status'] = False
                 display('Your match has gone out.', before=0, after=1)
 
-    def intro(self):
+    def intro(self, prompt):
         print('')
         print('~' * TEXT_WIDTH)
         print(self.game_map['opening']['title'].center(TEXT_WIDTH, ' '))
         print('~' * TEXT_WIDTH)
 
-        for text in self.game_map['opening']['intro'][:5]:
+        for text in self.game_map['opening']['intro'][:4]:
             display(text)
 
-        self.player.set_name(input().strip())
-        display(self.game_map['opening']['intro'][5].format(name=self.player.name))
+        display('', before=0, after=0)
+        self.player.set_name(input(prompt).strip())
+        display(self.game_map['opening']['intro'][4].format(name=self.player.name))
 
-        for text in self.game_map['opening']['intro'][6:]:
+        for text in self.game_map['opening']['intro'][5:]:
             display(text)
 
         display(self.player.room.init_desc, after=1)

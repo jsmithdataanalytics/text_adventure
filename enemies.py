@@ -8,9 +8,9 @@ from numpy.random import choice
 
 
 class Enemy:
-    health = 1
 
     def __init__(self, enemy_data, items):
+        self.health = 1
         self.items = items
         self.alive = True
         self.active = True
@@ -40,7 +40,6 @@ class Enemy:
 
 
 class Goblin(Enemy):
-    health = 1
     damage_dist = [[0, 20], [0.75, 0.25]]
     attack_text = {
         0: ['The goblin attacks with a knife, but misses by an inch.',
@@ -53,7 +52,6 @@ class Goblin(Enemy):
 
 
 class Troll(Enemy):
-    health = 140
     damage_dist = [[20, 40], [0.5, 0.5]]
     attack_text = {
         20: ['The face of the troll\'s axe knocks you backward.',
@@ -64,9 +62,12 @@ class Troll(Enemy):
              'Critical hit! The troll\'s axe gets you dead on!']
     }
 
+    def __init__(self, enemy_data, items):
+        super().__init__(enemy_data, items)
+        self.health = 140
+
 
 class Wolf(Enemy):
-    health = 60
     damage_dist = [[20, 40], [0.5, 0.5]]
     attack_text = {
         20: ['The wolf bites you, leaving you bloodied. Ouch!',
@@ -76,9 +77,12 @@ class Wolf(Enemy):
              'Critical hit! The wolf\'s vicious slash hit its mark!']
     }
 
+    def __init__(self, enemy_data, items):
+        super().__init__(enemy_data, items)
+        self.health = 60
+
 
 class Giant(Enemy):
-    health = 200
     damage_dist = [[40, 80], [0.7, 0.3]]
     attack_text = {
         40: ['The frost giant kicks you backward. Oof!',
@@ -95,6 +99,10 @@ class Giant(Enemy):
                          'You leap aside, just barely avoiding the frost giant\'s devastating hammer attack.']
     charge_attack_text = 'While you get started with that instead of worrying about the frost giant\'s attack, the ' \
                          'hammer comes crashing down on you!'
+
+    def __init__(self, enemy_data, items):
+        super().__init__(enemy_data, items)
+        self.health = 200
 
 
 def initialise_enemies(game_map, items):
