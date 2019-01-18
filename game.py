@@ -4,16 +4,17 @@
 
 __author__ = "James Smith"
 
-# from json import dumps
 from items import *
 from enemies import *
 from rooms import *
 from avatar import *
 from helpers import *
+from map import *
+# from json import dumps
 
 
 def load_game(prompt):
-    game_map = load_map()
+    # game_map = load_map()
     checkpoints = initialise_checkpoints()
     items = initialise_items(game_map)
     enemies = initialise_enemies(game_map, items)
