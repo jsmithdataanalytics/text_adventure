@@ -11,10 +11,3 @@ Download and run vista-text-adventure-x64.exe
 
 ### Linux
 Download and run TBD
-
-### Python
-1. Install Python v3.7.0+
-2. Clone this repository and navigate to it
-3. Upgrade pip: `python3 -m pip install --upgrade pip`
-4. Install dependencies: `pip3 install -r requirements.txt`
-5. Run: `python game.py`
