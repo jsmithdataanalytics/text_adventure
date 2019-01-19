@@ -10,4 +10,4 @@ In the game, you'll explore the fantasy realm known only as The Vista. You'll do
 Download and run vista-text-adventure-x64.exe
 
 ### Linux
-Download and run TBD
+Download and run vista-text-adventure-linux
