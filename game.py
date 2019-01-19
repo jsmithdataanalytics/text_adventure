@@ -59,7 +59,8 @@ def play_turn(_game, _command, text_input):
     elif _game.complete:
         display(_game.game_map['ending'].format(name=_game.player.name), before=0, after=1)
         display('Congratulations! You win!', before=0)
-        display('Thanks for playing!\nJames Smith, Creator')
+        display('Thanks for playing!\nJames Smith, Creator', after=1)
+        input("Press Enter to quit...")
 
     return _game, _command
 

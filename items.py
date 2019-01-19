@@ -4,7 +4,7 @@
 
 __author__ = "James Smith"
 
-from json import load
+# from json import load
 
 
 class Item:
@@ -21,10 +21,10 @@ class Item:
         self.combat_text = {}
 
 
-def load_map():
-    with open('map.json') as f:
-        game_map = load(f)
-    return game_map
+# def load_map():
+#     with open('map.json') as f:
+#         game_map = load(f)
+#     return game_map
 
 
 def initialise_checkpoints():

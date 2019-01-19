@@ -4,7 +4,7 @@
 
 __author__ = "James Smith"
 
-from numpy.random import choice
+from random import choices
 
 
 class Enemy:
@@ -36,7 +36,7 @@ class Enemy:
 
             for item in self.inventory:
                 self.items[item].visible = 1
-        return ('\n\n' + choice(self.death_text)) if self.alive is False else ''
+        return ('\n\n' + choices(self.death_text)[0]) if self.alive is False else ''
 
 
 class Goblin(Enemy):

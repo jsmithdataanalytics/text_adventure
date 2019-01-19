@@ -5,7 +5,7 @@
 __author__ = "James Smith"
 
 from commands import *
-import re
+from re import fullmatch
 from textwrap import fill
 from copy import deepcopy
 from random import randint
@@ -117,9 +117,16 @@ class Game:
 
         for text in self.game_map['opening']['intro'][:4]:
             display(text)
-
         display('', before=0, after=0)
-        self.player.set_name(input(prompt).strip())
+
+        while True:
+            name = input(prompt).strip()
+
+            if name != '':
+                break
+            display('You need to provide a name!', before=0, after=1)
+
+        self.player.set_name(name)
         display(self.game_map['opening']['intro'][4].format(name=self.player.name))
 
         for text in self.game_map['opening']['intro'][5:]:
@@ -205,7 +212,7 @@ def display(string, text_width=TEXT_WIDTH, before=1, after=0):
 
 def match_command(game, string, command_list):
     for reg_ex in command_list:
-        result = re.fullmatch(reg_ex, string)
+        result = fullmatch(reg_ex, string)
 
         if result:
             return command_list[reg_ex](game=game, match=result)

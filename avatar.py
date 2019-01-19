@@ -4,7 +4,7 @@
 
 __author__ = "James Smith"
 
-import re
+from re import fullmatch
 
 
 class Avatar:
@@ -137,7 +137,7 @@ class Avatar:
         elif direction in ['in', 'out']:
             aliases = [alias.format(player_name=self.name.lower())
                        for alias in self.room.state['extra_directions']['aliases']]
-            ref_checks = [re.fullmatch(alias, reference) for alias in aliases]
+            ref_checks = [fullmatch(alias, reference) for alias in aliases]
 
             if reference == '' or any(ref_checks):
                 self.coords = self.room.state['extra_directions'][direction]

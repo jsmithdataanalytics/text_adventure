@@ -5,8 +5,8 @@
 __author__ = "James Smith"
 
 from responses import *
-from numpy.random import choice
-import re
+from random import choices
+from re import fullmatch, search, sub
 
 
 class Command:
@@ -196,7 +196,7 @@ class GetCommand(Command):
 
                     for alias in value:
 
-                        if re.fullmatch(alias, item):
+                        if fullmatch(alias, item):
                             self.parsed['validity'] = 'valid'
                             self.parsed['item'] = key
                             return
@@ -237,7 +237,7 @@ class DropCommand(Command):
 
                 for alias in value:
 
-                    if re.fullmatch(alias, item):
+                    if fullmatch(alias, item):
                         self.parsed['item'] = key
                         return
 
@@ -381,7 +381,7 @@ class ReadCommand(Command):
 
     def execute(self):
         verb = self.match[1]
-        subject = re.sub('^the +', '', self.match[2].strip())
+        subject = sub('^the +', '', self.match[2].strip())
 
         if subject == '':
             return Response(self.game, text=verb.title() + ' what?')
@@ -406,16 +406,16 @@ class AttackCommand(Command):
         text = self.match.string
         self.verb = self.match[1]
 
-        m = re.search(' +with( +.*)?$', text)
+        m = search(' +with( +.*)?$', text)
 
         if m:
             if m[1] and m[1].strip():
                 self.weapon = m[1].strip()
-            text = re.sub(' +with( +.*)?$', '', text)
-        remainder = re.sub('^attack *', '', text)
+            text = sub(' +with( +.*)?$', '', text)
+        remainder = sub('^attack *', '', text)
 
         if remainder:
-            self.enemy = re.sub('^the +', '', remainder.strip())
+            self.enemy = sub('^the +', '', remainder.strip())
 
     def execute(self):
 
@@ -434,7 +434,7 @@ class AttackCommand(Command):
         elif self.enemy is None:
             return Response(self.game, text='Attack what?')
 
-        elif not any([re.fullmatch(enemy.type, self.enemy) for enemy in self.game.player.room.enemies.values() if
+        elif not any([fullmatch(enemy.type, self.enemy) for enemy in self.game.player.room.enemies.values() if
                       enemy.active]):
             return Response(self.game, text='There isn\'t one of those nearby.')
 
@@ -447,7 +447,7 @@ class AttackCommand(Command):
 
                 for reg in item.aliases:
 
-                    if re.fullmatch(reg, self.weapon):
+                    if fullmatch(reg, self.weapon):
                         self.weapon = key
                         break
 
@@ -467,12 +467,12 @@ class AttackCommand(Command):
             for e in self.game.player.room.enemies.values():
                 enemy = e
 
-                if re.fullmatch(enemy.type, self.enemy) and enemy.active:
+                if fullmatch(enemy.type, self.enemy) and enemy.active:
                     break
 
             if self.weapon != 'dot':
-                damage = choice(weapon.damage_dist[0], p=weapon.damage_dist[1])
-                text = choice(weapon.combat_text[enemy.name][damage])
+                damage = choices(weapon.damage_dist[0], weights=weapon.damage_dist[1])[0]
+                text = choices(weapon.combat_text[enemy.name][damage])[0]
 
             else:
                 damage = enemy.health
@@ -492,16 +492,16 @@ class HammerCommand(AttackCommand):
         text = self.match.string
         self.verb = self.match[1]
 
-        m = re.search(' +with( +.*)?$', text)
+        m = search(' +with( +.*)?$', text)
 
         if m:
             if m[1] and m[1].strip():
                 self.weapon = m[1].strip()
-            text = re.sub(' +with( +.*)?$', '', text)
-        remainder = re.sub('^{} *'.format(self.verb), '', text)
+            text = sub(' +with( +.*)?$', '', text)
+        remainder = sub('^{} *'.format(self.verb), '', text)
 
         if remainder:
-            self.enemy = re.sub('^the +', '', remainder.strip())
+            self.enemy = sub('^the +', '', remainder.strip())
 
     def execute(self):
 
@@ -521,7 +521,7 @@ class HammerCommand(AttackCommand):
 
                 for reg in item.aliases:
 
-                    if re.fullmatch(reg, self.weapon):
+                    if fullmatch(reg, self.weapon):
                         self.weapon = key
                         break
 
@@ -561,8 +561,8 @@ class TakeHitCommand(Command):
             text = []
 
             for enemy in active_enemies:
-                damage = choice(enemy.damage_dist[0], p=enemy.damage_dist[1])
-                text.append(choice(enemy.attack_text[damage]))
+                damage = choices(enemy.damage_dist[0], weights=enemy.damage_dist[1])[0]
+                text.append(choices(enemy.attack_text[damage])[0])
                 self.game.player.health = max(self.game.player.health - damage, 0)
             return Response(self.game, text='Hardly appropriate for a combat situation!\n' + '\n'.join(text))
 
@@ -573,10 +573,10 @@ class EvadeCommand(Command):
         active_enemies = [enemy for enemy in self.game.player.room.enemies.values() if enemy.active]
 
         if active_enemies[0].name == 'giant' and active_enemies[0].charge:
-            return Response(self.game, text=choice(active_enemies[0].charge_evade_text))
+            return Response(self.game, text=choices(active_enemies[0].charge_evade_text)[0])
 
         else:
-            return Response(self.game, text=choice(active_enemies[0].evade_text))
+            return Response(self.game, text=choices(active_enemies[0].evade_text)[0])
 
 
 class ClimbTreeCommand(Command):
@@ -590,7 +590,7 @@ class ClimbTreeCommand(Command):
                 return InvalidResponse(self.game)
 
             else:
-                match = re.fullmatch(go_regex, 'go up')
+                match = fullmatch(go_regex, 'go up')
                 c = GoCommand(self.game, match)
                 c.parse()
                 return c.execute()
@@ -601,7 +601,7 @@ class ClimbTreeCommand(Command):
                 return InvalidResponse(self.game)
 
             else:
-                match = re.fullmatch(go_regex, 'go down')
+                match = fullmatch(go_regex, 'go down')
                 c = GoCommand(self.game, match)
                 c.parse()
                 return c.execute()
@@ -660,10 +660,10 @@ class EnterExitCommand(Command):
         reference = self.match.group(2) if self.match.group(2) is not None else ''
 
         if self.match.group(1) == 'enter':
-            match = re.fullmatch(go_regex, 'go in {}'.format(reference).strip())
+            match = fullmatch(go_regex, 'go in {}'.format(reference).strip())
 
         else:
-            match = re.fullmatch(go_regex, 'go out {}'.format(reference).strip())
+            match = fullmatch(go_regex, 'go out {}'.format(reference).strip())
 
         c = GoCommand(self.game, match)
         c.parse()
@@ -687,8 +687,8 @@ class FireplaceCommand(Command):
 
     def execute(self):
         item = self.match[1]
-        stick_checks = [re.fullmatch(regex, item) for regex in self.game.items['sticks'].aliases]
-        inv_checks = [re.fullmatch(regex, item) for itm in self.game.player.inventory for regex in
+        stick_checks = [fullmatch(regex, item) for regex in self.game.items['sticks'].aliases]
+        inv_checks = [fullmatch(regex, item) for itm in self.game.player.inventory for regex in
                       self.game.items[itm].aliases]
 
         if not any(inv_checks):
