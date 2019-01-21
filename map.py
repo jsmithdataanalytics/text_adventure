@@ -10,7 +10,7 @@ game_map = {
     "title": "THE VISTA",
     "intro": [
       "Welcome to The Vista, a retro text adventure.",
-      "In this game, you'll explore the fantasy realm known only as \"The Vista\". You'll do so via a simple text interface, typing commands and receiving text responses. As with every text-based game, you have to provide commands that the game can recognise, which can involve some guesswork. The best strategy is to keep it simple. Pretty much every command in the game is four words or fewer, e.g. \"go north\", \"get sword\", \"drop all\", \"look around\", \"check inventory\", \"attack goblin with sword\" etc. So basically just \"verb noun\", or occasionally \"verb noun with noun\". You get the idea.\n\nType \"commands\" to see a list of example commands. Hit enter to repeat the previous command. Type \"quit\" to exit the game. Now let's set the scene...",
+      "In this game, you'll explore the fantasy realm known only as \"The Vista\". You'll do so via a simple text interface, typing commands and receiving text responses. As with every text-based game, you have to provide commands that the game can recognise, which can involve some guesswork. The best strategy is to keep it simple. Pretty much every command in the game is four words or fewer, e.g. \"go north\", \"get sword\", \"drop all\", \"look around\", \"check inventory\", \"attack goblin with sword\" etc. So basically just \"verb noun\", or occasionally \"verb noun with noun\". You get the idea.\n\nType \"commands\" to see a list of example commands. Hit enter to repeat the previous command. Type \"quit\" to exit the game. Now, let's set the scene...",
       "Fade in.",
       "We start with a traditional, twee fantasy village... Floonyloon Village. It's like The Shire, but without the hairy feet. Enter our hero:... wait, what's your name?",
       "Nice. Enter our hero, {name}. You're a young lad or lass, living in the village. Like 9 or 10 years old. The kind of age where your parents definitely shouldn't be letting you go off on dangerous adventures without supervision, but for some reason that doesn't seem to matter here.",
@@ -354,7 +354,7 @@ game_map = {
         "long_core": "This is the northwest part of Floonyloon Village, where the Potion Master's apothecary is. It's a weird tipi thing, made of all sorts of exotic plants and animal skins. Plumes of brightly coloured smoke rise from the top.\n\nTo the north, a path leads into Robinett Forest. There are also paths leading east and south from here.",
         "state": {
           "cut": {
-            "0": "However, the path is obstructed by a thicket of thorny vines.",
+            "0": "The northward path is obstructed by a thicket of thorny vines.",
             "1": ""
           }
         },
