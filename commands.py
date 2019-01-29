@@ -966,7 +966,8 @@ def initialise_commands(items, rooms):
             '(((the|an?) +)?(stone +)?(altar|pedestals?)|'
             '((the|all|all +of +the|the +three|all +three( +of +the)?) +)?(stone +)?pedestals?)': PlaceOrbsCommand,
             '(put|place|set) +(((the|an?) +)?((red|blue|yellow|sapphire|ruby|citrine) +)?|(one|each)( +of +the)? +)?'
-            'orbs? +((o|i)n(to)?|upon) +((the|an?|(one|each)( +of +the)?) +)?(stone +)?(altar|pedestals?)': PlaceOrbsCommand
+            'orbs? +((o|i)n(to)?|upon) +((the|an?|(one|each)( +of +the)?) +)?'
+            '(stone +)?(altar|pedestals?)': PlaceOrbsCommand
         }
     )
 
