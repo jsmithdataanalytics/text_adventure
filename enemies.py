@@ -93,7 +93,7 @@ class Giant(Enemy):
              'Critical hit! The giant\'s hammer gets you dead on!']
     }
     charge_prob = 0.5
-    charge_text = 'The frost giant lifts its might hammer over its head...'
+    charge_text = 'The frost giant lifts its mighty hammer over its head...'
     charge_evade_text = ['You jump back just in time, as the frost giant\'s mighty hammer comes crashing down, '
                          'leaving a small crater where you once stood.',
                          'You leap aside, just barely avoiding the frost giant\'s devastating hammer attack.']
@@ -115,9 +115,4 @@ def initialise_enemies(game_map, items):
 
     game_enemies = game_map['enemies']
     game_enemies = {key: enemy_constructors[value['name']](value, items) for key, value in game_enemies.items()}
-
-    dt = game_enemies['moub3wolf'].death_text
-
-    for i in range(len(dt)):
-        dt[i] = dt[i] + ' Left behind, in the snow, is a matchbook containing several matches.'
     return game_enemies

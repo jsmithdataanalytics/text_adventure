@@ -37,15 +37,16 @@ class InvalidCommand(Command):
 class GoCommand(Command):
 
     def parse(self):
-        group = self.match.group(1).strip().split()[0]
-        direction = group.replace('stairs', '').replace('side', '').replace('to', '')
+        group = self.match.group(1).strip()
+        direction = group.split()[0].replace('stairs', '').replace('side', '').replace('to', '')
         reference = self.match.group(2) if self.match.group(2) is not None else self.match.group(3)
         self.parsed['reference'] = reference.strip() if reference is not None else ''
 
         if group in ['north', 'south', 'east', 'west', 'up', 'down']:
             self.parsed['direction'] = group
 
-        elif group in ['upstairs', 'downstairs']:
+        elif fullmatch('(up|down)(?: +(?:the +)?)?stairs', group):
+            group = fullmatch('(up|down)(?: +(?:the +)?)?stairs', group)[1] + 'stairs'
 
             if 'extra_directions' in self.game.player.room.state and \
                     group in self.game.player.room.state['extra_directions']:
@@ -177,7 +178,7 @@ class InventoryCommand(Command):
 class GetCommand(Command):
 
     def parse(self):
-        item = self.match.group(1).strip()
+        item = self.match.group(1).strip() if self.match.group(1) is not None else ''
 
         if item in self.game.player.room.inventory and self.game.items[item].visible:
             self.parsed['validity'] = 'valid'
@@ -190,31 +191,44 @@ class GetCommand(Command):
         else:
             self.parsed = {'validity': 'invalid'}
 
-            for key, value in self.game.player.room.item_aliases.items():
+            if item:
 
-                if self.game.items[key].visible:
+                for key, value in self.game.player.room.item_aliases.items():
 
-                    for alias in value:
+                    if self.game.items[key].visible:
 
-                        if fullmatch(alias, item):
-                            self.parsed['validity'] = 'valid'
-                            self.parsed['item'] = key
-                            return
+                        for alias in value:
+
+                            if fullmatch(alias, item):
+                                self.parsed['validity'] = 'valid'
+                                self.parsed['item'] = key
+                                return
 
     def execute(self):
+        item = self.match.group(1).strip() if self.match.group(1) is not None else ''
+
+        if not item:
+            words = self.match.string.split()
+            words[0] = words[0].title()
+            return Response(self.game, text=' '.join(words) + ' what?')
+
         if self.parsed['validity'] == 'valid':
+
             if self.parsed['item'] == 'all':
                 n_visible = self.game.player.room.count_visible_items()
 
                 if n_visible == 0:
                     return GetResponse(self.game, 'valid', 'failure', method='all')
+
                 else:
                     got = self.game.player.get_all_visible_items()
                     return GetResponse(self.game, 'valid', 'success', new_items=got, method='all')
+
             else:
                 got = self.game.player.get_items(
                     new_items={self.parsed['item']: self.game.player.room.inventory[self.parsed['item']]})
                 return GetResponse(self.game, 'valid', 'success', new_items=got, method='specific')
+
         else:
             return GetResponse(self.game, 'invalid', 'failure', method='specific')
 
@@ -222,7 +236,7 @@ class GetCommand(Command):
 class DropCommand(Command):
 
     def parse(self):
-        item = self.match.group(1).strip()
+        item = self.match.group(1).strip() if self.match.group(1) is not None else ''
 
         if item in self.game.player.inventory:
             self.parsed['item'] = item
@@ -233,15 +247,36 @@ class DropCommand(Command):
         else:
             self.parsed['item'] = None
 
-            for key, value in self.game.player.item_aliases.items():
+            if item:
 
-                for alias in value:
+                for key, value in self.game.player.item_aliases.items():
 
-                    if fullmatch(alias, item):
-                        self.parsed['item'] = key
-                        return
+                    for alias in value:
+
+                        if fullmatch(alias, item):
+                            self.parsed['item'] = key
+                            return
 
     def execute(self):
+        item = self.match.group(1).strip() if self.match.group(1) is not None else ''
+
+        if not item:
+            words = [self.match.string.split()[0], 'what']
+
+            if words[0] == 'put':
+
+                if self.match.string.split()[-1] == 'floor':
+                    words.extend(['on', 'the', 'floor'])
+
+                elif self.match.string.split()[-1] == 'ground':
+                    words.extend(['on', 'the', 'ground'])
+
+                else:
+                    words.append('down')
+                    
+            words[0] = words[0].title()
+            return Response(self.game, text=' '.join(words) + '?')
+
         boots_message = 'You can\'t drop the snow boots because you\'re wearing them!'
         item = self.parsed['item']
 
@@ -539,7 +574,9 @@ class HammerCommand(AttackCommand):
 
             if self.enemy in ['pedestal', 'stone'] and self.game.rooms['moub3'].state['cave'] == 0:
                 text = text + ' The ground shakes as violent avalanches begin to cascade down the mountains in all ' \
-                              'directions. You stand safely atop the mountains until they all finally dissipate.'
+                              'directions. You stand safely atop the mountains until they all finally dissipate. ' \
+                              'You can begin your descent now, but don\'t be surprised if things look a little ' \
+                              'different...'
                 self.game.rooms['moub3'].state['cave'] = 1
                 self.game.rooms['moub3'].state.update(
                     {'extra_directions': {'in': [3, 1, 8], 'aliases': ['(the +)?((secret|hidden) +)?cave(rn)?']}})
@@ -605,6 +642,9 @@ class ClimbTreeCommand(Command):
                 c = GoCommand(self.game, match)
                 c.parse()
                 return c.execute()
+
+        elif 'tree' in self.match.string:
+            return Response(self.game, text='There are no climbable trees here.')
 
         else:
             return Response(self.game, text='You can\'t climb here.')
@@ -720,9 +760,9 @@ class FireCommand(Command):
             self.game.player.room.state['frozen'] = 0
             self.game.rooms['moub2'].state['frozen'] = 0
             self.game.player.room.state['firewood'] = 2
-            self.game.checkpoints['thaw'] = True
             return Response(self.game, text='The fireplace is filled with a roaring fire. You feel the sensation '
-                                            'return to your hands and feet as the room around you slowly thaws out.')
+                                            'return to your hands and feet as the room around you slowly warms up. '
+                                            'After a few minutes, the room is completely thawed out.')
 
 
 class BootsCommand(Command):
@@ -779,7 +819,40 @@ class CommandsCommand(Command):
         return Response(self.game, text='Example commands:\n\n' + ''.join(examples))
 
 
-go_regex = '(?:go +)?(north|south|east|west|up|down|upstairs|downstairs|' \
+class ClimbHill(Command):
+
+    def parse(self):
+
+        if self.match.string != 'climb' and self.match.group(1) is not None:
+            self.parsed['direction'] = self.match.group(1)
+
+        else:
+            self.parsed['direction'] = {'moub1': 'up', 'mouc1': None, 'mouc2': 'down'}[self.game.player.room_name]
+
+        if self.game.player.room_name == 'moub1' and self.parsed['direction'] == 'up':
+            self.parsed['direction'] = 'east'
+
+        elif self.game.player.room_name == 'mouc1' and self.parsed['direction'] == 'up':
+            self.parsed['direction'] = 'north'
+
+        elif self.game.player.room_name == 'mouc1' and self.parsed['direction'] == 'down':
+            self.parsed['direction'] = 'west'
+
+        elif self.game.player.room_name == 'mouc2' and self.parsed['direction'] == 'down':
+            self.parsed['direction'] = 'south'
+
+    def execute(self):
+
+        if self.parsed['direction'] is not None:
+            c = GoCommand(self.game, fullmatch(go_regex, 'go {}'.format(self.parsed['direction'])))
+            c.parse()
+            return c.execute()
+
+        else:
+            return Response(self.game, text='Up or down?')
+
+
+go_regex = '(?:go +)?(north|south|east|west|up|down|up(?: +(?:the +)?)?stairs|down(?: +(?:the +)?)?stairs|' \
            'in(?:to|side)?( +.+)?|out(?:side)?(?:(?: +of)?( +.+))?)'
 
 
@@ -789,20 +862,50 @@ def initialise_commands(items, rooms):
         'wait': WaitCommand,
         'look(?: +a?round)?': LookCommand,
         '(?:(?:check|inspect|examine) +)?(?:items|inventory)': InventoryCommand,
-        '(?:get|take|grab|pick +up) +(.+)': GetCommand,
+        '(?:get|take|grab|pick +up)(?: +(.+))?': GetCommand,
         'pick +(.+) +up': GetCommand,
-        '(?:drop|leave|put +down) +(.+)': DropCommand,
-        'put +(.+) +(?:down|on +(?:the +)?floor|on +(?:the +)?ground)': DropCommand,
+        '(?:drop|leave|put +down)(?: +(.+))?': DropCommand,
+        'put(?: +(.+))? +(?:down|on +(?:the +)?floor|on +(?:the +)?ground)': DropCommand,
         'dig(?: +(?:a +)?hole)?(?: +with +(?:the +)?(?:shovel|spade))?': DigCommand,
         'climb( +(?:up|down))?(?: +(?:the +)?tree)?': ClimbTreeCommand,
         '(enter|exit)(?: +(.+))?': EnterExitCommand,
         '((example +)?commands?|hints?|examples?)': CommandsCommand
     }
 
+    rooms['moub1'].commands.update(
+        {
+            'climb +(?:(up|down) +)?(?:the +)?(?:hill|incline|slope|mountain)': ClimbHill,
+            'go +(up|down) +(?:the +)?(?:hill|incline|slope|mountain)': ClimbHill,
+            '(?:(?:go|climb) +)?(up|down)hill': ClimbHill,
+            '(?:(?:go|climb) +)?(north|south|east|west|up|down)': ClimbHill,
+            'climb': ClimbHill
+        }
+    )
+
+    rooms['mouc1'].commands.update(
+        {
+            'climb +(?:(up|down) +)?(?:the +)?(?:hill|incline|slope|mountain)': ClimbHill,
+            'go +(up|down) +(?:the +)?(?:hill|incline|slope|mountain)': ClimbHill,
+            '(?:(?:go|climb) +)?(up|down)hill': ClimbHill,
+            '(?:(?:go|climb) +)?(north|south|east|west|up|down)': ClimbHill,
+            'climb': ClimbHill
+        }
+    )
+
+    rooms['mouc2'].commands.update(
+        {
+            'climb +(?:(up|down) +)?(?:the +)?(?:hill|incline|slope|mountain)': ClimbHill,
+            'go +(up|down) +(?:the +)?(?:hill|incline|slope|mountain)': ClimbHill,
+            '(?:(?:go|climb) +)?(up|down)hill': ClimbHill,
+            '(?:(?:go|climb) +)?(north|south|east|west|up|down)': ClimbHill,
+            'climb': ClimbHill
+        }
+    )
+
     rooms['vilb1'].commands.update(
         {
             'dig(?: +(?:a +)?hole)?(?: +with +(?:the +)?(?:shovel|spade))?': DigCommand,
-            'dig +up +(?:the +)?sword': DigCommand
+            'dig +up +(?:the +)?sword': DigCommand,
         }
     )
 
@@ -829,7 +932,8 @@ def initialise_commands(items, rooms):
     rooms['apoth'].commands.update(
         {
             '(?:give +her|show +her) +(.+)': GiveCommand,
-            '(?:give|present|show|hand +over) +(.+?)(?: +to +(?:her|(?:the +)?(?:potion +)?master))?': GiveCommand
+            '(?:give|deliver|present|show|hand +over)'
+            ' +(.+?)(?: +to +(?:her|(?:the +)?(?:potion +)?master))?': GiveCommand
         }
     )
 
@@ -858,11 +962,11 @@ def initialise_commands(items, rooms):
 
     rooms['shrin'].commands.update(
         {
-            '(put|place|set) +((the|all|all +of +the|the +three|all +three( +of +the)?) +)?orbs? +(on(to)?|upon) +'
+            '(put|place|set) +((the|all|all +of +the|the +three|all +three( +of +the)?) +)?orbs? +((o|i)n(to)?|upon) +'
             '(((the|an?) +)?(stone +)?(altar|pedestals?)|'
             '((the|all|all +of +the|the +three|all +three( +of +the)?) +)?(stone +)?pedestals?)': PlaceOrbsCommand,
             '(put|place|set) +(((the|an?) +)?((red|blue|yellow|sapphire|ruby|citrine) +)?|(one|each)( +of +the)? +)?'
-            'orbs? +(on(to)?|upon) +((the|an?|(one|each)( +of +the)?) +)?(stone +)?(altar|pedestals?)': PlaceOrbsCommand
+            'orbs? +((o|i)n(to)?|upon) +((the|an?|(one|each)( +of +the)?) +)?(stone +)?(altar|pedestals?)': PlaceOrbsCommand
         }
     )
 

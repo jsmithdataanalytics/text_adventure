@@ -48,12 +48,15 @@ class GoResponse(Response):
 
         elif self.validity == 'valid':
             if self.game.player.room_name == 'vilb2' and self.direction == 'east':
-                return 'That path leads into the Gygax Mountains. Don\'t you have somewhere else that you\'re ' \
-                       'supposed to be going?'
+                return 'That path leads into the Gygax Mountains. You have somewhere else that you\'re ' \
+                       'supposed to be going!'
 
             elif self.game.player.room_name == 'vilb1' and self.direction == 'south':
-                return 'That path leads to Floonyloon Temple. Don\'t you have somewhere else that you\'re ' \
-                       'supposed to be going?'
+                return 'That path leads to Floonyloon Shrine. You have somewhere else that you\'re ' \
+                       'supposed to be going!'
+
+            elif self.game.player.room_name == 'vila2' and self.direction == 'in':
+                return 'You\'re supposed to be going to see Jimbo!'
 
             else:
                 return 'You can\'t go that way.'

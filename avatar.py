@@ -74,10 +74,17 @@ class Avatar:
         self.room.lose_items(item_list)
 
         for item in item_list:
+
+            if item == 'snow boots' and self.items[item].taken == 0:
+                self.room.state['open'] = 2
+                self.checkpoints['thaw'] = True
+
+            elif item == 'sword':
+                self.rooms['jimbg'].init_core = self.rooms['jimbg'].text['init_core2']
+                self.rooms['jimbg'].long_core = self.rooms['jimbg'].text['init_core2']
+
             self.items[item].taken = 1
 
-            if item == 'snow boots':
-                self.room.state['open'] = 2
         return item_list
 
     def get_all_visible_items(self):
@@ -145,6 +152,12 @@ class Avatar:
 
                 if self.room_name == 'jimbg':
                     self.checkpoints['jimbo'] = True
+
+                    try:
+                        self.rooms['vila2'].room_blocks.remove('in')
+
+                    except ValueError:
+                        pass
 
                 if self.room_name == 'apoth':
                     self.checkpoints['apoth'] = True

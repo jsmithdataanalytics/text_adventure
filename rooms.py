@@ -87,6 +87,9 @@ class Room:
                 if value.active:
                     core.append(value.init_desc)
 
+            if 'trailing' in self.text:
+                core.append(self.text['trailing'])
+
             descs.append(' '.join(core))
         self.init_desc, self.short_desc, self.long_desc = descs[0], descs[1], descs[2]
 

@@ -174,7 +174,7 @@ game_map = {
         "frozen": 1,
         "extra_directions": {
           "in": [1, 4, 8],
-          "aliases": ["(the +)?(small +)?(mountain +)?hut"]
+          "aliases": ["(the +)?(small +)?(mountain +)?hut", "(the +)?door"]
         }
       },
       "blocks": ["north", "east"]
@@ -191,7 +191,7 @@ game_map = {
         },
         "responses": {}
       },
-      "items": ["matchbook"],
+      "items": [],
       "enemies": ["moub3wolf"],
       "state": {
         "cave": 0
@@ -270,7 +270,7 @@ game_map = {
           }
         }
       },
-      "items": ["snow boots"],
+      "items": ["snow boots", "matchbook"],
       "state_order": ["frozen", "firewood", "open", "extra_directions"],
       "state": {
         "frozen": 1,
@@ -278,7 +278,7 @@ game_map = {
         "open": 0,
         "extra_directions": {
           "out": [3, 4, 8],
-          "aliases": ["(the +)?(small +)?(mountain +)?hut"]
+          "aliases": ["(the +)?(small +)?(mountain +)?hut", "(the +)?door"]
         }
       }
     },
@@ -301,7 +301,7 @@ game_map = {
       "state": {
         "extra_directions": {
           "in": [1, 6, 5],
-          "aliases": ["((the|your|my) +)?house", "{player_name}'?s?( +house)?"]
+          "aliases": ["((the|your|my) +)?house", "{player_name}'?s?( +house)?", "(the +)?door"]
         }
       }
     },
@@ -342,16 +342,16 @@ game_map = {
         "extra_directions": {
           "upstairs": None,
           "out": [3, 6, 5],
-          "aliases": ["((the|your|my) +)?house", "{player_name}'?s?( +house)?"]
+          "aliases": ["((the|your|my) +)?house", "{player_name}'?s?( +house)?", "(the +)?door"]
         }
       }
     },
     "vila2": {
       "name": "vila2",
       "text": {
-        "init_core": "This is the northwest part of the village, where the Potion Master's apothecary is. It's a weird tipi thing, made of all sorts of exotic plants and animal skins. Plumes of brightly coloured smoke rise from the top.\n\nTo the north, a path leads into Robinett Forest. There are also paths leading east and south from here.",
+        "init_core": "This is the northwest part of the village, where the Potion Master's apothecary is. It's a weird teepee thing, made of all sorts of exotic plants and animal skins. Plumes of brightly coloured smoke rise from the top.\n\nTo the north, a path leads into Robinett Forest. There are also paths leading east and south from here.",
         "short_core": "This is the northwest part of the village, where the Potion Master's apothecary is. To the north, a path leads into Robinett Forest. There are also paths leading east and south from here.",
-        "long_core": "This is the northwest part of Floonyloon Village, where the Potion Master's apothecary is. It's a weird tipi thing, made of all sorts of exotic plants and animal skins. Plumes of brightly coloured smoke rise from the top.\n\nTo the north, a path leads into Robinett Forest. There are also paths leading east and south from here.",
+        "long_core": "This is the northwest part of Floonyloon Village, where the Potion Master's apothecary is. It's a weird teepee thing, made of all sorts of exotic plants and animal skins. Plumes of brightly coloured smoke rise from the top.\n\nTo the north, a path leads into Robinett Forest. There are also paths leading east and south from here.",
         "state": {
           "cut": {
             "0": "The northward path is obstructed by a thicket of thorny vines.",
@@ -368,33 +368,33 @@ game_map = {
       "state": {
         "extra_directions": {
           "in": [1, 4, 5],
-          "aliases": ["(the +)?potion +master('?s)?( +(house|tipi|teepee|tent|apothecary))?", "(the +)?(house|tipi|teepee|tent|apothecary)"]
+          "aliases": ["(the +)?potion +master('?s)?( +(house|tipi|teepee|tent|apothecary))?", "(the +)?(house|tipi|teepee|tent|apothecary)", "(the +)?door"]
         },
         "cut": 0
       },
-      "blocks": ["north"]
+      "blocks": ["north", "in"]
     },
     "apoth": {
       "name": "apoth",
       "text": {
-        "init_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience...\"\n\n\"This land is cursed, {name}. Strange creatures are invading The Vista, using evil magic to transform it into a world of darkness and despair. The only way to stop the onslaught is to gather the three precious orbs hidden throughout the land...\"\n\n\"The Blue Orb, hidden deep in Robinett Forest...\"\n\"The Yellow Orb, lost in the Gygax Mountains...\"\n\"The Red Orb, whose resting place is unknown...\"\n\n\"{name}, you must find the orbs and vanquish the rising evil!\"\n\n\"In the the meantime, I can make a potion to cure everyone here, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. I need you to bring back some Dingleflowers from the forest, and some Alaria Spring Water from the mountains.\"\n\n\"Head to the forest first, find the Blue Orb, and bring me some Dingleflowers! I'm counting on you, {name}!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
-        "short_core": "You're in the Potion Master's tent. She says: \"{name}, go to Robinett Forest, find the Blue Orb, and bring me some Dingleflowers!",
-        "long_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience...\"\n\n\"This land is cursed, {name}. Strange creatures are invading The Vista, using evil magic to transform it into a world of darkness and despair. The only way to stop the onslaught is to gather the three precious orbs hidden throughout the land...\"\n\n\"The Blue Orb, hidden deep in Robinett Forest...\"\n\"The Yellow Orb, lost in the Gygax Mountains...\"\n\"The Red Orb, whose resting place is unknown...\"\n\n\"{name}, you must find the orbs and vanquish the rising evil!\"\n\n\"In the the meantime, I can make a potion to cure everyone here, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. I need you to bring back some Dingleflowers from the forest, and some Alaria Spring Water from the mountains.\"\n\n\"Head to the forest first, find the Blue Orb, and bring me some Dingleflowers! I'm counting on you, {name}!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
-        "short_core2": "You're in the Potion Master's tent. She says: \"{name}, you must now go to the Gygax Mountains, find the Yellow Orb, and bring me some Alaria Spring Water! Hurry!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
-        "long_core2": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir. She says: \"{name}, you must now go to the Gygax Mountains, find the Yellow Orb, and bring me some Alaria Spring Water! Hurry!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
-        "short_core3": "You're in the Potion Master's tent. She says: \"{name}, take the orbs to the temple near Jimbo's house and break this curse once and for all! You did find all three orbs, didn't you?\"",
-        "long_core3": "You're in the Potion Master's tent. She says: \"{name}, take the orbs to the temple near Jimbo's house and break this curse once and for all! You did find all three orbs, didn't you?\"",
+        "init_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience...\"\n\n\"This land is cursed, {name}. Strange creatures are invading The Vista, using evil magic to transform it into a world of darkness and despair. The only way to stop the onslaught is to gather the three precious orbs hidden throughout the land...\"\n\n\"The Blue Orb, hidden deep in Robinett Forest...\"\n\"The Yellow Orb, lost in the Gygax Mountains...\"\n\"The Red Orb, whose resting place is unknown...\"\n\n\"{name}, you must find the orbs and take them to Floonyloon Shrine to vanquish the rising evil!\"\n\n\"In the the meantime, I can make a potion to cure everyone here, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. I need you to bring back some Dingleflowers from the forest, and some Alaria Spring Water from the mountains.\"\n\n\"Head to the forest first, find the Blue Orb, and return here with some Dingleflowers! I'm counting on you, {name}!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
+        "short_core": "You're in the Potion Master's tent. She says: \"{name}, go to Robinett Forest and bring me some Dingleflowers!",
+        "long_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience...\"\n\n\"This land is cursed, {name}. Strange creatures are invading The Vista, using evil magic to transform it into a world of darkness and despair. The only way to stop the onslaught is to gather the three precious orbs hidden throughout the land...\"\n\n\"The Blue Orb, hidden deep in Robinett Forest...\"\n\"The Yellow Orb, lost in the Gygax Mountains...\"\n\"The Red Orb, whose resting place is unknown...\"\n\n\"{name}, you must find the orbs and take them to Floonyloon Shrine to vanquish the rising evil!\"\n\n\"In the the meantime, I can make a potion to cure everyone here, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. I need you to bring back some Dingleflowers from the forest, and some Alaria Spring Water from the mountains.\"\n\n\"Head to the forest first, find the Blue Orb, and return here with some Dingleflowers! I'm counting on you, {name}!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
+        "short_core2": "You're in the Potion Master's tent. She says: \"{name}, you must now go to the Gygax Mountains and search for the Alaria Spring Water and the Yellow Orb! Hurry!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
+        "long_core2": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir. She says: \"{name}, you must now go to the Gygax Mountains and search for the Alaria Spring Water and the Yellow Orb! Hurry!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
+        "short_core3": "You're in the Potion Master's tent. She says: \"{name}, you did find all three orbs, didn't you? Take them to the shrine near Jimbo's house and break this curse once and for all!\"",
+        "long_core3": "You're in the Potion Master's tent. She says: \"{name}, you did find all three orbs, didn't you? Take them to the shrine near Jimbo's house and break this curse once and for all!\"",
         "state": {},
         "responses": {
-          "dingleflowers": "Potion Master: \"Ah! Dingleflowers! Excellent work, {name}! I'll add them to the potion right away!\"\n\nThe Potion Master takes the flowers, and tosses them into the cauldron. The potion immediately turns from red to blue.\n\n\"Yes, yes, that's right. Great work, {name}! Now, head to the Gygax Mountains, find the Yellow Orb, and bring me some Alaria Spring Water!\"",
-          "water": "Potion Master: \"Ah! Alaria Spring Water! Excellent work, {name}! I'll add it to the potion right away!\"\n\nThe Potion Master takes the bottle, and empties it into the cauldron. The potion effervesces, and the colour turns from blue to shimmering gold.\n\n\"Eureka! It worked! The potion is ready, {name}! I'll take it to everyone in town, and you go to the temple near Jimbo's house and break this curse once and for all! You did find all three orbs, didn't you?\""
+          "dingleflowers": "Potion Master: \"Ah! Dingleflowers! Excellent work, {name}! I'll add them to the potion right away!\"\n\nThe Potion Master takes the flowers, and tosses them into the cauldron. The potion immediately turns from red to blue.\n\n\"Yes, yes, that's right. Great work, {name}! Now, head to the Gygax Mountains and search for the Alaria Spring Water and the Yellow Orb!\"",
+          "water": "Potion Master: \"Ah! Alaria Spring Water! Excellent work, {name}! I'll add it to the potion right away!\"\n\nThe Potion Master takes the bottle, and empties it into the cauldron. The potion effervesces, and the colour turns from blue to shimmering gold.\n\n\"Eureka! It worked! The potion is ready, {name}! I'll take it to everyone in town while you go to the shrine near Jimbo's house. You did find all three orbs, didn't you? Head to the shrine and break this curse once and for all!\""
         }
       },
       "items": ["book", "bottle"],
       "state": {
         "extra_directions": {
           "out": [3, 5, 5],
-          "aliases": ["(the +)?potion +master('?s)?( +(house|tipi|teepee|tent|apothecary))?", "(the +)?(house|tipi|teepee|tent|apothecary)"]
+          "aliases": ["(the +)?potion +master('?s)?( +(house|tipi|teepee|tent|apothecary))?", "(the +)?(house|tipi|teepee|tent|apothecary)", "(the +)?door"]
         }
       }
     },
@@ -417,7 +417,7 @@ game_map = {
       "state": {
         "extra_directions": {
           "in": [1, 6, 7],
-          "aliases": ["jimbo('?s)?( +house)?", "(the +)?house"]
+          "aliases": ["jimbo('?s)?( +house)?", "(the +)?house", "(the +)?door"]
         },
         "dug": 0
       }
@@ -427,13 +427,14 @@ game_map = {
       "text": {
         "init_core": "You're inside Jimbo's place. He's in bed, looking all gaunt and sick. He starts to talk in a hoarse voice, and he's all like:\n\n\"Ugh, {name}, is that you? How's it going buddy? How come you're not sick? You're like the only one in town dude! Everyone else woke up today feeling like shit, plus the weather's all messed up. There were even rumours of monsters in the forest!\"\n\n\"I dunno what's going on man, but since you're looking so sprightly, could you go and see the Potion Master on the other side of town? She at least might be able to mix something up to make everyone feel better.\"\n\n\"Oh, and take my sword with you, just in case. I buried it just outside the house, so the monsters don't find it. You'll need a shovel... I think I saw one lying around somewhere in town, but you might need to explore a little.\"\n\nJimbo's counting on you. You'd better work with the Potion Master to rustle something up.",
         "short_core": "This is Jimbo's house. He says: \"Go see the Potion Master and help her cook something up for everyone!\"",
+        "init_core2": "You're inside Jimbo's place. He's in bed, looking all gaunt and sick. He starts to talk in a hoarse voice, and he's all like:\n\n\"Ugh, {name}, is that you? How's it going buddy? How come you're not sick? You're like the only one in town dude! Everyone else woke up today feeling like shit, plus the weather's all messed up. There were even rumours of monsters in the forest!\"\n\n\"I dunno what's going on man, but since you're looking so sprightly, could you go and see the Potion Master on the other side of town? She at least might be able to mix something up to make everyone feel better.\"\n\nJimbo's counting on you. You'd better work with the Potion Master to rustle something up.",
         "state": {}
       },
       "items": [],
       "state": {
         "extra_directions": {
           "out": [3, 6, 6],
-          "aliases": ["jimbo('?s)?( +house)?", "(the +)?house"]
+          "aliases": ["jimbo('?s)?( +house)?", "(the +)?house", "(the +)?door"]
         }
       }
     },
@@ -552,7 +553,12 @@ game_map = {
         "init_core": "This is a dead-end. One of the trees here has some low branches. You can leave via a path to the north."
       },
       "items": [],
-      "state": {}
+      "state": {
+        "extra_directions": {
+          "in": [2, 5, 2],
+          "aliases": ["(the +)?(tree *)?house", "(the +)?door"]
+        }
+      }
     },
     "treeh": {
       "name": "treeh",
@@ -560,7 +566,12 @@ game_map = {
         "init_core": "You are in an abandoned treehouse, apparently built by the young kid stood in front of you. He says: \"I heard the monsters talking about taking over The Vista! Oh, and there was some stuff about three precious stones, which apparently can be used to stop them or something?\""
       },
       "items": [],
-      "state": {}
+      "state": {
+        "extra_directions": {
+          "out": [3, 5, 2],
+          "aliases": ["(the +)?(tree *)?house", "(the +)?door"]
+        }
+      }
     },
     "dingl": {
       "name": "dingl",
@@ -691,10 +702,10 @@ game_map = {
       "name": "Matchbook",
       "aliases": ["the +matchbook", "(the +)?matches"],
       "text": {
-        "init_desc": "On the floor is a matchbook containing several matches.",
+        "init_desc": "On a nearby table is a matchbook containing several matches.",
         "responses": {}
       },
-      "visible": 0
+      "visible": 1
     },
     "snow boots": {
       "name": "Snow Boots",
@@ -771,7 +782,7 @@ game_map = {
       "type": "(winter *)?wolf",
       "init_desc": "However, a winter wolf, with pointed teeth and razor sharp claws, is blocking your way back.",
       "blocks": ["west"],
-      "inventory": ["matchbook"],
+      "inventory": [],
       "death_text": [
         "Your attack defeats the winter wolf, which then disappears in a plume of black smoke.",
         "The winter wolf is defeated. It emits a blood-curdling howl as it disappears in a plume of black smoke."
@@ -783,7 +794,7 @@ game_map = {
       "init_desc": "Luckily, it won't go to waste. A huge frost giant stands here, blocking your way north. Adapted to winter environments, it has white skin, blue hair and eyes, and seems completely indifferent to the freezing temperature. It is dressed only in skins and some armour, but, more notably, carries a great hammer, which looks like it could do a tremendous amount of damage.",
       "blocks": ["north"],
       "inventory": ["hammer", "citrine"],
-      "death_text": ["The frost giant is defeated. It falls to its knees, and says:\n\n\"How? How did this kid defeat us? Curse you, {name}!\"\n\nThe giant then vanishes in a great plume of smoke. Left behind, in the snow, is a yellow coloured orb of citrine, and the frost giant's hammer."]
+      "death_text": ["The frost giant is defeated. It falls to its knees, and says:\n\n\"How? How did this kid defeat us? Curse you, {name}!\"\n\nThe giant then vanishes in a great plume of smoke. Left behind, in the snow, is a yellow coloured orb of citrine, and the frost giant's hammer. The northward path is no longer blocked."]
     }
   },
   "starting_inventory": [],

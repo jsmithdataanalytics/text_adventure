@@ -93,10 +93,11 @@ class Game:
 
         if self.enemies['mouc2giant'].active:
 
-            if not isinstance(command, InvalidCommand):
+            if not isinstance(command, InvalidCommand) and not isinstance(command, CommandsCommand):
+                previous = self.enemies['mouc2giant'].charge
                 self.enemies['mouc2giant'].charge = False
 
-                if self.player.mode == 'combat' and self.player.room_name == 'mouc2':
+                if self.player.mode == 'combat' and self.player.room_name == 'mouc2' and not previous:
 
                     if randint(0, 1):
                         self.enemies['mouc2giant'].charge = True
@@ -164,14 +165,21 @@ class Game:
             combat_commands.update({
                 go_regex: GoCommand,
                 '(dodge|evade|avoid)(( +the)? +attack)?': EvadeCommand,
-                '(attack|hit|strike|stab|kill)( +.*)?': AttackCommand})
+                '(attack|hit|strike|stab|kill)( +.*)?': AttackCommand,
+                '((example +)?commands?|hints?|examples?)': CommandsCommand})
 
             if self.player.room_name == 'mouc2':
                 combat_commands.update(
                     {'(get|jump|move|leap) +out +of +(the +)?way': EvadeCommand,
                      '(dodge|evade|avoid)(( +the)? +hammer)?': EvadeCommand,
                      '(dodge|evade|avoid) +it': EvadeCommand,
-                     '(jump|move|leap) +aside': EvadeCommand})
+                     '(jump|move|leap) +aside': EvadeCommand,
+                     'climb +(?:(up|down) +)?(?:the +)?(?:hill|incline|slope|mountain)': ClimbHill,
+                     'go +(up|down) +(?:the +)?(?:hill|incline|slope|mountain)': ClimbHill,
+                     '(?:(?:go|climb) +)?(up|down)hill': ClimbHill,
+                     '(?:(?:go|climb) +)?(north|south|east|west|up|down)': ClimbHill,
+                     'climb': ClimbHill
+                     })
             command = match_command(self, user_input, combat_commands)
 
             if not isinstance(command, InvalidCommand):
@@ -185,7 +193,7 @@ class Game:
                 if mode == 'combat':
                     return TakeHitCommand(self, command.match)
 
-                elif mode == 'escape' and not isinstance(command, GoCommand):
+                elif mode == 'escape' and not (isinstance(command, GoCommand) or isinstance(command, CommandsCommand)):
                     return DeadByVinesCommand(self, command.match)
 
                 else:
