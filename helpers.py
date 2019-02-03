@@ -9,6 +9,7 @@ from re import fullmatch
 from textwrap import fill
 from copy import deepcopy
 from random import randint
+from time import time
 
 TEXT_WIDTH = 4 * 20
 
@@ -31,6 +32,7 @@ class Game:
         self.output = None
         self.last_checkpoint = None
         self.snapshot = None
+        self.start = time()
 
     def updates(self, command):
         self.player.room.update_blocks()
@@ -135,6 +137,37 @@ class Game:
 
         display(self.player.room.init_desc, after=1)
         self.player.room.first_visit = 0
+
+    def ending_sequence(self):
+        play_time = round(time() - self.start)
+        hours = play_time // 3600
+        minutes = (play_time - hours * 3600) // 60
+        seconds = play_time - hours * 3600 - minutes * 60
+
+        if play_time <= 60 * 15:
+            completion_message = self.game_map['message'][0]
+
+        elif play_time <= 60 * 35:
+            completion_message = self.game_map['message'][1]
+
+        else:
+            completion_message = self.game_map['message'][2]
+
+        display(self.game_map['ending'].format(name=self.player.name), before=0)
+        display('Congratulations! You win!')
+        display('Play time: {}h : {}m : {}s'.format(hours, minutes, seconds))
+        display(completion_message, before=0)
+        display('Thanks for playing!')
+        self.roll_credits()
+        input("Press Enter to quit...")
+
+    def roll_credits(self):
+        credits_dict = self.game_map['credits']
+
+        for role, names in credits_dict.items():
+            display(role.ljust(20) + names[0])
+            display('\n'.join([(' ' * 20) + name for name in names[1:]]), before=0)
+            display('', before=0)
 
     def choose_mode(self):
 

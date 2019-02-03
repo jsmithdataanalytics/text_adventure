@@ -4,8 +4,6 @@
 
 __author__ = "James Smith"
 
-# from json import load
-
 
 class Item:
     def __init__(self, item_data):
@@ -19,12 +17,6 @@ class Item:
         self.combat_commands = {}
         self.damage_dist = [[], []]
         self.combat_text = {}
-
-
-# def load_map():
-#     with open('map.json') as f:
-#         game_map = load(f)
-#     return game_map
 
 
 def initialise_checkpoints():
@@ -77,6 +69,13 @@ def initialise_items(game_map):
                                                 40: ['Critical hit! Your blade strikes the frost giant for double '
                                                      'damage!']}
     game_items['sword'].damage_dist = [[0, 20, 40], [0.4, 0.4, 0.2]]
+    game_items['axe'].combat_text['goblin'] = {0: ['You swing your axe at the goblin, but miss.',
+                                                   'You lunge at the goblin with your axe, but it leaps aside.'],
+                                               30: ['Your axe attack makes contact. Take that!',
+                                                    'You swing your axe at the goblin. Got the bastard!',
+                                                    'Your speed catches the goblin off guard. It takes the full ' +
+                                                    'brunt of your attack!'],
+                                               60: ['Critical hit! Your axe strikes the goblin for double damage!']}
     game_items['axe'].combat_text['wolf'] = {0: ['You swing your axe at the wolf, but miss.',
                                                  'You lunge at the wolf with your axe, but it leaps aside.'],
                                              30: ['Your axe attack makes contact. Take that!',
