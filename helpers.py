@@ -166,8 +166,11 @@ class Game:
 
         for role, names in credits_dict.items():
             display(role.ljust(20) + names[0])
-            display('\n'.join([(' ' * 20) + name for name in names[1:]]), before=0)
-            display('', before=0)
+
+            if names[1:]:
+                display('\n'.join([(' ' * 20) + name for name in names[1:]]), before=0)
+
+        display('', before=0)
 
     def choose_mode(self):
 
