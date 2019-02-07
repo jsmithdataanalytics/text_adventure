@@ -34,7 +34,7 @@ class Game:
         self.snapshot = None
         self.start = time()
 
-    def updates(self, command):
+    def updates(self, command, response):
         self.player.room.update_blocks()
         self.player.room.update_item_aliases()
         self.player.update_item_aliases()
@@ -101,9 +101,11 @@ class Game:
 
                 if self.player.mode == 'combat' and self.player.room_name == 'mouc2' and not previous:
 
-                    if randint(0, 1):
-                        self.enemies['mouc2giant'].charge = True
-                        display(self.enemies['mouc2giant'].charge_text, before=0, after=1)
+                    if not (isinstance(command, AttackCommand) and response.validity == 'invalid'):
+
+                        if randint(0, 1):
+                            self.enemies['mouc2giant'].charge = True
+                            display(self.enemies['mouc2giant'].charge_text, before=0, after=1)
 
         if self.player.lit_match['status']:
             self.player.lit_match['count'] -= 1

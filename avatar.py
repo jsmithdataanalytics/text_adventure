@@ -26,7 +26,7 @@ class Avatar:
         self.inventory = {item: items[item] for item in game_map['starting_inventory']}
         self.health = 120
         self.dead = False
-        self.lives = 3
+        self.lives = 5
         self.mode = 'normal'
         self.item_aliases = {}
         self.update_item_aliases()
@@ -84,6 +84,11 @@ class Avatar:
                 self.rooms['jimbg'].long_core = self.rooms['jimbg'].text['init_core2']
 
             self.items[item].taken = 1
+
+        if self.checkpoints['water'] and self.items['sapphire'].taken and self.items['ruby'].taken and \
+                self.items['citrine'].taken:
+            self.rooms['apoth'].short_core = self.rooms['apoth'].text['short_core3']
+            self.rooms['apoth'].long_core = self.rooms['apoth'].text['long_core3']
 
         return item_list
 

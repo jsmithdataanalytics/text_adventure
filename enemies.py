@@ -93,7 +93,7 @@ class Giant(Enemy):
              'Critical hit! The giant\'s hammer gets you dead on!']
     }
     charge_prob = 0.5
-    charge_text = 'The frost giant lifts its mighty hammer over its head...'
+    charge_text = 'The frost giant lifts its mighty hammer over its head... Look out!'
     charge_evade_text = ['You jump back just in time, as the frost giant\'s mighty hammer comes crashing down, '
                          'leaving a small crater where you once stood.',
                          'You leap aside, just barely avoiding the frost giant\'s devastating hammer attack.']

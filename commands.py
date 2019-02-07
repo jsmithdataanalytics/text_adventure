@@ -224,6 +224,9 @@ class GetCommand(Command):
                     got = self.game.player.get_all_visible_items()
                     return GetResponse(self.game, 'valid', 'success', new_items=got, method='all')
 
+            elif self.parsed['item'] == 'stone':
+                return Response(self.game, text='The stone pedestal is set into the ground and cannot be lifted.')
+
             else:
                 got = self.game.player.get_items(
                     new_items={self.parsed['item']: self.game.player.room.inventory[self.parsed['item']]})
@@ -444,9 +447,12 @@ class AttackCommand(Command):
         m = search(' +with( +.*)?$', text)
 
         if m:
+
             if m[1] and m[1].strip():
                 self.weapon = m[1].strip()
+
             text = sub(' +with( +.*)?$', '', text)
+
         remainder = sub('^attack *', '', text)
 
         if remainder:
@@ -464,17 +470,17 @@ class AttackCommand(Command):
             self.valid_weapons.append('dot')
 
         if self.verb != 'attack':
-            return Response(self.game, text='The word you\'re looking for is "attack".')
+            return Response(self.game, text='The word you\'re looking for is "attack".', validity='invalid')
 
         elif self.enemy is None:
-            return Response(self.game, text='Attack what?')
+            return Response(self.game, text='Attack what?', validity='invalid')
 
         elif not any([fullmatch(enemy.type, self.enemy) for enemy in self.game.player.room.enemies.values() if
                       enemy.active]):
-            return Response(self.game, text='There isn\'t one of those nearby.')
+            return Response(self.game, text='There isn\'t one of those nearby.', validity='invalid')
 
         elif self.weapon is None:
-            return Response(self.game, text='Attack with what?')
+            return Response(self.game, text='Attack with what?', validity='invalid')
 
         elif self.weapon not in self.game.player.inventory:
 
@@ -490,10 +496,10 @@ class AttackCommand(Command):
                     break
 
             if self.weapon not in self.game.player.inventory:
-                return Response(self.game, text='You don\'t have one of those.')
+                return Response(self.game, text='You don\'t have one of those.', validity='invalid')
 
         if self.weapon not in self.valid_weapons:
-            return Response(self.game, text='You can\'t attack with that.')
+            return Response(self.game, text='You can\'t attack with that.', validity='invalid')
 
         else:
             weapon = self.game.player.inventory[self.weapon]
@@ -669,11 +675,25 @@ class GiveCommand(DropCommand):
 
                 elif item == 'bottle':
                     self.game.player.lose_items([item])
-                    self.game.player.room.short_core = self.game.player.room.text['short_core3']
-                    self.game.player.room.long_core = self.game.player.room.text['long_core3']
                     self.game.checkpoints['water'] = True
                     self.game.rooms['vilb1'].room_blocks = []
-                    return Response(self.game, text=self.game.player.room.text['responses']['water'])
+
+                    if self.game.items['sapphire'].taken and self.game.items['ruby'].taken and \
+                            self.game.items['citrine'].taken:
+                        self.game.player.room.short_core = self.game.player.room.text['short_core3']
+                        self.game.player.room.long_core = self.game.player.room.text['long_core3']
+                        return Response(self.game, text=self.game.player.room.text['responses']['water'] +
+                                        self.game.player.room.text['responses']['water1'])
+
+                    else:
+                        self.game.player.room.short_core = self.game.player.room.text['short_core4']
+                        self.game.player.room.long_core = self.game.player.room.text['long_core4']
+                        return Response(self.game, text=self.game.player.room.text['responses']['water'] +
+                                        self.game.player.room.text['responses']['water2'])
+
+                elif self.game.checkpoints['water']:
+                    return Response(self.game, text='Potion Master: "I have no use for that! Please, unite the three '
+                                                    'orbs in Floonyloon Shrine and save The Vista!"')
 
                 else:
                     return Response(self.game, text='Potion Master: "Hm, not really what I was looking for. '
@@ -714,7 +734,10 @@ class LightMatchCommand(Command):
 
     def execute(self):
 
-        if self.game.player.lit_match['status']:
+        if 'matchbook' not in self.game.player.inventory:
+            return Response(self.game, text='You don\'t have any of those.')
+
+        elif self.game.player.lit_match['status']:
             return Response(self.game, text='You are already carrying a lit match.')
 
         else:
@@ -768,8 +791,21 @@ class FireCommand(Command):
 class BootsCommand(Command):
 
     def execute(self):
-        self.game.player.boots = True
-        return Response(self.game, text='You are now wearing the snow boots.')
+
+        if self.game.player.boots:
+            return Response(self.game, text='You\'re already wearing the snow boots you mug.')
+
+        elif 'snow boots' in self.game.player.inventory or \
+                (self.game.player.room_name == 'mohut' and self.game.rooms['mohut'].state['open'] == 1):
+
+            if 'snow boots' not in self.game.player.inventory:
+                self.game.player.get_items({'snow boots': self.game.items['snow boots']})
+
+            self.game.player.boots = True
+            return Response(self.game, text='You are now wearing the snow boots.')
+
+        else:
+            return Response(self.game, text='You don\'t have any of those.')
 
 
 class FillBottleCommand(Command):
@@ -869,7 +905,12 @@ def initialise_commands(items, rooms):
         'dig(?: +(?:a +)?hole)?(?: +with +(?:the +)?(?:shovel|spade))?': DigCommand,
         'climb( +(?:up|down))?(?: +(?:the +)?tree)?': ClimbTreeCommand,
         '(enter|exit)(?: +(.+))?': EnterExitCommand,
-        '((example +)?commands?|hints?|examples?)': CommandsCommand
+        '((example +)?commands?|hints?|examples?)': CommandsCommand,
+        '(?:wear|equip|put +on|strap +on|don) +(the +)?(snow *)?boots': BootsCommand,
+        'put +(the +)?(snow *)?boots +on': BootsCommand,
+        'change +into +(the +)?(snow *)?boots': BootsCommand,
+        '(change|swap|switch) +(boots|shoes)': BootsCommand,
+        '(?:light|strike|ignite|burn) +(?:a +)?match': LightMatchCommand
     }
 
     rooms['moub1'].commands.update(
@@ -1001,19 +1042,6 @@ def initialise_commands(items, rooms):
         }
     )
 
-    items['matchbook'].commands.update(
-        {
-            '(?:light|strike|ignite|burn) +(?:a +)?match': LightMatchCommand
-        }
-    )
-    items['snow boots'].commands.update(
-        {
-            '(?:wear|equip|put +on|strap +on|don) +(the +)?(snow *)?boots': BootsCommand,
-            'put +(the +)?(snow *)?boots +on': BootsCommand,
-            'change +into +(the +)?(snow *)?boots': BootsCommand,
-            '(change|swap|switch) +(boots|shoes)': BootsCommand
-        }
-    )
     items['hammer'].commands.update(
         {
             '(hit|strike|pound|smash|hammer)( +.*)?': HammerCommand

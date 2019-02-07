@@ -48,7 +48,7 @@ def play_turn(_game, _command, text_input):
     response = _command.execute()
     _game.output = _game.text_constructor(response)
     display(_game.output, before=0, after=1)
-    _game.updates(_command)
+    _game.updates(_command, response)
 
     if _game.over:
         display('You are out of lives. Thy game is over.')

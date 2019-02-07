@@ -45,9 +45,9 @@ class Room:
     def count_visible_items(self):
         count = 0
 
-        for item in self.inventory.values():
+        for key, item in self.inventory.items():
 
-            if item.visible:
+            if item.visible and key != 'stone':
                 count += 1
         return count
 

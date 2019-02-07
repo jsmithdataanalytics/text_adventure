@@ -163,8 +163,8 @@ game_map = {
                 "init_core": "You are in the mountains, stood just outside a small mountain hut.",
                 "state": {
                     "frozen": {
-                        "0": "The door is wide open, and there seems to be a fire burning inside.",
-                        "1": "It seems to be frozen solid, but the door is wide open."
+                        "0": "The door is wide open, and there seems to be a fire burning inside. Paths lead south and west from here.",
+                        "1": "It seems to be frozen solid, but the door is wide open. Paths lead south and west from here."
                     }
                 },
                 "responses": {}
@@ -241,11 +241,11 @@ game_map = {
         "mouc3": {
             "name": "mouc3",
             "text": {
-                "init_core": "You are atop the Gygax Mountains. You are at a dead end, with sheer drops on all sides, except to the south. Set into the ground is a circular stone pedestal, which bears an engraving in the shape of a hammer.",
+                "init_core": "You are atop the Gygax Mountains. You are at a dead end, with sheer drops on all sides, except to the south.",
                 "state": {},
                 "responses": {}
             },
-            "items": [],
+            "items": ["stone"],
             "state": {},
             "blocks": ["west"]
         },
@@ -360,7 +360,7 @@ game_map = {
                 },
                 "responses": {
                     "already_cut": "You've already cut the vines away you mug.",
-                    "cut_success": "You've successfully cut away the vines, revealing a path into the forest.",
+                    "cut_success": "Your sword cuts through the vines, revealing a path into the forest.",
                     "nothing_to_cut_with": "You have nothing to cut with."
                 }
             },
@@ -377,17 +377,22 @@ game_map = {
         "apoth": {
             "name": "apoth",
             "text": {
-                "init_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience...\"\n\n\"This land is cursed, {name}. Strange creatures are invading The Vista, using evil magic to transform it into a world of darkness and despair. The only way to stop the onslaught is to gather the three precious orbs hidden throughout the land...\"\n\n\"The Blue Orb, hidden deep in Robinett Forest...\"\n\"The Yellow Orb, lost in the Gygax Mountains...\"\n\"The Red Orb, whose resting place is unknown...\"\n\n\"{name}, you must find the orbs and take them to Floonyloon Shrine to vanquish the rising evil!\"\n\n\"In the the meantime, I can make a potion to cure everyone here, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. I need you to bring back some Dingleflowers from the forest, and some Alaria Spring Water from the mountains.\"\n\n\"Head to the forest first, find the Blue Orb, and return here with some Dingleflowers! I'm counting on you, {name}!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
+                "init_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience...\"\n\n\"This land is cursed, {name}. Strange creatures are invading The Vista, using evil magic to transform it into a world of darkness and despair. The only way to stop the onslaught is to gather the three precious orbs hidden throughout the land...\"\n\n\"The Blue Orb, hidden deep in Robinett Forest...\"\n\"The Yellow Orb, lost in the Gygax Mountains...\"\n\"The Red Orb, rumoured to be somewhere in this very village...\"\n\n\"{name}, you must find the orbs and take them to Floonyloon Shrine to vanquish the rising evil!\"\n\n\"In the the meantime, I can make a potion to cure everyone here, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. I need you to bring back some Dingleflowers from the forest, and some Alaria Spring Water from the mountains.\"\n\n\"Head to the forest first, find the Blue Orb, and return here with some Dingleflowers! I'm counting on you, {name}!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
                 "short_core": "You're in the Potion Master's tent. She says: \"{name}, go to Robinett Forest and bring me some Dingleflowers!",
-                "long_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience...\"\n\n\"This land is cursed, {name}. Strange creatures are invading The Vista, using evil magic to transform it into a world of darkness and despair. The only way to stop the onslaught is to gather the three precious orbs hidden throughout the land...\"\n\n\"The Blue Orb, hidden deep in Robinett Forest...\"\n\"The Yellow Orb, lost in the Gygax Mountains...\"\n\"The Red Orb, whose resting place is unknown...\"\n\n\"{name}, you must find the orbs and take them to Floonyloon Shrine to vanquish the rising evil!\"\n\n\"In the the meantime, I can make a potion to cure everyone here, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. I need you to bring back some Dingleflowers from the forest, and some Alaria Spring Water from the mountains.\"\n\n\"Head to the forest first, find the Blue Orb, and return here with some Dingleflowers! I'm counting on you, {name}!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
+                "long_core": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir.\n\n\"Huh? What are you doing here {name}? You should be resting! What do you mean you're not sick? Everyone is, even me! Amazing, you must have some kind of natural resilience...\"\n\n\"This land is cursed, {name}. Strange creatures are invading The Vista, using evil magic to transform it into a world of darkness and despair. The only way to stop the onslaught is to gather the three precious orbs hidden throughout the land...\"\n\n\"The Blue Orb, hidden deep in Robinett Forest...\"\n\"The Yellow Orb, lost in the Gygax Mountains...\"\n\"The Red Orb, rumoured to be somewhere in this very village...\"\n\n\"{name}, you must find the orbs and take them to Floonyloon Shrine to vanquish the rising evil!\"\n\n\"In the the meantime, I can make a potion to cure everyone here, but I need some pretty rare ingredients. The kind of stuff you just can't find here in town. I need you to bring back some Dingleflowers from the forest, and some Alaria Spring Water from the mountains.\"\n\n\"Head to the forest first, find the Blue Orb, and return here with some Dingleflowers! I'm counting on you, {name}!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
                 "short_core2": "You're in the Potion Master's tent. She says: \"{name}, you must now go to the Gygax Mountains and search for the Alaria Spring Water and the Yellow Orb! Hurry!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
                 "long_core2": "You're inside the Potion Master's tent. The Potion Master is stood over a large cauldron, mixing some kind of red coloured elixir. She says: \"{name}, you must now go to the Gygax Mountains and search for the Alaria Spring Water and the Yellow Orb! Hurry!\"\n\nThe Potion Master then returns to work, hastily throwing more ingredients into the cauldron.",
-                "short_core3": "You're in the Potion Master's tent. She says: \"{name}, you did find all three orbs, didn't you? Take them to the shrine near Jimbo's house and break this curse once and for all!\"",
-                "long_core3": "You're in the Potion Master's tent. She says: \"{name}, you did find all three orbs, didn't you? Take them to the shrine near Jimbo's house and break this curse once and for all!\"",
+                "short_core3": "You're in the Potion Master's tent. She says: \"{name}, take the three orbs to the shrine near Jimbo's house and break this curse once and for all!\"",
+                "long_core3": "You're in the Potion Master's tent. She says: \"{name}, take the three orbs to the shrine near Jimbo's house and break this curse once and for all!\"",
+                "short_core4": "You're in the Potion Master's tent. She says: \"{name}, did you find all three orbs yet? Remember...\"\n\n\"The Blue Orb is hidden deep in Robinett Forest...\"\n\"The Yellow Orb is lost in the Gygax Mountains...\"\n\"The Red Orb is rumoured to be somewhere in this very village...\"\n\n\"Unite the three orbs in the shrine and break this curse once and for all!\"",
+                "long_core4": "You're in the Potion Master's tent. She says: \"{name}, did you find all three orbs yet? Remember...\"\n\n\"The Blue Orb is hidden deep in Robinett Forest...\"\n\"The Yellow Orb is lost in the Gygax Mountains...\"\n\"The Red Orb is rumoured to be somewhere in this very village...\"\n\n\"Unite the three orbs in the shrine and break this curse once and for all!\"",
                 "state": {},
                 "responses": {
                     "dingleflowers": "Potion Master: \"Ah! Dingleflowers! Excellent work, {name}! I'll add them to the potion right away!\"\n\nThe Potion Master takes the flowers, and tosses them into the cauldron. The potion immediately turns from red to blue.\n\n\"Yes, yes, that's right. Great work, {name}! Now, head to the Gygax Mountains and search for the Alaria Spring Water and the Yellow Orb!\"",
-                    "water": "Potion Master: \"Ah! Alaria Spring Water! Excellent work, {name}! I'll add it to the potion right away!\"\n\nThe Potion Master takes the bottle, and empties it into the cauldron. The potion effervesces, and the colour turns from blue to shimmering gold.\n\n\"Eureka! It worked! The potion is ready, {name}! I'll take it to everyone in town while you go to the shrine near Jimbo's house. You did find all three orbs, didn't you? Head to the shrine and break this curse once and for all!\""
+                    "water": "Potion Master: \"Ah! Alaria Spring Water! Excellent work, {name}! I'll add it to the potion right away!\"\n\nThe Potion Master takes the bottle, and empties it into the cauldron. The potion effervesces, and the colour turns from blue to shimmering gold.\n\n\"Eureka! It worked! The potion is ready, {name}! I'll take it to everyone in town while you take the orbs to the shrine near Jimbo's house.",
+                    "water1": " Head to the shrine and break this curse once and for all!\"",
+                    "water2": " Did you find all three of them yet? Remember...\"\n\n\"The Blue Orb is hidden deep in Robinett Forest...\"\n\"The Yellow Orb is lost in the Gygax Mountains...\"\n\"The Red Orb is rumoured to be somewhere in this very village...\"\n\n\"Unite the three orbs in the shrine and break this curse once and for all!\""
+
                 }
             },
             "items": ["book", "bottle"],
@@ -582,7 +587,7 @@ game_map = {
             "state": {}
         },
         "spath": {
-            "name": "tpath",
+            "name": "spath",
             "text": {
                 "init_core": "You are on a woodland path, to the south of Floonyloon Village. The path is lined on either side with statues honouring The Vista's greatest historical leaders. You can go north or south from here."
             },
@@ -724,6 +729,15 @@ game_map = {
                 "responses": {}
             },
             "visible": 0
+        },
+        "stone": {
+            "name": "Stone",
+            "aliases": ["(the +)?(circular +)?(stone|pedestal|stone +pedestal)"],
+            "text": {
+                "init_desc": "Set into the ground is a circular stone pedestal, which bears a symbol in the shape of a hammer.",
+                "responses": {}
+            },
+            "visible": 1
         },
         "citrine": {
             "name": "Yellow Orb",
