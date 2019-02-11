@@ -10,6 +10,6 @@ In the game, you'll explore the fantasy realm known only as The Vista. You'll do
 Download and run vista-text-adventure-x64.exe
 
 ### Linux
-1. Download vista-text-adventure-linux and navigate to it
-2. Make executable: `sudo chmod +x vista-text-adventure-linux`
-3. Run: `./vista-text-adventure-linux`
+1. Download vista-text-adventure-linux-x64 and navigate to it
+2. Make executable: `sudo chmod +x vista-text-adventure-linux-x64`
+3. Run: `./vista-text-adventure-linux-x64`
