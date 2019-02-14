@@ -349,9 +349,9 @@ game_map = {
         "vila2": {
             "name": "vila2",
             "text": {
-                "init_core": "This is the northwest part of the village, where the Potion Master's apothecary is. It's a weird teepee thing, made of all sorts of exotic plants and animal skins. Plumes of brightly coloured smoke rise from the top.\n\nTo the north, a path leads into Robinett Forest. There are also paths leading east and south from here.",
-                "short_core": "This is the northwest part of the village, where the Potion Master's apothecary is. To the north, a path leads into Robinett Forest. There are also paths leading east and south from here.",
-                "long_core": "This is the northwest part of Floonyloon Village, where the Potion Master's apothecary is. It's a weird teepee thing, made of all sorts of exotic plants and animal skins. Plumes of brightly coloured smoke rise from the top.\n\nTo the north, a path leads into Robinett Forest. There are also paths leading east and south from here.",
+                "init_core": "This is the northwest part of the village, where the Potion Master's pharmacy is. It's a weird teepee thing, made of all sorts of exotic plants and animal skins. Plumes of brightly coloured smoke rise from the top.\n\nTo the north, a path leads into Robinett Forest. There are also paths leading east and south from here.",
+                "short_core": "This is the northwest part of the village, where the Potion Master's pharmacy is. To the north, a path leads into Robinett Forest. There are also paths leading east and south from here.",
+                "long_core": "This is the northwest part of Floonyloon Village, where the Potion Master's pharmacy is. It's a weird teepee thing, made of all sorts of exotic plants and animal skins. Plumes of brightly coloured smoke rise from the top.\n\nTo the north, a path leads into Robinett Forest. There are also paths leading east and south from here.",
                 "state": {
                     "cut": {
                         "0": "The northward path is obstructed by a thicket of thorny vines.",
@@ -368,7 +368,7 @@ game_map = {
             "state": {
                 "extra_directions": {
                     "in": [1, 4, 5],
-                    "aliases": ["(the +)?potion +master('?s)?( +(house|tipi|teepee|tent|apothecary))?", "(the +)?(house|tipi|teepee|tent|apothecary)", "(the +)?door"]
+                    "aliases": ["(the +)?potion +master('?s)?( +(house|tipi|teepee|tent|pharmacy))?", "(the +)?(house|tipi|teepee|tent|pharmacy)", "(the +)?door"]
                 },
                 "cut": 0
             },
@@ -399,7 +399,7 @@ game_map = {
             "state": {
                 "extra_directions": {
                     "out": [3, 5, 5],
-                    "aliases": ["(the +)?potion +master('?s)?( +(house|tipi|teepee|tent|apothecary))?", "(the +)?(house|tipi|teepee|tent|apothecary)", "(the +)?door"]
+                    "aliases": ["(the +)?potion +master('?s)?( +(house|tipi|teepee|tent|pharmacy))?", "(the +)?(house|tipi|teepee|tent|pharmacy)", "(the +)?door"]
                 }
             }
         },
@@ -821,9 +821,10 @@ game_map = {
     "credits": {
         "Creator": ["James Smith"],
         "Play Testers": [
+            "David Wong",
+            "Paul Willcock",
             "Tyler Slack",
             "Tommaso Fazio",
-            "David Wong",
             "Miranda Smith",
             "Ian Smith"
         ]

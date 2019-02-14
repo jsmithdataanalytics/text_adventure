@@ -130,7 +130,7 @@ class GoCommand(Command):
                 return Response(self.game,
                                 text='You have escaped into the northeast part of the village. The vines have '
                                      'retreated, and the forest has returned to its usual, peaceful state. The Potion '
-                                     'Master\'s apothecary is here.')
+                                     'Master\'s pharmacy is here.')
 
             if self.game.player.room_name == 'homeg' and "dot" in self.game.player.inventory and \
                     self.game.checkpoints['easter'] is False:
@@ -974,7 +974,7 @@ def initialise_commands(items, rooms):
         {
             '(?:give +her|show +her) +(.+)': GiveCommand,
             '(?:give|deliver|present|show|hand +over)'
-            ' +(.+?)(?: +to +(?:her|(?:the +)?(?:potion +)?master))?': GiveCommand
+            ' +(.+?)(?: +to +(?:her|(?:the +)?(?:potion +)?master|(?:the +)?pharmacist))?': GiveCommand
         }
     )
 
@@ -997,18 +997,19 @@ def initialise_commands(items, rooms):
         {
             'fill +(up +)?((the( +empty)?|a(n? +empty)?) +)?bottle'
             '( +with +((the|some( +of +the)?) +)?(alaria +)?(spring +)?water)?': FillBottleCommand,
-            'get +((the|some( +of +the)?) +)?(alaria +)?(spring +)?water': FillBottleCommand
+            '(get|take|grab|pick +up) +((the|some( +of +the)?) +)?(alaria +)?(spring +)?water': FillBottleCommand,
+            'pick +(((the|some( +of +the)?) +)?(alaria +)?(spring +)?water) +up': FillBottleCommand
         }
     )
 
     rooms['shrin'].commands.update(
         {
-            '(put|place|set) +((the|all|all +of +the|the +three|all +three( +of +the)?) +)?orbs? +((o|i)n(to)?|upon) +'
+            '(put|place|set) +((the|all|all +of +the|the +three|all +three( +of +the)?) +)?orbs?( +((o|i)n(to)?|upon) +'
             '(((the|an?) +)?(stone +)?(altar|pedestals?)|'
-            '((the|all|all +of +the|the +three|all +three( +of +the)?) +)?(stone +)?pedestals?)': PlaceOrbsCommand,
+            '((the|all|all +of +the|the +three|all +three( +of +the)?) +)?(stone +)?pedestals?))?': PlaceOrbsCommand,
             '(put|place|set) +(((the|an?) +)?((red|blue|yellow|sapphire|ruby|citrine) +)?|(one|each)( +of +the)? +)?'
-            'orbs? +((o|i)n(to)?|upon) +((the|an?|(one|each)( +of +the)?) +)?'
-            '(stone +)?(altar|pedestals?)': PlaceOrbsCommand
+            'orbs?( +((o|i)n(to)?|upon) +((the|an?|(one|each)( +of +the)?) +)?'
+            '(stone +)?(altar|pedestals?))?': PlaceOrbsCommand,
         }
     )
 

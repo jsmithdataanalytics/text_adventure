@@ -65,7 +65,7 @@ class Game:
                     display(text + output, before=0, after=1)
 
                 elif self.last_checkpoint == 'dingleflowers':
-                    text = 'You are in the Potion Master\'s apothecary, and have just given her the Dingleflowers.\n\n'
+                    text = 'You are in the Potion Master\'s teepee, and have just given her the Dingleflowers.\n\n'
                     display(text + self.output, before=0, after=1)
 
                 elif self.last_checkpoint in ['easter', 'thaw']:
@@ -146,10 +146,10 @@ class Game:
         minutes = (play_time - hours * 3600) // 60
         seconds = play_time - hours * 3600 - minutes * 60
 
-        if play_time <= 60 * 15:
+        if play_time <= 60 * 20:
             completion_message = self.game_map['message'][0]
 
-        elif play_time <= 60 * 35:
+        elif play_time <= 60 * 45:
             completion_message = self.game_map['message'][1]
 
         else:
