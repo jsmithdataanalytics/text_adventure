@@ -17,7 +17,6 @@ class Avatar:
         self.checkpoints = checkpoints
         self.items = items
         self.rooms = rooms
-        self.game_map = game_map
         self.name = ''
         self.coords = game_map['spawn_point']
         self.room_name = ''

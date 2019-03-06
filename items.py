@@ -20,14 +20,14 @@ class Item:
 
 
 def initialise_checkpoints():
-    return {'jimbo': False,
-            'apoth': False,
-            'vines': False,
-            'escape': False,
-            'dingleflowers': False,
-            'easter': False,
-            'thaw': False,
-            'water': False}
+    return {'jimbo':            False,
+            'apoth':            False,
+            'vines':            False,
+            'escape':           False,
+            'dingleflowers':    False,
+            'easter':           False,
+            'thaw':             False,
+            'water':            False}
 
 
 def initialise_items(game_map):

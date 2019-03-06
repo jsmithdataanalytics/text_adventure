@@ -7,6 +7,25 @@ __author__ = "James Smith"
 from responses import *
 from random import choices
 from re import fullmatch, search, sub
+from textwrap import fill
+
+TEXT_WIDTH = 80
+
+
+def display(string, text_width=TEXT_WIDTH, before=1, after=0):
+    paras = string.split('\n')
+    string = '\n'.join([fill(para, text_width, replace_whitespace=False)
+                        for para in paras])
+    print('\n' * before + string + '\n' * after)
+
+
+def match_command(game, string, command_list):
+    for reg_ex in command_list:
+        result = fullmatch(reg_ex, string)
+
+        if result:
+            return command_list[reg_ex](game=game, match=result)
+    return InvalidCommand(game)
 
 
 class Command:
@@ -888,6 +907,23 @@ class ClimbHill(Command):
             return Response(self.game, text='Up or down?')
 
 
+class SaveCommand(Command):
+
+    def execute(self):
+
+        while True:
+            filename = input('Please name your save file: ')
+
+            if not fullmatch('[a-zA-Z0-9\\-_ ]+', filename):
+                display('The filename must contain only A-Z, 0-9, - and _ characters.', before=0, after=1)
+
+            else:
+                break
+
+        self.game.save(filename)
+        return Response(self.game, text='Progress saved.')
+
+
 go_regex = '(?:go +)?(north|south|east|west|up|down|up(?: +(?:the +)?)?stairs|down(?: +(?:the +)?)?stairs|' \
            'in(?:to|side)?( +.+)?|out(?:side)?(?:(?: +of)?( +.+))?)'
 
@@ -910,7 +946,8 @@ def initialise_commands(items, rooms):
         'put +(the +)?(snow *)?boots +on': BootsCommand,
         'change +into +(the +)?(snow *)?boots': BootsCommand,
         '(change|swap|switch) +(boots|shoes)': BootsCommand,
-        '(?:light|strike|ignite|burn) +(?:a +)?match': LightMatchCommand
+        '(?:light|strike|ignite|burn) +(?:a +)?match': LightMatchCommand,
+        'save( *file| +to +file| +((the|my) +)?game| +(my +)?progress)?': SaveCommand
     }
 
     rooms['moub1'].commands.update(

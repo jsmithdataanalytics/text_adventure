@@ -10,7 +10,6 @@ from collections import OrderedDict
 class Room:
     def __init__(self, room_data, items, enemies):
         self.items = items
-        self.enemies = enemies
         self.name = room_data['name']
         self.text = room_data['text']
         self.init_core = self.text['init_core']
