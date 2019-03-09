@@ -539,6 +539,12 @@ class AttackCommand(Command):
                 text = 'One hit KO!'
 
             more_text = enemy.lose_health(damage)
+
+            if enemy.name == 'giant' and not enemy.active:
+                addition = ' From here you can travel north, or head south to begin your descent.'
+                self.game.rooms['mouc2'].short_core += addition
+                self.game.rooms['mouc2'].long_core += addition
+
             return Response(self.game, text=text + more_text)
 
 
@@ -910,17 +916,27 @@ class ClimbHill(Command):
 class SaveCommand(Command):
 
     def execute(self):
+        filename = self.game.filename
 
-        while True:
-            filename = input('Please name your save file: ')
+        if filename is None:
 
-            if not fullmatch('[a-zA-Z0-9\\-_ ]+', filename):
-                display('The filename must contain only A-Z, 0-9, - and _ characters.', before=0, after=1)
+            while True:
+                filename = input('Please name your save file: ')
 
-            else:
-                break
+                if not fullmatch('[a-zA-Z0-9\\-_]+', filename):
+                    display('The filename must contain only A-Z, 0-9, - and _ characters.', before=0, after=1)
 
-        self.game.save(filename)
+                elif len(filename) + 6 > TEXT_WIDTH:
+                    display('That filename is too long.', before=0, after=1)
+
+                elif not filename:
+                    display('Please provide a filename.', before=0, after=1)
+
+                else:
+                    self.game.filename = filename
+                    break
+
+        self.game.save()
         return Response(self.game, text='Progress saved.')
 
 
@@ -1017,7 +1033,7 @@ def initialise_commands(items, rooms):
 
     rooms['mohut'].commands.update(
         {
-            '(?:put|place) +(.+) +(?:in(?:(?:to|side))? +(?:the +)?fireplace)': FireplaceCommand
+            '(?:put|place) +(.+) +(?:in(?:(?:to|side))? +(?:the +)?fire(?:place)?)': FireplaceCommand
         }
     )
 

@@ -4,11 +4,12 @@
 
 __author__ = "James Smith"
 
-from commands import *
-from json import dump
+from collections import OrderedDict
 from copy import deepcopy
+from json import dump, load
 from random import randint
 from time import time
+from commands import *
 
 
 class Game:
@@ -30,6 +31,8 @@ class Game:
         self.last_checkpoint = None
         self.snapshot = None
         self.start = time()
+        self.filename = None
+        self.time = self.start - self.start
 
     def updates(self, command, response):
         self.player.room.update_blocks()
@@ -87,29 +90,30 @@ class Game:
 
             self.old_checkpoints = deepcopy(self.checkpoints)
             self.snapshot = None
-            snapshot = deepcopy(self)
-            self.snapshot = snapshot
+            self.snapshot = deepcopy(self)
 
-        if self.enemies['mouc2giant'].active:
+        if not isinstance(command, InvalidCommand) and \
+                not isinstance(command, CommandsCommand) and \
+                not isinstance(command, SaveCommand) and \
+                not (isinstance(command, AttackCommand) and response.validity == 'invalid'):
 
-            if not isinstance(command, InvalidCommand) and not isinstance(command, CommandsCommand):
+            if self.enemies['mouc2giant'].active:
+
                 previous = self.enemies['mouc2giant'].charge
                 self.enemies['mouc2giant'].charge = False
 
                 if self.player.mode == 'combat' and self.player.room_name == 'mouc2' and not previous:
 
-                    if not (isinstance(command, AttackCommand) and response.validity == 'invalid'):
+                    if randint(0, 1):
+                        self.enemies['mouc2giant'].charge = True
+                        display(self.enemies['mouc2giant'].charge_text, before=0, after=1)
 
-                        if randint(0, 1):
-                            self.enemies['mouc2giant'].charge = True
-                            display(self.enemies['mouc2giant'].charge_text, before=0, after=1)
+            if self.player.lit_match['status']:
+                self.player.lit_match['count'] -= 1
 
-        if self.player.lit_match['status']:
-            self.player.lit_match['count'] -= 1
-
-            if self.player.lit_match['count'] == 0:
-                self.player.lit_match['status'] = False
-                display('Your match has gone out.', before=0, after=1)
+                if self.player.lit_match['count'] == 0:
+                    self.player.lit_match['status'] = False
+                    display('Your match has gone out.', before=0, after=1)
 
     def intro(self, prompt):
         print('')
@@ -124,9 +128,14 @@ class Game:
         while True:
             name = input(prompt).strip()
 
-            if name != '':
+            if name == '':
+                display('You need to provide a name!', before=0, after=1)
+
+            elif len(name) > self.text_width - len(prompt):
+                display('Nobody\'s name is that long.', before=0, after=1)
+
+            else:
                 break
-            display('You need to provide a name!', before=0, after=1)
 
         self.player.set_name(name)
         display(self.game_map['opening']['intro'][4].format(name=self.player.name))
@@ -138,7 +147,7 @@ class Game:
         self.player.room.first_visit = 0
 
     def ending_sequence(self):
-        play_time = round(time() - self.start)
+        play_time = round((time() - self.start) + self.time)
         hours = play_time // 3600
         minutes = (play_time - hours * 3600) // 60
         seconds = play_time - hours * 3600 - minutes * 60
@@ -201,7 +210,8 @@ class Game:
                 go_regex: GoCommand,
                 '(dodge|evade|avoid)(( +the)? +attack)?': EvadeCommand,
                 '(attack|hit|strike|stab|kill)( +.*)?': AttackCommand,
-                '((example +)?commands?|hints?|examples?)': CommandsCommand})
+                '((example +)?commands?|hints?|examples?)': CommandsCommand,
+                'save( *file| +to +file| +((the|my) +)?game| +(my +)?progress)?': SaveCommand})
 
             if self.player.room_name == 'mouc2':
                 combat_commands.update(
@@ -228,7 +238,9 @@ class Game:
                 if mode == 'combat':
                     return TakeHitCommand(self, command.match)
 
-                elif mode == 'escape' and not (isinstance(command, GoCommand) or isinstance(command, CommandsCommand)):
+                elif mode == 'escape' and not (isinstance(command, GoCommand) or
+                                               isinstance(command, CommandsCommand) or
+                                               isinstance(command, SaveCommand)):
                     return DeadByVinesCommand(self, command.match)
 
                 else:
@@ -240,7 +252,7 @@ class Game:
 
         for key in self.__dict__:
 
-            if key != 'snapshot':
+            if key not in ['snapshot', 'filename']:
                 self.__dict__[key] = self.snapshot.__dict__[key]
         self.old_checkpoints = None
         self.player.lives = lives
@@ -253,7 +265,10 @@ class Game:
 
         return obj.__dict__
 
-    def save(self, filename):
+    def save(self):
+        now = time()
+        self.time = (now - self.start) + self.time
+        self.start = now
         game = deepcopy(self)
         game.game_map = None
 
@@ -282,5 +297,48 @@ class Game:
         game.player.inventory = tmp_inventory
         game.snapshot = None
 
-        with open('{}.vista'.format(filename), 'w') as f:
+        with open('{}.vista'.format(self.filename), 'w') as f:
             dump(game, f, default=self.default)
+
+    def load(self, filename):
+
+        with open('{}.vista'.format(filename), 'r') as f:
+            savefile = load(f)
+
+        self.start = time()
+        self.time = savefile['time']
+        self.filename = filename
+        self.old_checkpoints = savefile['old_checkpoints']
+        self.output = savefile['output']
+        self.last_checkpoint = None
+
+        for key in self.checkpoints:
+            self.checkpoints[key] = savefile['checkpoints'][key]
+
+        for key, item in self.items.items():
+
+            for attr in ['taken', 'visible']:
+                item.__setattr__(attr, savefile['items'][key][attr])
+
+        for key, enemy in self.enemies.items():
+
+            for attr in ['health', 'alive', 'active', 'charge', 'inventory']:
+                enemy.__setattr__(attr, savefile['enemies'][key][attr])
+
+        for key, room in self.rooms.items():
+
+            for attr in ['init_core', 'short_core', 'long_core', 'init_desc', 'short_desc',
+                         'long_desc', 'first_visit', 'room_blocks', 'enemy_blocks', 'blocks', 'item_aliases']:
+                room.__setattr__(attr, savefile['rooms'][key][attr])
+
+            room.inventory = OrderedDict([(item, self.items[item]) for item in savefile['rooms'][key]['inventory']])
+            room.state = OrderedDict([(var, savefile['rooms'][key]['state'][var]) for var in room.state_order])
+
+        for attr in ['name', 'coords', 'health', 'dead', 'lives', 'mode', 'item_aliases', 'boots', 'lit_match']:
+            self.player.__setattr__(attr, savefile['player'][attr])
+
+        self.player.update_room()
+        self.player.inventory = {item: self.items[item] for item in self.player.item_aliases}
+
+        self.snapshot = None
+        self.snapshot = deepcopy(self)

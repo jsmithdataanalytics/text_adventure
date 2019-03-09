@@ -4,15 +4,16 @@
 
 __author__ = "James Smith"
 
-from items import *
-from enemies import *
-from rooms import *
+import os
 from avatar import *
+from enemies import *
 from game import *
+from items import *
 from map import *
+from rooms import *
 
 
-def load_game(prompt):
+def load_game(prompt, filename=None):
     checkpoints = initialise_checkpoints()
     items = initialise_items(game_map)
     enemies = initialise_enemies(game_map, items)
@@ -20,18 +21,44 @@ def load_game(prompt):
     player = initialise_player(game_map, checkpoints, items, rooms)
     generic_commands = initialise_commands(items, rooms)
     _game = Game(TEXT_WIDTH, game_map, checkpoints, items, enemies, rooms, player, generic_commands)
-    _game.intro(prompt)
+
+    if filename:
+        _game.load(filename)
+        display(_game.player.describe_current_room('long').format(name=_game.player.name), after=1)
+
+    else:
+        _game.intro(prompt)
+
     return _game, InvalidCommand(_game)
 
 
 def initialise_game(prompt):
+
+    to_load = None
+    savefiles = [filename[:-6] for filename in os.listdir('.') if filename[-6:] == '.vista']
+
+    if savefiles:
+        options = ['"{}"'.format(filename) for filename in savefiles]
+        display('\n'.join(['Available save files:'] + options), before=1, after=1)
+
+        while True:
+            to_load = input('Specify a save file to load, or hit Enter to start from the beginning: ').lower()
+
+            if to_load in savefiles or not to_load:
+                break
+
+            else:
+                display('That\'s not one of the options.', before=0, after=1)
+
     print('\nLoading game...')
-    return load_game(prompt)
+    return load_game(prompt, to_load)
 
 
-def reinitialise_game(prompt):
+def reinitialise_game(prompt, filename):
     print('\nRestarting game...')
-    return load_game(prompt)
+    _game, _command = load_game(prompt)
+    _game.filename = filename
+    return _game, _command
 
 
 def play_turn(_game, _command, text_input):
@@ -74,4 +101,4 @@ if __name__ == '__main__':
         game, command = play_turn(game, command, game_input)
 
         if game.over:
-            game, command = reinitialise_game('Enter your name: ')
+            game, command = reinitialise_game('Enter your name: ', game.filename)

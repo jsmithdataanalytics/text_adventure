@@ -227,9 +227,9 @@ game_map = {
         "mouc2": {
             "name": "mouc2",
             "text": {
-                "init_core": "You are at the peak of the Gygax Mountains. The view from here would be spectacular, were you not stood in the middle of a blizzard, complete with frequent claps of thunder. The summit is a flat platform, suitable for use as a fighting arena.",
-                "short_core": "You are at the flat peak of the Gygax Mountains. From here you can travel north, or head south to begin your descent.",
-                "long_core": "You are at the flat peak of the Gygax Mountains. The view from here would be spectacular, were you not stood in the middle of a blizzard. From here you can travel north, or head south to begin your descent.",
+                "init_core": "You are at the peak of the Gygax Mountains. The view from here would be spectacular, were you not stood in the middle of a blizzard, complete with frequent claps of thunder.",
+                "short_core": "You are at the peak of the Gygax Mountains.",
+                "long_core": "You are at the peak of the Gygax Mountains. The view from here would be spectacular, were you not stood in the middle of a blizzard, complete with frequent claps of thunder.",
                 "state": {},
                 "responses": {}
             },
@@ -805,7 +805,7 @@ game_map = {
         "mouc2giant": {
             "name": "giant",
             "type": "(frost *)?giant",
-            "init_desc": "Luckily, it won't go to waste. A huge frost giant stands here, blocking your way north. Adapted to winter environments, it has white skin, blue hair and eyes, and seems completely indifferent to the freezing temperature. It is dressed only in skins and some armour, but, more notably, carries a great hammer, which looks like it could do a tremendous amount of damage.",
+            "init_desc": "The summit is a flat platform, suitable for use as a fighting arena. Luckily, it won't go to waste. A huge frost giant stands here, blocking your way north. Adapted to winter environments, it has white skin, blue hair and eyes, and seems completely indifferent to the freezing temperature. It is dressed only in skins and some armour, but, more notably, carries a great hammer, which looks like it could do a tremendous amount of damage.",
             "blocks": ["north"],
             "inventory": ["hammer", "citrine"],
             "death_text": ["The frost giant is defeated. It falls to its knees, and says:\n\n\"How? How did this kid defeat us? Curse you, {name}!\"\n\nThe giant then vanishes in a great plume of smoke. Left behind, in the snow, is a yellow coloured orb of citrine, and the frost giant's hammer. The northward path is no longer blocked."]
@@ -824,6 +824,7 @@ game_map = {
             "David Wong",
             "Paul Willcock",
             "Tyler Slack",
+            "Josh Greenwood",
             "Tommaso Fazio",
             "Miranda Smith",
             "Ian Smith"

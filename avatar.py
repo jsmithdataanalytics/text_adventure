@@ -52,20 +52,26 @@ class Avatar:
             return self.room.init_desc
 
         elif desc_type == 'short':
+            to_return = self.room.short_desc
 
             if self.checkpoints['vines'] and not self.checkpoints['escape'] and \
                     self.room_name not in ['deade', 'dead2']:
-                return self.room.short_desc + ' Thorny vines continue to spring up just behind you, trying to stop ' \
-                                              'you escaping with the Dingleflowers!'
-
-            else:
-                return self.room.short_desc
+                to_return += ' Thorny vines continue to spring up just behind you, trying to stop ' \
+                             'you escaping with the Dingleflowers!'
 
         elif desc_type == 'long':
-            return self.room.long_desc
+            to_return = self.room.long_desc
+
+            # The only way to have a long description while in the escape scene is to load from savefile
+            if self.checkpoints['vines'] and not self.checkpoints['escape'] and \
+                    self.room_name not in ['deade', 'dead2']:
+                to_return += ' Having taken the Dingleflowers, you are being pursued by thorny vines, intent' \
+                             ' on preventing your escape. Return to the village without taking a wrong turn!'
 
         else:
             raise ValueError('Unhandled description type')
+
+        return to_return
 
     def get_items(self, new_items):
         self.inventory.update(new_items)
