@@ -63,7 +63,7 @@ def initialise_game(prompt):
 
     else:
         print('\nLoading game...')
-        load_game(prompt, None)
+        return load_game(prompt, None)
 
 
 def reinitialise_game(prompt, filename):
