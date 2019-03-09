@@ -23,8 +23,13 @@ def load_game(prompt, filename=None):
     _game = Game(TEXT_WIDTH, game_map, checkpoints, items, enemies, rooms, player, generic_commands)
 
     if filename:
-        _game.load(filename)
-        display(_game.player.describe_current_room('long').format(name=_game.player.name), after=1)
+        status = _game.load(filename)
+
+        if status:
+            display(_game.player.describe_current_room('long').format(name=_game.player.name), after=1)
+
+        else:
+            return None
 
     else:
         _game.intro(prompt)
@@ -34,7 +39,6 @@ def load_game(prompt, filename=None):
 
 def initialise_game(prompt):
 
-    to_load = None
     savefiles = [filename[:-6] for filename in os.listdir('.') if filename[-6:] == '.vista']
 
     if savefiles:
@@ -45,13 +49,21 @@ def initialise_game(prompt):
             to_load = input('Specify a save file to load, or hit Enter to start from the beginning: ').lower()
 
             if to_load in savefiles or not to_load:
-                break
+                print('\nLoading game...')
+                to_return = load_game(prompt, to_load)
+
+                if to_return is None:
+                    display('That save file has become corrupted.', before=0, after=1)
+
+                else:
+                    return to_return
 
             else:
                 display('That\'s not one of the options.', before=0, after=1)
 
-    print('\nLoading game...')
-    return load_game(prompt, to_load)
+    else:
+        print('\nLoading game...')
+        load_game(prompt, None)
 
 
 def reinitialise_game(prompt, filename):

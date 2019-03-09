@@ -9,7 +9,7 @@ from copy import deepcopy
 from json import dumps, loads
 from random import randint
 from time import time
-from cryptography.fernet import Fernet
+from cryptography.fernet import Fernet, InvalidToken, InvalidSignature
 import crypto
 from commands import *
 
@@ -310,7 +310,13 @@ class Game:
 
         with open('{}.vista'.format(filename), 'rb') as f:
             cipher_text = f.read()
-            plain_text = self.cipher_suite.decrypt(cipher_text)
+
+            try:
+                plain_text = self.cipher_suite.decrypt(cipher_text)
+
+            except (InvalidToken, InvalidSignature):
+                return 0
+
             savefile = loads(plain_text.decode(encoding='UTF-8'))
 
         self.start = time()
@@ -350,3 +356,5 @@ class Game:
 
         self.snapshot = None
         self.snapshot = deepcopy(self)
+
+        return 1
