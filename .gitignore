@@ -154,3 +154,6 @@ fabric.properties
 
 # savefiles
 *.vista
+
+#crypto
+crypto.py

@@ -873,8 +873,8 @@ class CommandsCommand(Command):
     def execute(self):
         examples = ['go north', 'get sword', 'drop sword', 'look around',
                     'go upstairs', 'get all', 'drop all', 'check inventory',
-                    'go inside', 'give sword', 'attack', 'dodge',
-                    'go out', 'south', 'commands', 'quit']
+                    'go inside', 'give sword', 'attack', 'save',
+                    'go out', 'south', 'dodge', 'quit']
         examples = [example.center(len(example) + 2, '"').ljust(int(self.game.text_width / 4), ' ')
                     for example in examples]
         return Response(self.game, text='Example commands:\n\n' + ''.join(examples))

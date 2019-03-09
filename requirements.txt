@@ -1,6 +1,11 @@
 altgraph==0.16.1
+asn1crypto==0.24.0
+cffi==1.12.2
+cryptography==2.6.1
 future==0.17.1
 macholib==1.11
 pefile==2018.8.8
+pycparser==2.19
 PyInstaller==3.4
 pywin32-ctypes==0.2.0
+six==1.12.0

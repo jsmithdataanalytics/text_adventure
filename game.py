@@ -6,13 +6,17 @@ __author__ = "James Smith"
 
 from collections import OrderedDict
 from copy import deepcopy
-from json import dump, load
+from json import dumps, loads
 from random import randint
 from time import time
+from cryptography.fernet import Fernet
+import crypto
 from commands import *
 
 
 class Game:
+    encryption_key = crypto.key
+    cipher_suite = Fernet(encryption_key)
 
     def __init__(self, text_width, game_map, checkpoints, items, enemies, rooms, player, generic_commands):
         self.text_width = text_width
@@ -297,13 +301,17 @@ class Game:
         game.player.inventory = tmp_inventory
         game.snapshot = None
 
-        with open('{}.vista'.format(self.filename), 'w') as f:
-            dump(game, f, default=self.default)
+        with open('{}.vista'.format(self.filename), 'wb') as f:
+            plain_text = bytes(dumps(game, default=self.default), 'UTF-8')
+            cipher_text = self.cipher_suite.encrypt(plain_text)
+            f.write(cipher_text)
 
     def load(self, filename):
 
-        with open('{}.vista'.format(filename), 'r') as f:
-            savefile = load(f)
+        with open('{}.vista'.format(filename), 'rb') as f:
+            cipher_text = f.read()
+            plain_text = self.cipher_suite.decrypt(cipher_text)
+            savefile = loads(plain_text.decode(encoding='UTF-8'))
 
         self.start = time()
         self.time = savefile['time']
